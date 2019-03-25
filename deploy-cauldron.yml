@@ -57,11 +57,18 @@
           - "docker"
           - requests>=2.20.1
 
+
+- name: Create a network for the containers
+  hosts: localhost
+  tasks:
+    - name: Create a network
+      docker_network:
+        name: network_cauldron
+
+
 - name: Deploy grimoirelab/secured in a container
   hosts: localhost
   remote_user: root
-  tags:
-    - install_docker
   tasks:
     - name: Run grimoirelab/secured as grimoirelab_service
       docker_container:
@@ -72,6 +79,8 @@
         pull: yes
         env:
           RUN_MORDRED: "NO"
+        networks:
+          - name: network_cauldron
         ports:
           - "443:5601"
           - "127.0.0.1:9200:9200"
@@ -79,10 +88,9 @@
 
 - name: Deploy Cauldron in a container
   hosts: localhost
-  become: yes
   tasks:
 
-    - name: Build Cauldron Dockerfile
+    - name: Build Cauldron Dockerfile (It takes some time the first time)
       docker_image:
         path: ./cauldron
         name: cauldron
@@ -93,5 +101,9 @@
         image: "cauldron"
         state: started
         restart: yes
+        networks:
+          - name: network_cauldron
         ports:
           - "8000:8000"
+
+

@@ -6,6 +6,8 @@ ENV PYTHONBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
 
+RUN apt update && apt install -y mysql-client
+
 # Download Cauldron code
 RUN git clone https://gitlab.com/cauldron2/cauldron.git --depth 1
 
