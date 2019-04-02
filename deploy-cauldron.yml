@@ -60,6 +60,7 @@
 
 - name: Create a network for the containers
   hosts: localhost
+  remote_user: root
   tasks:
     - name: Create a network
       docker_network:
