@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Copy the settings_secret
-cp /code/settings_secret.py /code/cauldron/Cauldron2/Cauldron2/settings_secret.py
-
 # Create a database for mordred
 until mysql -u grimoirelab -h grimoirelab_service -e "CREATE DATABASE IF NOT EXISTS test_sh;"
 do
