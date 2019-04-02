@@ -1,0 +1,117 @@
+---
+## Run as:
+##  ansible-playbook -i IP, deploy-cauldron.yml
+##  OPTIONAL: --skip-tags "install docker"
+
+# Install docker in the machine (latest version, not from apt)
+- name: Install Docker
+  hosts: all
+  remote_user: root
+  tags:
+    - install_docker
+  tasks:
+    - name: Deploy packages for docker
+      apt:
+        name: "{{ packages }}"
+        state: latest
+        force: yes
+        update_cache: yes
+      vars:
+        packages:
+          - "apt-transport-https"
+          - "ca-certificates"
+          - "curl"
+          - "gnupg2"
+          - "software-properties-common"
+          - "python-pip"
+      become: yes
+
+    - name: Add key for Docker APT repository
+      apt_key:
+        url: "https://download.docker.com/linux/debian/gpg"
+        state: present
+      become: yes
+
+    - name: Create line for Docker APT repository
+      command: bash -c "echo \"deb [arch=amd64] https://download.docker.com/linux/debian wheezy stable\" "
+      register: docker_repo_line
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: "{{ docker_repo_line.stdout }}"
+        state: present
+      become: true
+
+    - name: Install Docker Community Edition
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+      become: true
+
+    - name: Install pip pacakges for docker
+      become: yes
+      pip:
+        name:
+          - "docker"
+          - requests>=2.20.1
+
+
+- name: Create a network for the containers
+  hosts: all
+  remote_user: root
+  tasks:
+    - name: Create a network
+      docker_network:
+        name: network_cauldron
+
+
+- name: Deploy grimoirelab/secured in a container
+  hosts: all
+  remote_user: root
+  tasks:
+    - name: Run grimoirelab/secured as grimoirelab_service
+      docker_container:
+        name: grimoirelab_service
+        image: "grimoirelab/secured"
+        state: started
+        restart: yes
+        pull: yes
+        env:
+          RUN_MORDRED: "NO"
+        networks:
+          - name: network_cauldron
+        ports:
+          - "443:5601"
+          - "127.0.0.1:9200:9200"
+          - "127.0.0.1:3306:3306"
+
+- name: Deploy Cauldron in a container
+  hosts: all
+  remote_user: root
+  vars:
+    dir: /root/deployment
+  tasks:
+    - name: Copy the customized settings_secret.py
+      copy:
+        src: "cauldron/settings_secret.py"
+        dest: "{{dir}}/settings_secret.py"
+        mode: 0755
+
+    - name: Build Cauldron Dockerfile (It takes some time the first time)
+      command: docker build -t cauldron https://gitlab.com/cauldron2/deployment.git#:cauldron
+
+    - name: Run Cauldron
+      docker_container:
+        name: cauldron_service
+        image: "cauldron"
+        state: started
+        restart: yes
+        networks:
+          - name: network_cauldron
+        ports:
+          - "8000:8000"
+        volumes:
+          - "{{dir}}/settings_secret.py:/code/cauldron/Cauldron2/Cauldron2/settings_secret.py"
+
+
