@@ -4,7 +4,11 @@
 cp /code/settings_secret.py /code/cauldron/Cauldron2/Cauldron2/settings_secret.py
 
 # Create a database for mordred
-mysql -u grimoirelab -h grimoirelab_service -e "create database test_sh;"
+until mysql -u grimoirelab -h grimoirelab_service -e "create database test_sh;"
+do
+  echo $(date +"%x %X") - Waiting for mysql
+  sleep 2
+done
 
 # Run cauldron server
 cd /code/cauldron/Cauldron2
