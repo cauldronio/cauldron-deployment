@@ -84,8 +84,8 @@
           - name: network_cauldron
         ports:
           - "443:5601"
-          - "127.0.0.1:9200:9200"
-          - "127.0.0.1:3306:3306"
+          - "9200:9200"
+          - "3306:3306"
 
 - name: Deploy Cauldron in a container
   hosts: localhost
