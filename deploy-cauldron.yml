@@ -67,6 +67,15 @@
         name: network_cauldron
 
 
+- name: Create a shared volume for the containers
+  hosts: localhost
+  remote_user: root
+  tasks:
+    - name: Create a volume
+      docker_volume:
+        name: cauldron_volume
+
+
 - name: Deploy grimoirelab/secured in a container
   hosts: localhost
   remote_user: root
@@ -107,5 +116,21 @@
           - name: network_cauldron
         ports:
           - "8000:8000"
+        volumes:
+          - "cauldron_volume:/dashboard_logs"
 
+    - name: Build Mordred Dockerfile (It may take some time the first time)
+      docker_image:
+        path: "./mordred"
+        name: mordred
 
+    - name: Run mordred
+      docker_container:
+        name: mordred_service
+        image: "mordred"
+        state: started
+        restart: yes
+        networks:
+          - name: network_cauldron
+        volumes:
+          - "cauldron_volume:/dashboard_logs"

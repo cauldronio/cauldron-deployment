@@ -20,5 +20,8 @@ ADD settings_secret.py /code/cauldron/Cauldron2/Cauldron2/settings_secret.py
 
 RUN chmod 755 /entrypoint.sh
 
+# Volume for dashboards logs
+VOLUME ["/dashboard_logs"]
+
 # Entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
