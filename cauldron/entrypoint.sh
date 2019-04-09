@@ -7,6 +7,14 @@ do
   sleep 2
 done
 
+# Create a database for Django
+until mysql -u grimoirelab -h grimoirelab_service -e "CREATE DATABASE IF NOT EXISTS db_cauldron CHARACTER SET utf8;"
+do
+  echo $(date +"%x %X") - Waiting for mysql
+  sleep 2
+done
+
+
 # Run cauldron server
 cd /code/cauldron/Cauldron2
 echo "Apply migrations"
