@@ -1,0 +1,58 @@
+---
+##  Install docker in the target machine
+##
+##  Run with:
+##  ansible-playbook  install_docker.yml
+## -K in case is local (you will need to write your password)
+##
+- name: Install Docker
+  hosts: localhost
+  remote_user: root
+  tags:
+    - install_docker
+  tasks:
+    - name: Deploy packages for docker
+      apt:
+        name: "{{ packages }}"
+        state: latest
+        force: yes
+        update_cache: yes
+      vars:
+        packages:
+          - "apt-transport-https"
+          - "ca-certificates"
+          - "curl"
+          - "gnupg2"
+          - "software-properties-common"
+          - "python-pip"
+      become: yes
+
+    - name: Add key for Docker APT repository
+      apt_key:
+        url: "https://download.docker.com/linux/debian/gpg"
+        state: present
+      become: yes
+
+    - name: Create line for Docker APT repository
+      command: bash -c "echo \"deb [arch=amd64] https://download.docker.com/linux/debian wheezy stable\" "
+      register: docker_repo_line
+
+    - name: Add Docker APT repository
+      apt_repository:
+        repo: "{{ docker_repo_line.stdout }}"
+        state: present
+      become: true
+
+    - name: Install Docker Community Edition
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: yes
+      become: true
+
+    - name: Install pip pacakges for docker
+      become: yes
+      pip:
+        name:
+          - "docker"
+          - requests>=2.20.1

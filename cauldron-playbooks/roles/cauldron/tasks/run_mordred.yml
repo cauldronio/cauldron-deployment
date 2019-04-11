@@ -1,0 +1,22 @@
+---
+
+- name: Configure cauldron settings
+  vars:
+    worker_name: "worker_{{worker_id}}"
+  template:
+    src: config.py.j2
+    dest: "{{ configuration_dir }}/mordred_conf_{{worker_id}}.py"
+
+- name: Run cauldron server
+  vars:
+    docker_name: "{{mordred_name}}_{{worker_id}}"
+  docker_container:
+    name: "{{ docker_name }}"
+    image: "{{ modred_image }}"
+    state: started
+    restart: yes
+    networks:
+      - name: "{{ network_name }}"
+    volumes:
+      - "{{configuration_dir}}/mordred_conf_{{worker_id}}.py:/code/mordred/MordredManager/config.py"
+      - "{{volume_name}}:/dashboard_logs"

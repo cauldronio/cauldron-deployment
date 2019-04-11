@@ -16,7 +16,6 @@ WORKDIR /code/cauldron
 RUN pip install -q -r requirements.txt
 
 ADD entrypoint.sh /entrypoint.sh
-ADD settings_secret.py /code/cauldron/Cauldron2/Cauldron2/settings_secret.py
 
 RUN chmod 755 /entrypoint.sh
 

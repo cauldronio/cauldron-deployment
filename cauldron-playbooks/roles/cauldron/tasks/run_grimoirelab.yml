@@ -1,0 +1,16 @@
+---
+- name: Run grimoirelab
+  docker_container:
+    name: "{{ grimoirelab_name }}"
+    image: "{{ grimoirelab_image }}"
+    state: started
+    restart: yes
+    pull: yes
+    env:
+      RUN_MORDRED: "NO"
+    networks:
+      - name: "{{ network_name }}"
+    ports:
+      - "{{port_kibiter}}:5601"
+      - "{{port_es}}:9200"
+      - "{{port_db}}:3306"

@@ -1,0 +1,24 @@
+---
+
+- name: Generate django secret key
+  command: openssl rand -base64 32
+  register: django_key
+
+- name: Configure django settings
+  template:
+    src: django_settings.py.j2
+    dest: "{{ configuration_dir }}/django_settings.py"
+
+- name: Run cauldron server
+  docker_container:
+    name: "{{ django_name }}"
+    image: "{{ django_image }}"
+    state: started
+    restart: yes
+    networks:
+      - name: "{{ network_name }}"
+    ports:
+      - "{{ port_django }}:8000"
+    volumes:
+      - "{{configuration_dir}}/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
+      - "{{volume_name}}:/dashboard_logs"

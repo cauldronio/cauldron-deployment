@@ -1,0 +1,18 @@
+---
+- name: Create a network for cauldron
+  import_tasks: create_network.yml
+
+- name: Create a volume for cauldron
+  import_tasks: create_volume.yml
+
+- name: Run grimoirelab
+  import_tasks: run_grimoirelab.yml
+
+- name: Run Django server
+  import_tasks: run_django.yml
+
+- name: Run mordred workers
+  import_tasks: run_many_mordred.yml
+
+
+

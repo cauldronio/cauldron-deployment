@@ -1,0 +1,79 @@
+---
+####################
+## USER VARIABLES ##
+####################
+
+# GitHub Oauth App keys
+gh_client_id: ""
+gh_client_secret: ""
+
+# Where will the configuration files be stored
+# in you computer and mapped to Docker
+configuration_dir: "/tmp/"
+
+# Number of mordred worker
+num_workers: 3
+
+# Network and volume names for connecting
+# the containers
+network_name: "network_cauldron"
+volume_name: "cauldron_volume"
+
+
+###########################
+## GRIMOIRELAB CONTAINER ##
+###########################
+
+# Grimoirelab running container
+grimoirelab_name: "grimoirelab_service"
+
+# Grimoirelab image used
+grimoirelab_image: "grimoirelab/secured"
+
+# External port for Kibiter
+port_kibiter: '443'
+
+# External port for ElasticSearch
+port_es: '9200'
+
+# External port for MariaDB (keep consistency
+# with Django, both use the same database)
+port_db: '3306'
+
+
+######################
+## DJANGO CONTAINER ##
+######################
+
+# Cauldron web server running container
+django_name: "cauldron_service"
+
+# Cauldron web server image used
+django_image: "cauldron"
+
+# Cauldron web server external port
+port_django: '8000'
+
+## DJANGO CONFIGURATION ##
+# Debug
+django_debug: 'True'
+# Host (Keep same as deployed) All accepted here
+django_host: "*"
+# Database name for django
+django_db_name: 'db_cauldron'
+# Configuration for the database
+django_db_user: 'grimoirelab'
+django_db_password: ''
+django_db_host: 'grimoirelab_service'
+django_db_port: '3306'
+
+
+#######################
+## MORDRED CONTAINER ##
+#######################
+# Mordred running container name (there will be many with '_0', '_1', ...)
+mordred_name: "mordred_service"
+
+# Mordred image for Docker used
+modred_image: "mordred"
+

@@ -1,0 +1,55 @@
+---
+
+- name: Stop and delete containers
+  hosts: localhost
+  remote_user: root
+  tasks:
+    - name: cauldron
+      docker_container:
+        name: cauldron_service
+        state: absent
+        stop_timeout: 10
+
+    - name: Stop mordred services
+      shell: "docker kill $(docker ps -aq --filter name=mordred_service)"
+
+    - name: Delete mordred containers
+      shell: "docker rm $(docker ps -aq --filter name=mordred_service)"
+
+    - name: grimoirelab
+      docker_container:
+        name: grimoirelab_service
+        state: absent
+        stop_timeout: 10
+
+- name: Delete cauldron network
+  hosts: localhost
+  remote_user: root
+  tasks:
+    - docker_network:
+        name: network_cauldron
+        state: absent
+        force: yes
+
+- name: Delete cauldron volume
+  hosts: localhost
+  remote_user: root
+  tasks:
+    - docker_volume:
+        name: cauldron_volume
+        state: absent
+
+- name: Delete Images
+  hosts: localhost
+  remote_user: root
+  tasks:
+    - name: Cauldron
+      docker_image:
+        name: cauldron
+        state: absent
+
+
+    - name: Mordred
+      docker_image:
+        name: mordred
+        state: absent
