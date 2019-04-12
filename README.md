@@ -15,7 +15,7 @@ The following ports will be used in the target machine. You can change this late
   - **443.** Kibiter
   
 
-### Installation and configuration
+### Download and configure
 
 1. Download this repository with `git clone` and navigate to that directory:
     ```bash
