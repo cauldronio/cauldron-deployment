@@ -12,9 +12,11 @@
 
     - name: Stop mordred services
       shell: "docker kill $(docker ps -aq --filter name=mordred_service)"
+      ignore_errors: yes
 
     - name: Delete mordred containers
       shell: "docker rm $(docker ps -aq --filter name=mordred_service)"
+      ignore_errors: yes
 
     - name: grimoirelab
       docker_container:
