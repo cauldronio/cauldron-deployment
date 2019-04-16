@@ -19,7 +19,7 @@ The following ports will be used in the target machine. You can change this late
 
 1. Download this repository with `git clone` and navigate to that directory:
     ```bash
-    $ git clone https://gitlab.com/cauldron2/deployment.git
+    $ git clone --branch demo-2019-04-15 https://gitlab.com/cauldron2/deployment.git
     $ cd deployment 
     ```
 
