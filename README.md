@@ -41,8 +41,8 @@ The following ports will be used in the target machine. You can change this late
         
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - Some configuration files for Docker containers will be mounted in the local filesystem. Now are in `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
-        - If you are using any of the mentioned ports before (443, 8000, 9200 or 3306), you can change them here. By default is **3**, but you can change it before running at any time.
-        - You can select how many workers for mordred will be running in the `num_workers` option. 
+        - If you are using any of the mentioned ports before (443, 8000, 9200 or 3306), you can change them here. 
+        - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it before running at any time.
 
 ### Running
 Navigate to `playbooks` directory from the root of the repository.
