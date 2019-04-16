@@ -17,9 +17,9 @@ The following ports will be used in the target machine. You can change this late
 
 ### Download and configure
 
-1. Download this repository with `git clone` and navigate to that directory:
+1. Download the latest tagged version of this repository with `git clone --branch tag` and navigate to that directory:
     ```bash
-    $ git clone --branch demo-2019-04-15 https://gitlab.com/cauldron2/deployment.git
+    $ git clone --branch <tag> https://gitlab.com/cauldron2/deployment.git
     $ cd deployment 
     ```
 
