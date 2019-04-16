@@ -3,7 +3,7 @@
   remote_user: root
   tasks:
     - name: Build Django Docker image
-      command: docker build -t cauldron https://gitlab.com/cauldron2/deployment.git#demo-2019-04-15:cauldron
+      command: docker build -t cauldron https://gitlab.com/cauldron2/deployment.git#:cauldron
 
     - name: Build Mordred Docker image
-      command: docker build -t mordred https://gitlab.com/cauldron2/deployment.git#demo-2019-04-15:mordred
+      command: docker build -t mordred https://gitlab.com/cauldron2/deployment.git#:mordred
