@@ -14,7 +14,6 @@
     name: "{{ docker_name }}"
     image: "{{ modred_image }}"
     state: started
-    restart: yes
     networks:
       - name: "{{ network_name }}"
     volumes:

@@ -7,6 +7,11 @@ SECRET_KEY = '{{ django_key.stdout_lines[0] }}'
 GH_CLIENT_ID = '{{ gh_client_id }}'
 GH_CLIENT_SECRET = '{{ gh_client_secret }}'
 
+GL_CLIENT_ID = '{{ gl_client_id }}'
+GL_CLIENT_SECRET = '{{ gl_client_secret }}'
+
+GL_PRIVATE_TOKEN = '{{ gl_private_token }}'
+
 DEBUG = {{ django_debug }}
 
 ALLOWED_HOSTS = [ '{{ django_host }}' ]

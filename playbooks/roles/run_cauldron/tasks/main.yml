@@ -1,10 +1,4 @@
 ---
-- name: Create a network for cauldron
-  import_tasks: create_network.yml
-
-- name: Create a volume for cauldron
-  import_tasks: create_volume.yml
-
 - name: Run grimoirelab
   import_tasks: run_grimoirelab.yml
 

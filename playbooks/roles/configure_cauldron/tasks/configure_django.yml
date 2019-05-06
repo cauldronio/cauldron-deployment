@@ -1,0 +1,10 @@
+---
+
+- name: Generate django secret key
+  command: openssl rand -base64 32
+  register: django_key
+
+- name: Configure django settings
+  template:
+    src: django_settings.py.j2
+    dest: "{{ configuration_dir }}/django_settings.py"

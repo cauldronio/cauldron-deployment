@@ -1,0 +1,16 @@
+---
+- name: Create a network for cauldron
+  import_tasks: create_network.yml
+
+- name: Create a volume for cauldron
+  import_tasks: create_volume.yml
+
+- name: Configure django
+  import_tasks: configure_django.yml
+
+- name: Build django image
+  import_tasks: build_django.yml
+
+- name: Build mordred image
+  import_tasks: build_mordred.yml
+

@@ -7,6 +7,12 @@
 gh_client_id: ""
 gh_client_secret: ""
 
+# Gitlab Oauth App keys
+gl_client_id: ""
+gl_client_secret: ""
+
+gl_private_token: ""
+
 # Where will the configuration files be stored
 # in you computer and mapped to Docker
 configuration_dir: "/tmp/"

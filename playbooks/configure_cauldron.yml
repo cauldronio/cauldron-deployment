@@ -4,4 +4,4 @@
   vars_files:
     - defaults.yml
   roles:
-    - role: run_cauldron
+    - role: configure_cauldron
