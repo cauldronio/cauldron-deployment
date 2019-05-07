@@ -11,7 +11,6 @@ The following ports will be used in the target machine. You can change this late
    
   - **8000.** Cauldron Django server
   - **9200.** ElasticSearch
-  - **3306.** MariaDB Database
   - **443.** Kibiter
   
 
@@ -22,26 +21,43 @@ The following ports will be used in the target machine. You can change this late
     $ git clone --branch <tag> https://gitlab.com/cauldron2/deployment.git
     $ cd deployment 
     ```
+    **Or** you can download the latest version in **development** (could not be stable):
+     ```bash
+    $ git clone https://gitlab.com/cauldron2/deployment.git
+    $ cd deployment 
+    ```
 
 2. You will need to fill some **configuration** before running any task.
 
-    - Create a GitHub Oauth App and get the keys. For creating a new Application [follow this link](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Some information for the application:
+    - Create a **GitHub Oauth App** and get the keys. For creating a new Application [follow this link](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Some information for the application:
         - **Application name**: A name for the application, for example `Bitergia Cauldron`
         - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `http://localhost:8000/`. (You can change it later)
         - **Application description**: Not required
         - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `http://localhost:8000/github-login`. (You can change it later)
         
         After the registration, you can obtain the `Client ID` and `Client Secret`.
-    
+        
+    - Create a **Gitlab Oauth App** and get the keys. For creating a new Application [follow this link](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile). Some information for the application:
+        - **Name**: A name for the application, for example `Bitergia Cauldron`
+        - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `http://localhost:8000/gitlab-login`. (You can change it later)
+        - **Scopes**: Select only `api`
+        
+        After the registration, you can obtain the `Application ID` and `Secret`.
+     
+    - Create a private gitlab token (This is a temporary step until some changes are applied to perceval). [Gitlab personal access tokens](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#creating-a-personal-access-token) 
+
     - Open the following file (inside the cloned repository) with a text editor: 
         ```
-        playbooks/roles/cauldron/defaults/main.yml
+        playbooks/defaults.yml
         ```
-        - You will need to write you GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
+        - You will need to write:
+          - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
+          - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
+          - Your Gitlab private token (`gl_private_token`)
         
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - Some configuration files for Docker containers will be mounted in the local filesystem. Now are in `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
-        - If you are using any of the mentioned ports before (443, 8000, 9200 or 3306), you can change them here. 
+        - If you are using any of the mentioned ports before (443, 8000 or 9200), you can change them here. 
         - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it before running at any time.
 
 ### Running
@@ -58,9 +74,9 @@ There are some useful **playbooks**:
     ```
     If you are running it for localhost, you need to be root (append `-K` to the previous command and it will ask for your password)
 
-- **`build_images.yml`**. If you don't have the images for the Cauldron web server and the Mordred worker in the target computer, you will need to build them:
+- **`configure_cauldron.yml`**. If you don't have the images for the Cauldron web server and the Mordred worker in the target computer, you will need to build them. This playbook also create the configuration for the server, create a docker network (`network_cauldron` by default) and a docker volume (`cauldron_volume` by default)
     ```bash
-    $ ansible-playbook build_images.yml
+    $ ansible-playbook configure_cauldron.yml
     ```
     It builds the Dockerfile inside `cauldron` and `mordred` that are in this repository.
     
@@ -72,11 +88,10 @@ There are some useful **playbooks**:
     cauldron                latest              36302776d1b7        30 seconds ago      1.09GB
     ...
     ```
+    
+    And the configuration for the Django server in the directory specified in `defaults.yml`, by default is `/tmp`. 
 
-- **`run_cauldron.yml`**. With this playbook you will be able to:
-    - Run the Docker images: `cauldron`, `mordred` and `grimoirelab/secured`
-    - Create a Docker network (`network_cauldron` by default)
-    - Create a Docker volume (`cauldron_volume` by dafault)
+- **`run_cauldron.yml`**. With this playbook you will be able to run the Docker images: `cauldron`, `mordred` and `grimoirelab/secured`
     ```bash
     $ ansible-playbook run_cauldron.yml
     ```
@@ -100,13 +115,15 @@ There are some useful **playbooks**:
     local               cauldron_volume
 
     ```
-    If everythink works correctly, you can:
+    If everything works correctly, you can:
     
     - **Analyze** some repositories at http://localhost:8000
     - Use **Kibiter** for your dashboard at https://localhost
-    - Browse the data analyzed in a **ElasticSearch**: https://localhost:92000 
+    - Browse the data analyzed in a **ElasticSearch**: https://localhost:92000
+    
+    Sometimes you have to wait 1 minute after the containers has started to browse to that urls.
 
-- **`stop_cauldron.yml`**. With this playbook you can remove all the containers and images generated.
+- **`stop_cauldron.yml`**. With this playbook you can remove all the containers, images, volumes and networks generated.
 
     ```bash
     $ ansible-playbook stop_cauldron.yml
