@@ -12,3 +12,4 @@
     ports:
       - "{{port_kibiter}}:5601"
       - "{{port_es}}:9200"
+  register: grimoirelab_result

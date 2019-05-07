@@ -1,19 +1,20 @@
 ---
 
-- name: Configure cauldron settings
+- name: Configure worker_{{worker_id}} settings
   vars:
     worker_name: "worker_{{worker_id}}"
   template:
     src: config.py.j2
     dest: "{{ configuration_dir }}/mordred_conf_{{worker_id}}.py"
 
-- name: Run cauldron server
+- name: Run worker {{worker_id}}
   vars:
     docker_name: "{{mordred_name}}_{{worker_id}}"
   docker_container:
     name: "{{ docker_name }}"
     image: "{{ modred_image }}"
     state: started
+    restart: "{{ 'yes' if grimoirelab_result.changed else 'no'}}"
     networks:
       - name: "{{ network_name }}"
     volumes:

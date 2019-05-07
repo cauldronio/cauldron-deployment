@@ -4,6 +4,7 @@
     name: "{{ django_name }}"
     image: "{{ django_image }}"
     state: started
+    restart: "{{ 'yes' if grimoirelab_result.changed else 'no'}}"
     networks:
       - name: "{{ network_name }}"
     ports:
