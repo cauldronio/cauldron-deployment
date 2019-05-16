@@ -14,3 +14,6 @@
 - name: Build mordred image
   import_tasks: build_mordred.yml
 
+- name: Pull grimoirelab/secured image
+  import_tasks: pull_grimoirelab.yml
+
