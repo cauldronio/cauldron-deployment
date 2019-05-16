@@ -1,0 +1,39 @@
+---
+- name: Kill cauldron
+  docker_container:
+    name: cauldron_service
+    state: stopped
+    force_kill: yes
+
+- name: Run Role run_cauldron
+  include_role:
+    name: run_cauldron
+
+- name: Check containers Running
+  import_tasks: containers_running.yml
+
+- name: Kill grimoirelab
+  docker_container:
+    name: grimoirelab_service
+    state: stopped
+    force_kill: yes
+
+- name: Run Role run_cauldron
+  include_role:
+    name: run_cauldron
+
+- name: Check containers Running
+  import_tasks: containers_running.yml
+
+
+- name: Kill mordred services
+  shell: "docker kill $(docker ps -aq --filter name=mordred_service)"
+  ignore_errors: yes
+
+- name: Run Role run_cauldron
+  include_role:
+    name: run_cauldron
+
+- name: Check containers Running
+  import_tasks: containers_running.yml
+

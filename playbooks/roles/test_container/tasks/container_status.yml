@@ -1,0 +1,11 @@
+---
+
+- name: Get container <{{ container_name }}> status
+  shell: docker ps -a -f name={{ container_name }} --format {%raw%}"table {{.Status}}"{%endraw%} | awk 'FNR == 2 {print}' | awk '{print $1}'
+  register: status
+
+- name: Check container <{{ container_name }}> is running
+  assert:
+    that:
+      - "status.stdout == 'Up'"
+    msg: "status is '{{status.stdout}}'"

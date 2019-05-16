@@ -1,0 +1,9 @@
+---
+- include_tasks: container_status.yml
+  loop: "{{ range(0, num_workers) | list | map('regex_replace', '^(.*)$', mordred_name + '_\\1') | list }}"
+  loop_control:
+    loop_var: container_name
+
+- include_tasks: container_status.yml
+  vars:
+    container_name: "{{ grimoirelab_name }}"

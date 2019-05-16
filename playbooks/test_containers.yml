@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+  vars_files:
+    - defaults.yml
+  roles:
+    - role: test_container
