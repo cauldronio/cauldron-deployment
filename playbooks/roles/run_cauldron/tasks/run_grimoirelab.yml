@@ -1,9 +1,25 @@
 ---
+- name: Check if ES running
+  uri:
+    url: https://{{hostname}}:{{port_es}}
+    validate_certs: no
+  register: es_result
+  failed_when: false
+
+- name: Check if Kibiter running
+  uri:
+    url: https://{{hostname}}
+    validate_certs: no
+  register: kibiter_result
+  failed_when: false
+
+
 - name: Run grimoirelab
   docker_container:
     name: "{{ grimoirelab_name }}"
     image: "{{ grimoirelab_image }}"
     state: started
+    restart: "{{ 'yes' if es_result.status < 0 or kibiter_result.status < 0 else 'no'}}"
     pull: yes
     env:
       RUN_MORDRED: "NO"

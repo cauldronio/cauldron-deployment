@@ -25,6 +25,8 @@ num_workers: 3
 network_name: "network_cauldron"
 volume_name: "cauldron_volume"
 
+# Host IP or Name
+hostname: "localhost"
 
 ###########################
 ## GRIMOIRELAB CONTAINER ##
