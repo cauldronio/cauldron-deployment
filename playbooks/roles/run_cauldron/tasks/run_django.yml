@@ -1,14 +1,20 @@
 ---
+- name: Check if already running
+  uri:
+    url: http://{{hostname}}:{{port_django}}
+  register: django_result
+  failed_when: false
+
 - name: Run cauldron server
   docker_container:
     name: "{{ django_name }}"
     image: "{{ django_image }}"
     state: started
-    restart: "{{ 'yes' if grimoirelab_result.changed else 'no'}}"
+    restart: "{{ 'yes' if django_result.status != 200 else 'no'}}"
     networks:
       - name: "{{ network_name }}"
     ports:
       - "{{ port_django }}:8000"
     volumes:
-      - "{{configuration_dir}}/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
+      - "{{configuration_dir}}/django/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
       - "{{volume_name}}:/dashboard_logs"

@@ -1,6 +1,9 @@
 ---
-- name: Run grimoirelab
-  import_tasks: run_grimoirelab.yml
+#- name: Run grimoirelab
+#  import_tasks: run_grimoirelab.yml
+
+- name: Run database
+  import_tasks: run_database.yml
 
 - name: Run Django server
   import_tasks: run_django.yml
@@ -8,5 +11,8 @@
 - name: Run mordred workers
   import_tasks: run_many_mordred.yml
 
+- name: Run Opendistro ES
+  import_tasks: run_elastic.yml
 
-
+- name: Run Opendistro Kibana
+  import_tasks: run_kibana.yml

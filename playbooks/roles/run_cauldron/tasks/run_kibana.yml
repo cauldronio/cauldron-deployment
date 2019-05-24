@@ -1,0 +1,24 @@
+---
+
+- name: Run Kibana
+  docker_container:
+    name: "{{ kibana_container_name }}"
+    image: "{{ kibana_image }}"
+    state: started
+    networks:
+      - name: "{{ network_name }}"
+    ports:
+      - "{{ kibana_port }}:5601"
+
+    volumes:
+      - "{{configuration_dir}}/es/keys/node-1.pem:/usr/share/kibana/config/node-1.pem"
+      - "{{configuration_dir}}/es/keys/node-1-key.pem:/usr/share/kibana/config/node-1-key.pem"
+      - "{{configuration_dir}}/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
+      - "{{configuration_dir}}/es/keys/root-ca.pem:/usr/share/kibana/config/root-ca.pem"
+
+#    env:
+#      ELASTICSEARCH_URL: https://odfe-node1:9200
+#      ELASTICSEARCH_HOSTS: https://odfe-node1:9200
+#      SERVER_SSL_ENABLED: "true"
+#      SERVER_SSL_KEY: /usr/share/kibana/config/node-1-key.pem
+#      SERVER_SSL_CERTIFICATE: /usr/share/kibana/config/node-1.pem

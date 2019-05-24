@@ -8,12 +8,20 @@
 - name: Configure django
   import_tasks: configure_django.yml
 
+- name: Build grimoirelab image
+  import_tasks: build_grimoirelab.yml
+
 - name: Build django image
   import_tasks: build_django.yml
 
 - name: Build mordred image
   import_tasks: build_mordred.yml
 
-- name: Pull grimoirelab/secured image
-  import_tasks: pull_grimoirelab.yml
+- name: Build database image
+  import_tasks: build_database.yml
 
+- name: Configure database
+  import_tasks: configure_database.yml
+
+- name: Configure Opendistro
+  import_tasks: configure_opendistro.yml

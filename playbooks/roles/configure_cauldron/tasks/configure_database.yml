@@ -1,0 +1,8 @@
+---
+- name: Ensures {{configuration_dir}}/database dir exists
+  file: path={{configuration_dir}}/database state=directory
+
+- name: Configure database settings
+  template:
+    src: database.sql.j2
+    dest: "{{ configuration_dir }}/database/database.sql"

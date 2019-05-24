@@ -1,0 +1,26 @@
+---
+- name: Ensures {{configuration_dir}}/es dir exists
+  file: path={{configuration_dir}}/es state=directory
+
+- name: Ensures {{configuration_dir}}/kibana dir exists
+  file: path={{configuration_dir}}/kibana state=directory
+
+- name: Copy keys for Elasticseach and kibana
+  copy:
+    src: "keys"
+    dest: "{{ configuration_dir }}/es/"
+    mode: 0600
+
+
+- name: Create ElasticSearch configuration
+  template:
+    src: elasticsearch-secured.yml.j2
+    dest: "{{ configuration_dir }}/es/elasticsearch-secured.yml"
+    mode: 0600
+
+
+- name: Create Kibana configuration
+  template:
+    src: kibana.yml.j2
+    dest: "{{ configuration_dir }}/kibana/kibana.yml"
+    mode: 0600
