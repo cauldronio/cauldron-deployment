@@ -11,6 +11,8 @@ gh_client_secret: ""
 gl_client_id: ""
 gl_client_secret: ""
 
+gl_private_token: ""
+
 # Where will the configuration files be stored
 # in you computer and mapped to Docker
 configuration_dir: "/tmp"
@@ -97,3 +99,13 @@ mordred_name: "mordred_service"
 # Mordred image for Docker used
 modred_image: "mordred"
 
+
+######################
+## PANELS CONTAINER ##
+######################
+
+# Grimoirelab image
+grimoire_image: "grimoirelab/installed"
+
+# Name for the temporary container for the panels
+panels_container: "tmp_container_panels"

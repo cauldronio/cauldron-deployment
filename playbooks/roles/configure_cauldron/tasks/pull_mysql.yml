@@ -1,0 +1,5 @@
+---
+
+- name: Pull MySQL image for checks
+  docker_image:
+    name: mysql

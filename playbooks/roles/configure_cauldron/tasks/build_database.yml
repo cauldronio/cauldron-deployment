@@ -1,4 +1,4 @@
 ---
 
 - name: Build Database Docker image
-  command: docker build -t cauldron_database https://gitlab.com/cauldron2/deployment.git#:database
+  command: docker build -t {{db_image}} https://gitlab.com/cauldron2/deployment.git#:database

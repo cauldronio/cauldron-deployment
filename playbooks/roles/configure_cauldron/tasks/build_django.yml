@@ -1,4 +1,4 @@
 ---
 
 - name: Build Django Docker image
-  command: docker build -t cauldron https://gitlab.com/cauldron2/deployment.git#:cauldron
+  command: docker build -t {{django_image}} https://gitlab.com/cauldron2/deployment.git#:cauldron

@@ -8,9 +8,6 @@
 - name: Configure django
   import_tasks: configure_django.yml
 
-- name: Build grimoirelab image
-  import_tasks: build_grimoirelab.yml
-
 - name: Build django image
   import_tasks: build_django.yml
 
@@ -25,3 +22,9 @@
 
 - name: Configure Opendistro
   import_tasks: configure_opendistro.yml
+
+- name: Pull mysql for checks
+  import_tasks: pull_mysql.yml
+
+- name: Copy panels
+  import_tasks: copy_panels.yml

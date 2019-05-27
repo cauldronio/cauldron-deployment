@@ -1,6 +1,4 @@
 ---
-#- name: Run grimoirelab
-#  import_tasks: run_grimoirelab.yml
 
 - name: Run database
   import_tasks: run_database.yml
