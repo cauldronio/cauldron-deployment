@@ -1,0 +1,10 @@
+---
+- name: Copy the panels for Kibana
+  copy:
+    src: "panels"
+    dest: "{{ configuration_dir }}/"
+
+- name: Set panels import script executable
+  file:
+    path: "{{ configuration_dir }}/panels/import_panels.sh"
+    mode: "0744"

@@ -14,7 +14,7 @@ GL_PRIVATE_TOKEN = '{{ gl_private_token }}'
 
 DEBUG = {{ django_debug }}
 
-ALLOWED_HOSTS = [ '{{ django_host }}' ]
+ALLOWED_HOSTS = [ '{{ django_hosts }}' ]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -59,11 +59,11 @@ WSGI_APPLICATION = 'Cauldron2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ django_db_name }}',
-        'USER': '{{ django_db_user }}',
-        'PASSWORD': '{{ django_db_password }}',
-        'HOST': '{{ django_db_host }}',
-        'PORT': {{ django_db_port }},
+        'NAME': '{{ db_django_name }}',
+        'USER': '{{ db_user }}',
+        'PASSWORD': '{{ db_password }}',
+        'HOST': '{{ db_container_name }}',
+        'PORT': {{ db_port }},
         'OPTIONS': {
             'sql_mode': 'traditional'
         }

@@ -5,17 +5,23 @@
   register: django_result
   failed_when: false
 
+- name: Wait for database {{db_django_name}} running
+  shell: "docker run --rm --link {{db_container_name}} mysql sh -c 'mysql -h {{db_container_name}} -u {{db_user}} -D {{db_django_name}}'"
+  register: result
+  until: result.rc == 0
+  retries: 10
+  delay: 3
 
 - name: Run cauldron server
   docker_container:
     name: "{{ django_name }}"
     image: "{{ django_image }}"
     state: started
-    restart: "{{ 'yes' if grimoirelab_result.changed or django_result.status != 200 else 'no'}}"
+    restart: "{{ 'yes' if django_result.status != 200 else 'no'}}"
     networks:
       - name: "{{ network_name }}"
     ports:
       - "{{ port_django }}:8000"
     volumes:
-      - "{{configuration_dir}}/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
+      - "{{configuration_dir}}/django/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
       - "{{volume_name}}:/dashboard_logs"

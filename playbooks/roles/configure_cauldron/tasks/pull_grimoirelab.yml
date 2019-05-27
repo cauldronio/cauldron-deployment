@@ -1,5 +1,0 @@
----
-
-- name: Pull grimoirelab image
-  docker_image:
-    name: "{{ grimoirelab_image }}"

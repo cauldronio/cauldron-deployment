@@ -1,0 +1,12 @@
+---
+- name: Run database
+  docker_container:
+    name: "{{ db_container_name }}"
+    image: "{{ db_image }}"
+    state: started
+    networks:
+      - name: "{{ network_name }}"
+    ports:
+      - "{{ db_port }}:3306"
+    volumes:
+      - "{{configuration_dir}}/database:/docker-entrypoint-initdb.d"

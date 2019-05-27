@@ -15,7 +15,7 @@ gl_private_token: ""
 
 # Where will the configuration files be stored
 # in you computer and mapped to Docker
-configuration_dir: "/tmp/"
+configuration_dir: "/tmp"
 
 # Number of mordred worker
 num_workers: 3
@@ -28,25 +28,46 @@ volume_name: "cauldron_volume"
 # Host IP or Name
 hostname: "localhost"
 
-###########################
-## GRIMOIRELAB CONTAINER ##
-###########################
 
-# Grimoirelab running container
-grimoirelab_name: "grimoirelab_service"
+########################
+## DATABASE CONTAINER ##
+########################
 
-# Grimoirelab image used
-grimoirelab_image: "grimoirelab/secured"
+# Database container name
+db_container_name: "db_cauldron_service"
+db_image: "database_cauldron"
+db_port: "3306"
+db_root_password: "root"
+db_user: "grimoirelab"
+db_password: ""
 
-# External port for Kibiter
-port_kibiter: '443'
+# Names for the tables created
+db_sortinghat_name: "test_sh"
+db_django_name: "db_cauldron"
+
+#############################
+## OPENDISTRO ES CONTAINER ##
+#############################
+
+es_container_name: "elastic_service"
+es_image: "amazon/opendistro-for-elasticsearch:0.9.0"
+
+# password for admin user
+es_admin_password: "admin"
 
 # External port for ElasticSearch
-port_es: '9200'
+es_port: '9200'
 
-# External port for MariaDB (keep consistency
-# with Django, both use the same database)
-port_db: '3306'
+
+#################################
+## OPENDISTRO KIBANA CONTAINER ##
+#################################
+
+kibana_container_name: "kibana_service"
+kibana_image: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
+
+# External port for Kibana
+kibana_port: '5601'
 
 
 ######################
@@ -66,14 +87,7 @@ port_django: '8000'
 # Debug
 django_debug: 'True'
 # Host (Keep same as deployed) All accepted here
-django_host: "*"
-# Database name for django
-django_db_name: 'db_cauldron'
-# Configuration for the database
-django_db_user: 'grimoirelab'
-django_db_password: ''
-django_db_host: 'grimoirelab_service'
-django_db_port: '3306'
+django_hosts: "*"
 
 
 #######################
@@ -85,3 +99,13 @@ mordred_name: "mordred_service"
 # Mordred image for Docker used
 modred_image: "mordred"
 
+
+######################
+## PANELS CONTAINER ##
+######################
+
+# Grimoirelab image
+grimoire_image: "grimoirelab/installed"
+
+# Name for the temporary container for the panels
+panels_container: "tmp_container_panels"

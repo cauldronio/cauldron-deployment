@@ -1,0 +1,365 @@
+cluster.name: "es-docker-cluster"
+network.host: 0.0.0.0
+
+# minimum_master_nodes need to be explicitly set when bound on a public IP
+# set to 1 to allow single node clusters
+# Details: https://github.com/elastic/elasticsearch/pull/17288
+discovery.zen.minimum_master_nodes: 1
+
+cluster.routing.allocation.disk.threshold_enabled: false
+
+bootstrap.memory_lock: true
+
+
+#############################################################################################
+#                                     OPEN DISTRO SECURITY SSL                              #
+#                                       Configuration                                       #
+#############################################################################################
+
+
+#############################################################################################
+# Transport layer SSL                                                                       #
+#                                                                                           #
+#############################################################################################
+# Enable or disable node-to-node ssl encryption (default: true)
+opendistro_security.ssl.transport.enabled: true
+# JKS or PKCS12 (default: JKS)
+#opendistro_security.ssl.transport.keystore_type: PKCS12
+# Relative path to the keystore file (mandatory, this stores the server certificates), must be placed under the config/ dir
+#opendistro_security.ssl.transport.keystore_filepath: keystore_node1.jks
+# Alias name (default: first alias which could be found)
+#opendistro_security.ssl.transport.keystore_alias: my_alias
+# Keystore password (default: changeit)
+#opendistro_security.ssl.transport.keystore_password: changeit
+
+# JKS or PKCS12 (default: JKS)
+#opendistro_security.ssl.transport.truststore_type: PKCS12
+# Relative path to the truststore file (mandatory, this stores the client/root certificates), must be placed under the config/ dir
+#opendistro_security.ssl.transport.truststore_filepath: truststore.jks
+# Alias name (default: trust all aliases)
+#opendistro_security.ssl.transport.truststore_alias: my_alias
+# Truststore password (default: changeit)
+#opendistro_security.ssl.transport.truststore_password: changeit
+# Enforce hostname verification (default: true)
+opendistro_security.ssl.transport.enforce_hostname_verification: false
+# If hostname verification is enabled specify if hostname should be resolved (default: true)
+#opendistro_security.ssl.transport.resolve_hostname: true
+# Use native Open SSL instead of JDK SSL if available (default: true)
+#opendistro_security.ssl.transport.enable_openssl_if_available: false
+
+# As an alternative to JKS/PCKS12 based configuration 
+# you can also use X.509 PEM certificates and PKCS #8 keys.
+# This, for example, makes it pretty easy to configure letsencrypt certificates.
+
+# Relative path to the certificates key file (PKCS #8), must be placed under the config/ dir
+opendistro_security.ssl.transport.pemkey_filepath: node-1-key.pem
+# Key password (omit this setting if the key has no password)
+#opendistro_security.ssl.transport.pemkey_password: "secret"
+# X509 node certificate chain in PEM format, must be placed under the config/ dir
+opendistro_security.ssl.transport.pemcert_filepath: node-1.pem
+# Trusted certificates
+opendistro_security.ssl.transport.pemtrustedcas_filepath: root-ca.pem
+
+
+# Enabled SSL cipher suites for transport protocol (only Java format is supported)
+# WARNING: Expert setting, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk
+#opendistro_security.ssl.transport.enabled_ciphers:
+#  - "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
+#  - "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"
+  
+# Enabled SSL protocols for transport protocol (only Java format is supported)
+# WARNING: Expert setting, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk  
+#opendistro_security.ssl.transport.enabled_protocols:
+#  - "TLSv1.2"
+
+#############################################################################################
+# HTTP/REST layer SSL                                                                       #
+#                                                                                           #
+#############################################################################################
+# Enable or disable rest layer security - https, (default: false)
+opendistro_security.ssl.http.enabled: true
+# JKS or PKCS12 (default: JKS)
+#opendistro_security.ssl.http.keystore_type: PKCS12
+# Relative path to the keystore file (this stores the server certificates), must be placed under the config/ dir
+#opendistro_security.ssl.http.keystore_filepath: keystore_https_node1.jks
+# Alias name (default: first alias which could be found)
+#opendistro_security.ssl.http.keystore_alias: my_alias
+# Keystore password (default: changeit)
+#opendistro_security.ssl.http.keystore_password: changeit
+# Do the clients (typically the browser or the proxy) have to authenticate themself to the http server, default is OPTIONAL
+# To enforce authentication use REQUIRE, to completely disable client certificates use NONE
+#opendistro_security.ssl.http.clientauth_mode: REQUIRE
+# JKS or PKCS12 (default: JKS)
+#opendistro_security.ssl.http.truststore_type: PKCS12
+# Relative path to the truststore file (this stores the client certificates), must be placed under the config/ dir
+#opendistro_security.ssl.http.truststore_filepath: truststore_https.jks
+# Alias name (default: first alias which could be found)
+#opendistro_security.ssl.http.truststore_alias: my_alias
+# Truststore password (default: changeit)
+#opendistro_security.ssl.http.truststore_password: changeit
+# Use native Open SSL instead of JDK SSL if available (default: true)
+#opendistro_security.ssl.http.enable_openssl_if_available: false
+
+# As an alternative to JKS/PCKS12 based configuration 
+# you can also use X.509 PEM certificates and PKCS #8 keys.
+# This, for example, makes it pretty easy to configure letsencrypt certificates.
+
+# Relative path to the certificates key file (PKCS #8), must be placed under the config/ dir
+opendistro_security.ssl.http.pemkey_filepath: node-1-key.pem
+# Key password (omit this setting if the key has no password)
+#opendistro_security.ssl.http.pemkey_password: "secret"
+# X509 node certificate chain in PEM format, must be placed under the config/ dir
+opendistro_security.ssl.http.pemcert_filepath: node-1.pem
+# Trusted certificates
+opendistro_security.ssl.http.pemtrustedcas_filepath: root-ca.pem
+
+# Enabled SSL cipher suites for http protocol (only Java format is supported)
+# WARNING: Expert setting, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk
+#opendistro_security.ssl.http.enabled_ciphers:
+#  - "TLS_DHE_RSA_WITH_AES_256_CBC_SHA"
+#  - "TLS_DHE_DSS_WITH_AES_128_CBC_SHA256"
+
+# Enabled SSL protocols for http protocol (only Java format is supported)
+# WARNING: Expert setting, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk  
+#opendistro_security.ssl.http.enabled_protocols:
+#  - "TLSv1.2"
+
+# Enables the usage of custom SSLContext's for Transport clients
+# This setting does only apply to Transport clients
+# WARNING: Expert setting, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk  
+#opendistro_security.ssl.client.external_context_id: myid
+
+# Class name of a class which is in classpath and implements com.amazon.opendistroforelasticsearch.security.ssl.transport.PrincipalExtractor
+# used to resolve the string representation of an principal from a x509 certificate
+# WARNING: Expert setting, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk 
+#opendistro_security.ssl.transport.principal_extractor_class: com.example.security.MyPrincipalExtractor
+
+# CRL validation of HTTP client certificates
+# WARNING: Expert setting, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk 
+# Set to true to enable CRL validation (default is false)
+#opendistro_security.ssl.http.crl.validate: true
+# File based static revocation list, by default this is null
+# if null then either OCSP or CRLDP needs to be enabled
+# CRL file must be in config/ dir, so this path is relative here
+#opendistro_security.ssl.http.crl.file_path: mycrl.crl
+# Default is false (means we prefer OCSP over static CRL file)
+#opendistro_security.ssl.http.crl.prefer_crlfile_over_ocsp: true
+# Default is true (means we do not validate intermediate certificates)
+#opendistro_security.ssl.http.crl.check_only_end_entities: false
+# Default is false (means we use OCSP if available)
+#opendistro_security.ssl.http.crl.disable_ocsp: true
+# Default is false (means we use CRLDP if available)
+#opendistro_security.ssl.http.crl.disable_crldp: true
+# Sets the time (as unix epoch timestamp) for which the validity of the certification path should be determined
+# If not set of set to -1 then the current time will be used
+#opendistro_security.ssl.http.crl.validation_date: 1496070074
+
+
+
+
+
+
+############## Open Distro Security configuration ###############
+
+###########################################################
+# Add the following settings to your standard elasticsearch.yml
+# alongside with the Open Distro Security TLS settings.
+# Settings must always be the same on all nodes in the cluster.
+
+############## Common configuration settings ##############
+
+# Enable or disable the Open Distro Security advanced modules
+# By default advanced modules are enabled, you can switch
+# all advanced features off by setting the following key to false
+opendistro_security.advanced_modules_enabled: true
+
+# Specify a list of DNs which denote the other nodes in the cluster.
+# This settings support wildcards and regular expressions
+# This setting only has effect if 'opendistro_security.cert.intercluster_request_evaluator_class' is not set.
+opendistro_security.nodes_dn:
+  - "CN=node-1,O=Dis,L=All,ST=Any,C=EU"
+
+# Defines the DNs (distinguished names) of certificates
+# to which admin privileges should be assigned (mandatory)
+opendistro_security.authcz.admin_dn:
+  - "CN=Admin,O=Dis,L=All,ST=Any,C=EU"
+
+# Define how backend roles should be mapped to Open Distro Security roles
+# MAPPING_ONLY - mappings must be configured explicitely in roles_mapping.yml (default)
+# BACKENDROLES_ONLY - backend roles are mapped to Open Distro Security rules directly. Settings in roles_mapping.yml have no effect.
+# BOTH - backend roles are mapped to Open Distro Security roles mapped directly and via roles_mapping.yml in addition
+opendistro_security.roles_mapping_resolution: MAPPING_ONLY
+
+############## REST Management API configuration settings ##############
+# Enable or disable role based access to the REST management API
+# Default is that no role is allowed to access the REST management API.
+opendistro_security.restapi.roles_enabled: ["all_access","security_rest_api_access"]
+
+# Disable particular endpoints and their HTTP methods for roles.
+# By default all endpoints/methods are allowed.
+#opendistro_security.restapi.endpoints_disabled.<role>.<endpoint>: <array of http methods>
+# Example:
+#opendistro_security.restapi.endpoints_disabled.all_access.ACTIONGROUPS: ["PUT","POST","DELETE"]
+#opendistro_security.restapi.endpoints_disabled.xyz_role.LICENSE: ["DELETE"]
+
+# The following endpoints exist:
+# ACTIONGROUPS
+# CACHE
+# CONFIG
+# ROLES
+# ROLESMAPPING
+# INTERNALUSERS
+# SYSTEMINFO
+# PERMISSIONSINFO
+
+############## Auditlog configuration settings ##############
+# General settings
+
+# Enable/disable rest request logging (default: true)
+#opendistro_security.audit.enable_rest: true
+# Enable/disable transport request logging (default: false)
+#opendistro_security.audit.enable_transport: false
+# Enable/disable bulk request logging (default: false)
+# If enabled all subrequests in bulk requests will be logged too
+#opendistro_security.audit.resolve_bulk_requests: false
+# Disable some categories
+#opendistro_security.audit.config.disabled_categories: ["AUTHENTICATED","GRANTED_PRIVILEGES"]
+# Disable some requests (wildcard or regex of actions or rest request paths)
+#opendistro_security.audit.ignore_requests: ["indices:data/read/*","*_bulk"]
+# Tune threadpool size, default is 10 and 0 means disabled
+#opendistro_security.audit.threadpool.size: 0
+# Tune threadpool max size queue length, default is 100000
+#opendistro_security.audit.threadpool.max_queue_len: 100000
+
+# If enable_request_details is true then the audit log event will also contain
+# details like the search query. Default is false.
+#opendistro_security.audit.enable_request_details: true
+# Ignore users, e.g. do not log audit requests from that users (default: no ignored users)
+#opendistro_security.audit.ignore_users: ['kibanaserver','some*user','/also.*regex possible/']"
+
+# Destination of the auditlog events
+opendistro_security.audit.type: internal_elasticsearch
+#opendistro_security.audit.type: external_elasticsearch
+#opendistro_security.audit.type: debug
+#opendistro_security.audit.type: webhook
+
+# external_elasticsearch settings
+#opendistro_security.audit.config.http_endpoints: ['localhost:9200','localhost:9201','localhost:9202']"
+# Auditlog index can be a static one or one with a date pattern (default is 'auditlog6')
+#opendistro_security.audit.config.index: auditlog6 # make sure you secure this index properly
+#opendistro_security.audit.config.index: "'auditlog6-'YYYY.MM.dd" #rotates index daily - make sure you secure this index properly
+#opendistro_security.audit.config.type: auditlog
+#opendistro_security.audit.config.username: auditloguser
+#opendistro_security.audit.config.password: auditlogpassword
+#opendistro_security.audit.config.enable_ssl: false
+#opendistro_security.audit.config.verify_hostnames: false
+#opendistro_security.audit.config.enable_ssl_client_auth: false
+#opendistro_security.audit.config.cert_alias: mycert
+#opendistro_security.audit.config.pemkey_filepath: key.pem
+#opendistro_security.audit.config.pemkey_content: <...pem base 64 content>
+#opendistro_security.audit.config.pemkey_password: secret
+#opendistro_security.audit.config.pemcert_filepath: cert.pem
+#opendistro_security.audit.config.pemcert_content: <...pem base 64 content>
+#opendistro_security.audit.config.pemtrustedcas_filepath: ca.pem
+#opendistro_security.audit.config.pemtrustedcas_content: <...pem base 64 content>
+
+# webhook settings
+#opendistro_security.audit.config.webhook.url: "http://mywebhook/endpoint"
+# One of URL_PARAMETER_GET,URL_PARAMETER_POST,TEXT,JSON,SLACK
+#opendistro_security.audit.config.webhook.format: JSON
+#opendistro_security.audit.config.webhook.ssl.verify: false
+#opendistro_security.audit.config.webhook.ssl.pemtrustedcas_filepath: ca.pem
+#opendistro_security.audit.config.webhook.ssl.pemtrustedcas_content: <...pem base 64 content>
+
+# log4j settings
+#opendistro_security.audit.config.log4j.logger_name: auditlogger
+#opendistro_security.audit.config.log4j.level: INFO
+
+############## Kerberos configuration settings ##############
+# If Kerberos authentication should be used you have to configure:
+
+# The Path to the krb5.conf file
+# Can be absolute or relative to the Elasticsearch config directory
+#opendistro_security.kerberos.krb5_filepath: '/etc/krb5.conf'
+
+# The Path to the keytab where the acceptor_principal credentials are stored.
+# Must be relative to the Elasticsearch config directory
+#opendistro_security.kerberos.acceptor_keytab_filepath: 'eskeytab.tab'
+
+# Acceptor (Server) Principal name, must be present in acceptor_keytab_path file
+#opendistro_security.kerberos.acceptor_principal: 'HTTP/localhost'
+
+############## Advanced configuration settings ##############
+# Enable transport layer impersonation
+# Allow DNs (distinguished names) to impersonate as other users
+#opendistro_security.authcz.impersonation_dn:
+#  "CN=spock,OU=client,O=client,L=Test,C=DE":
+#    - worf
+#  "cn=webuser,ou=IT,ou=IT,dc=company,dc=com":
+#    - user2
+#    - user1
+
+# Enable rest layer impersonation
+# Allow users to impersonate as other users
+#opendistro_security.authcz.rest_impersonation_user:
+#  "picard":
+#    - worf
+#  "john":
+#    - steve
+#    - martin
+
+# If this is set to true Open Distro Security will automatically initialize the configuration index
+# with the files in the config directory if the index does not exist.
+# WARNING: This will use well-known default passwords.
+#          Use only in a private network/environment.
+opendistro_security.allow_default_init_securityindex: false
+
+# If this is set to true then allow to startup with demo certificates.
+# These are certificates issued by floragunn GmbH for demo purposes.
+# WARNING: This certificates are well known and therefore unsafe
+#          Use only in a private network/environment.
+opendistro_security.allow_unsafe_democertificates: false
+
+############## Expert settings ##############
+# WARNING: Expert settings, do only use if you know what you are doing
+# If you set wrong values here this this could be a security risk
+# or make Open Distro Security stop working
+
+# Name of the index where .opendistro_security stores its configuration.
+
+#opendistro_security.config_index_name: .opendistro_security
+
+# This defines the OID of server node certificates
+#opendistro_security.cert.oid: '1.2.3.4.5.5'
+
+# This specifies the implementation of com.amazon.opendistroforelasticsearch.security.transport.InterClusterRequestEvaluator
+# that is used to determine inter-cluster request.
+# Instances of com.amazon.opendistroforelasticsearch.security.transport.InterClusterRequestEvaluator must implement a single argument
+# constructor that takes an org.elasticsearch.common.settings.Settings
+#opendistro_security.cert.intercluster_request_evaluator_class: com.amazon.opendistroforelasticsearch.security.transport.DefaultInterClusterRequestEvaluator
+
+# Allow snapshot restore for normal users
+# By default only requests signed by an admin TLS certificate can do this
+# To enable snapshot restore for normal users set 'opendistro_security.enable_snapshot_restore_privilege: true'
+# The user who wants to restore a snapshot must have the 'cluster:admin/snapshot/restore' privilege and must also have
+# "indices:admin/create" and "indices:data/write/index" for the indices to be restores.
+# A snapshot can only be restored when it does not contain global state and does not restore the '.opendistro_security' index
+# If 'opendistro_security.check_snapshot_restore_write_privileges: false' is set then the additional indices checks are omitted.
+
+# This makes it less secure.
+opendistro_security.enable_snapshot_restore_privilege: true
+opendistro_security.check_snapshot_restore_write_privileges: true
+
+# Authentication cache timeout in minutes (A value of 0 disables caching, default is 60)
+#opendistro_security.cache.ttl_minutes: 60
+
+# Disable Open Distro Security
+# WARNING: This can expose your configuration (including passwords) to the public.
+#opendistro_security.disabled: false
