@@ -12,8 +12,6 @@ RUN apt-get update && \
 RUN apt-get -y install --no-install-recommends mariadb-server
 RUN echo "mysqld_safe &" > /tmp/config && \
     echo "mysqladmin --silent --wait=30 ping || exit 1" >> /tmp/config && \
-    echo "mysql -e 'CREATE USER grimoirelab;'" >> /tmp/config && \
-    echo "mysql -e 'GRANT ALL PRIVILEGES ON *.* TO \"grimoirelab\"@\"%\" WITH GRANT OPTION;'" >> /tmp/config && \
     bash /tmp/config && \
     rm -f /tmp/config && \
     sed -e "/bind-address/s/^/#/g" -i /etc/mysql/mariadb.conf.d/50-server.cnf

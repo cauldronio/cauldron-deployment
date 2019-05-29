@@ -36,7 +36,6 @@
     image: "{{grimoire_image}}"
     cleanup : yes
     detach: no
-    interactive: yes
     entrypoint: ""
     command: "/panels/import_panels.sh kidash https://admin:{{es_admin_password}}@{{es_container_name}}:{{es_port}} .kibana /panels/"
     volumes:

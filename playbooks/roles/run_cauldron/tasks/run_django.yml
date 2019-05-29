@@ -6,7 +6,7 @@
   failed_when: false
 
 - name: Wait for database {{db_django_name}} running
-  shell: "docker run --rm --link {{db_container_name}} mysql sh -c 'mysql -h {{db_container_name}} -u {{db_user}} -D {{db_django_name}}'"
+  shell: "docker run --rm --link {{db_container_name}} mysql sh -c 'mysql -h {{db_container_name}} -u {{db_user}} -p{{db_password}} -D {{db_django_name}}'"
   register: result
   until: result.rc == 0
   retries: 10

@@ -39,7 +39,7 @@ db_image: "database_cauldron"
 db_port: "3306"
 db_root_password: "root"
 db_user: "grimoirelab"
-db_password: ""
+db_password: "ChangeThisPassword"
 
 # Names for the tables created
 db_sortinghat_name: "test_sh"

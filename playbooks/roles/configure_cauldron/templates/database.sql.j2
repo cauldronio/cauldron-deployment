@@ -1,11 +1,6 @@
--- https://linuxize.com/post/how-to-create-mysql-user-accounts-and-grant-privileges/
--- TODO: Create custom password
 
--- CREATE USER {{ db_user }};
--- GRANT ALL PRIVILEGES ON *.* TO "{{ db_user }}"@"%" WITH GRANT OPTION;
+CREATE USER {{ db_user }} IDENTIFIED BY '{{ db_password }}';
+GRANT ALL PRIVILEGES ON *.* TO "{{ db_user }}"@"%" WITH GRANT OPTION;
 
 CREATE DATABASE IF NOT EXISTS {{ db_sortinghat_name }};
 CREATE DATABASE IF NOT EXISTS {{ db_django_name }} CHARACTER SET utf8;
-
--- CREATE DATABASE IF NOT EXISTS test_sh;
--- CREATE DATABASE IF NOT EXISTS db_cauldron CHARACTER SET utf8;
