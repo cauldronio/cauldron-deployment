@@ -1,0 +1,39 @@
+# This is the internal user database
+# The hash value is a bcrypt hash and can be generated with plugin/tools/hash.sh
+
+admin:
+  readonly: true
+  hash: {{ hash_es_admin_password}}
+  roles:
+    - admin
+  attributes:
+    #no dots allowed in attribute names
+    attribute1: value1
+    attribute2: value2
+    attribute3: value3
+
+logstash:
+  hash: {{ hash_es_logstash_password }}
+  roles:
+    - logstash
+
+kibanaserver:
+  readonly: true
+  hash: {{ hash_es_kibanaserver_password }}
+
+kibanaro:
+  hash: {{ hash_es_kibanaro_password }}
+  roles:
+    - kibanauser
+    - readall
+
+readall:
+  hash: {{ hash_es_readall_password }}
+  #password is: readall
+  roles:
+    - readall
+
+snapshotrestore:
+  hash: {{ hash_es_snapshotrestore_password }}
+  roles:
+    - snapshotrestore

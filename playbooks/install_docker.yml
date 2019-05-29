@@ -6,7 +6,7 @@
 ## -K in case is local (you will need to write your password)
 ##
 - name: Install Docker
-  hosts: localhost
+  hosts: all
   remote_user: root
   tags:
     - install_docker

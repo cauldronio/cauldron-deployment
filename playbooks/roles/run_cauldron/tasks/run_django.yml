@@ -1,7 +1,7 @@
 ---
 - name: Check if already running
   uri:
-    url: http://{{hostname}}:{{port_django}}
+    url: http://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{port_django}}
   register: django_result
   failed_when: false
 

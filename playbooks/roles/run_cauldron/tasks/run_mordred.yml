@@ -22,7 +22,7 @@
     docker_worker_name: "{{mordred_name}}_{{worker_id}}"
   docker_container:
     name: "{{ docker_worker_name }}"
-    image: "{{ modred_image }}"
+    image: "{{ mordred_image }}"
     state: started
     networks:
       - name: "{{ network_name }}"

@@ -24,3 +24,21 @@
     src: kibana.yml.j2
     dest: "{{ configuration_dir }}/kibana/kibana.yml"
     mode: 0600
+
+
+- name: Crete hashes for elasticsearch passwords
+  include: hash_password.yml
+  with_items:
+      - { loop_psw: "{{ es_admin_password }}", loop_output: "hash_es_admin_password" }
+      - { loop_psw: "{{ es_logstash_password }}", loop_output: "hash_es_logstash_password" }
+      - { loop_psw: "{{ es_kibanaserver_password }}", loop_output: "hash_es_kibanaserver_password" }
+      - { loop_psw: "{{ es_kibanaro_password }}", loop_output: "hash_es_kibanaro_password" }
+      - { loop_psw: "{{ es_readall_password }}", loop_output: "hash_es_readall_password" }
+      - { loop_psw: "{{ es_snapshotrestore_password }}", loop_output: "hash_es_snapshotrestore_password" }
+
+
+- name: Copy Elasticsearch internal_users.yml configuration
+  template:
+    src: internal_users.yml.j2
+    dest: "{{ configuration_dir }}/es/internal_users.yml"
+    mode: 0600

@@ -1,4 +1,4 @@
 ---
 
 - name: Build Mordred Docker image
-  command: docker build -t {{modred_image}} https://gitlab.com/cauldron2/deployment.git#:mordred
+  command: docker build -t {{mordred_image}} https://gitlab.com/cauldron2/deployment.git#:mordred

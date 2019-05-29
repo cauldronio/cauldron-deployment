@@ -25,9 +25,6 @@ num_workers: 3
 network_name: "network_cauldron"
 volume_name: "cauldron_volume"
 
-# Host IP or Name
-hostname: "localhost"
-
 
 ########################
 ## DATABASE CONTAINER ##
@@ -37,9 +34,9 @@ hostname: "localhost"
 db_container_name: "db_cauldron_service"
 db_image: "database_cauldron"
 db_port: "3306"
-db_root_password: "root"
+db_root_password: "ChangeRootPassword"
 db_user: "grimoirelab"
-db_password: "ChangeThisPassword"
+db_password: "ChangeGrimoirePassword"
 
 # Names for the tables created
 db_sortinghat_name: "test_sh"
@@ -52,11 +49,16 @@ db_django_name: "db_cauldron"
 es_container_name: "elastic_service"
 es_image: "amazon/opendistro-for-elasticsearch:0.9.0"
 
-# password for admin user
-es_admin_password: "admin"
-
 # External port for ElasticSearch
 es_port: '9200'
+
+# password for ES users
+es_admin_password: "ChangeAdminPassword"
+es_logstash_password: "logstash"
+es_kibanaserver_password: "kibanaserver"
+es_kibanaro_password: "kibanaro"
+es_readall_password: "readall"
+es_snapshotrestore_password: "snapshotrestore"
 
 
 #################################
@@ -68,6 +70,9 @@ kibana_image: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
 
 # External port for Kibana
 kibana_port: '5601'
+
+# Default index for Kibana
+kibana_default_index: 'git_enrich'
 
 
 ######################
@@ -97,7 +102,7 @@ django_hosts: "*"
 mordred_name: "mordred_service"
 
 # Mordred image for Docker used
-modred_image: "mordred"
+mordred_image: "mordred"
 
 
 ######################
@@ -109,3 +114,10 @@ grimoire_image: "grimoirelab/installed"
 
 # Name for the temporary container for the panels
 panels_container: "tmp_container_panels"
+
+#########################
+## PASSWORDS CONTAINER ##
+#########################
+
+# Name for the temporary container for creating the passwords for the users for Elasticsearch
+passwords_container: "tmp_container_passwords"
