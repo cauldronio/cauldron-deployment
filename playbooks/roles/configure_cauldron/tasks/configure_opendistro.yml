@@ -26,7 +26,7 @@
     mode: 0600
 
 
-- name: Crete hashes for elasticsearch passwords
+- name: Create hashes for elasticsearch passwords
   include: hash_password.yml
   with_items:
       - { loop_psw: "{{ es_admin_password }}", loop_output: "hash_es_admin_password" }

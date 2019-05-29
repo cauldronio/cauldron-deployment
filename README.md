@@ -11,7 +11,7 @@ The following ports will be used in the target machine. You can change this late
    
   - **8000.** Cauldron Django server
   - **9200.** ElasticSearch
-  - **443.** Kibiter
+  - **443.** Kibana
   
 
 ### Download and configure
@@ -21,7 +21,7 @@ The following ports will be used in the target machine. You can change this late
     $ git clone --branch <tag> https://gitlab.com/cauldron2/deployment.git
     $ cd deployment 
     ```
-    **Or** you can download the latest version in **development** (could not be stable):
+    **Or** you can download the latest version in **development**:
      ```bash
     $ git clone https://gitlab.com/cauldron2/deployment.git
     $ cd deployment 
@@ -56,6 +56,7 @@ The following ports will be used in the target machine. You can change this late
           - Your Gitlab private token (`gl_private_token`)
         
         You can leave the other configuration as it is, but there are some points that could be interesting:
+        - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.
         - Some configuration files for Docker containers will be mounted in the local filesystem. Now are in `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
         - If you are using any of the mentioned ports before (443, 8000 or 9200), you can change them here. 
         - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it before running at any time.
@@ -66,17 +67,29 @@ Navigate to `playbooks` directory from the root of the repository.
 ```
 $ cd playbooks
 ```
-There are some useful **playbooks**:
+There are some useful **playbooks**. You will need a custom inventory. There are 2 example files: one for a remote machine `production` and another one for your local machine: `local`:
 
 - **`install_docker.yml`**. **Only** run this playbook if you don't have Docker installed in the target machine for running the Cauldron. It will install Docker and its dependencies.
     ```
-    $ ansible-playbook install_docker.yml 
+    $ ansible-playbook -i <inventory_file> install_docker.yml 
     ```
     If you are running it for localhost, you need to be root (append `-K` to the previous command and it will ask for your password)
 
-- **`configure_cauldron.yml`**. If you don't have the images for the Cauldron web server and the Mordred worker in the target computer, you will need to build them. This playbook also create the configuration for the server, create a docker network (`network_cauldron` by default) and a docker volume (`cauldron_volume` by default)
+- **`configure_cauldron.yml`**. You will need to run this playbook the first time. This playbook will:
+    - Create a internal Docker Network
+    - Create a Docker Volume
+    - Create the Django configuration and copy to remote
+    - Build Django image 
+    - Build Mordred image
+    - Build Database image
+    - Create the Database configuration
+    - Create OpenDistro configuration
+    - Pull mysql image
+    - Copy panels for Kibana
+
+    The command for running this playbook is:
     ```bash
-    $ ansible-playbook configure_cauldron.yml
+    $ ansible-playbook -i <inventory_file> configure_cauldron.yml
     ```
     It builds the Dockerfile inside `cauldron` and `mordred` that are in this repository.
     
@@ -85,26 +98,30 @@ There are some useful **playbooks**:
     $ docker images
     REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
     mordred                 latest              9b33c908fcb6        10 seconds ago      895MB
-    cauldron                latest              36302776d1b7        30 seconds ago      1.09GB
+    cauldron                latest              36302776d1b7        10 seconds ago      1.09GB
+    database_cauldron       latest              293e6e74dd4b        10 seconds ago      553MB
+    mysql                   latest              990386cbd5c0        10 seconds ago      443MB
     ...
     ```
-    
-    And the configuration for the Django server in the directory specified in `defaults.yml`, by default is `/tmp`. 
-
+    An the configuration created by default in `/tmp/database`, `/tmp/django`, `/tmp/kibana`, `/tmp/mordred`, `/tmp/panels` and `tmp/panels`
 - **`run_cauldron.yml`**. With this playbook you will be able to run the Docker images: `cauldron`, `mordred` and `grimoirelab/secured`
     ```bash
-    $ ansible-playbook run_cauldron.yml
+    $ ansible-playbook -i <inventory_file> run_cauldron.yml
     ```
     Once it has finished, you can see the running containers and the volume and network created:
-    ```
+    ```bash
     $ docker ps
-    CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                                                                   NAMES
-    78c3c33a89f0        mordred               "python3 manager.py"     14 seconds ago      Up 13 seconds                                                                               mordred_service_2
-    58078aaee172        mordred               "python3 manager.py"     16 seconds ago      Up 14 seconds                                                                               mordred_service_1
-    85d7b93c72f0        mordred               "python3 manager.py"     18 seconds ago      Up 16 seconds                                                                               mordred_service_0
-    e4ee49ee77a5        cauldron              "/entrypoint.sh"         21 seconds ago      Up 19 seconds       0.0.0.0:8000->8000/tcp                                                  cauldron_service
-    eccb4c735aaf        grimoirelab/secured   "/entrypoint.sh -c /…"   23 seconds ago      Up 21 seconds       0.0.0.0:3306->3306/tcp, 0.0.0.0:9200->9200/tcp, 0.0.0.0:443->5601/tcp   grimoirelab_service         
-    
+    CONTAINER ID        IMAGE                                              COMMAND                  CREATED             STATUS              PORTS                                                      NAMES
+    81fc9f917120        amazon/opendistro-for-elasticsearch:0.9.0          "/usr/local/bin/dock…"   5 hours ago         Up 5 hours          0.0.0.0:9200->9200/tcp, 0.0.0.0:9600->9600/tcp, 9300/tcp   elastic_service
+    0faeb212a4b3        amazon/opendistro-for-elasticsearch-kibana:0.9.0   "/usr/local/bin/kiba…"   5 hours ago         Up 5 hours          0.0.0.0:5601->5601/tcp                                     kibana_service
+    8ae30f440689        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_3
+    bd3996f77f1c        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_2
+    cb4e6dcd27d0        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_1
+    e997f0a02e67        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_0
+    55cca3a6d1be        cauldron                                           "/entrypoint.sh"         5 hours ago         Up 2 hours          0.0.0.0:80->8000/tcp                                       cauldron_service
+    71eb8dc42702        database_cauldron                                  "/entrypoint.sh"         5 hours ago         Up 5 hours          0.0.0.0:3306->3306/tcp                                     db_cauldron_service
+    ...
+  
     $ docker volume ls
     NETWORK ID          NAME                DRIVER              SCOPE
     b9a99d39aa1c        network_cauldron    bridge              local
@@ -113,20 +130,20 @@ There are some useful **playbooks**:
     $ docker network ls
     DRIVER              VOLUME NAME
     local               cauldron_volume
-
+    ...
     ```
     If everything works correctly, you can:
     
     - **Analyze** some repositories at http://localhost:8000
-    - Use **Kibiter** for your dashboard at https://localhost
+    - Use **Kibana** for your dashboard at http://localhost:5601
     - Browse the data analyzed in a **ElasticSearch**: https://localhost:92000
     
-    Sometimes you have to wait 1 minute after the containers has started to browse to that urls.
+    You can find the default passwords inside `playbooks/defaults.yml`
 
-- **`stop_cauldron.yml`**. With this playbook you can remove all the containers, images, volumes and networks generated.
+- **`remove_cauldron.yml`**. With this playbook you can remove all the containers, images, volumes, networks and configuration generated.
 
     ```bash
-    $ ansible-playbook stop_cauldron.yml
+    $ ansible-playbook -i <inventory_file> remove_cauldron.yml
     ```
 
 ### Help!
