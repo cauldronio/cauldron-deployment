@@ -1,0 +1,22 @@
+---
+
+- name: Stop and remove Opendistro Kibana
+  import_tasks: remove_kibana.yml
+
+- name: Stop and remove Opendistro ES
+  import_tasks: remove_elastic.yml
+
+- name: Stop and remove mordred workers
+  import_tasks: remove_mordred.yml
+
+- name: Stop and remove Django server
+  import_tasks: remove_django.yml
+
+- name: Stop and remove database
+  import_tasks: remove_database.yml
+
+- name: Remove network
+  import_tasks: remove_network.yml
+
+- name: Remove configuration files
+  import_tasks: remove_config_files.yml

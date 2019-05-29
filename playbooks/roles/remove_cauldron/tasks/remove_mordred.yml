@@ -1,0 +1,13 @@
+---
+- name: Stop Mordred services
+  shell: "docker kill $(docker ps -aq --filter name={{mordred_name}})"
+  ignore_errors: yes
+
+- name: Delete mordred containers
+  shell: "docker rm $(docker ps -aq --filter name={{mordred_name}})"
+  ignore_errors: yes
+
+- name: Delete Mordred image
+  docker_image:
+    name: "{{mordred_image}}"
+    state: absent

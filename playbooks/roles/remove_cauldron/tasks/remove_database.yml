@@ -1,0 +1,11 @@
+---
+- name: Stop and remove database container
+  docker_container:
+    name: "{{db_container_name}}"
+    state: absent
+    stop_timeout: 10
+
+- name: Delete database image
+  docker_image:
+    name: "{{db_image}}"
+    state: absent

@@ -1,0 +1,7 @@
+---
+
+- name: Remove docker volume
+  docker_volume:
+    name: "{{volume_name}}"
+    state: absent
+
