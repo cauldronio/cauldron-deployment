@@ -1,10 +1,23 @@
 ---
 
+- name: Check ElasticSearch Running
+  uri:
+    url: "https://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{es_port}}/_cluster/health"
+    method: GET
+    user: admin
+    password: "{{es_admin_password}}"
+    force_basic_auth: yes
+    validate_certs: no
+  register: check_es
+  failed_when: false
+
+
 - name: Run ElasticSearch
   docker_container:
     name: "{{ es_container_name }}"
     image: "{{ es_image }}"
     state: started
+    restart: "{{'yes' if check_es.status != 200 or (check_es.json.status != 'yellow' and check_es.json.status != 'green' ) else 'no'}}"
     networks:
       - name: "{{ network_name }}"
     ports:
@@ -14,7 +27,7 @@
       - 'memlock:-1:-1'
 
     env:
-      ES_JAVA_OPTS: "-Xms2g -Xmx2g" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+      ES_JAVA_OPTS: "-Xms2g -Xmx2g"
 
     volumes:
       # - "/tmp/es-data:/usr/share/elasticsearch/data"

@@ -1,22 +1,5 @@
 ---
 
-- name: Ensures {{configuration_dir}}/mordred dir exists
-  file: path={{configuration_dir}}/mordred state=directory
-
-
-- name: Configure worker_{{worker_id}} global settings
-  vars:
-    worker_name: "worker_{{worker_id}}"
-  template:
-    src: config.py.j2
-    dest: "{{ configuration_dir }}/mordred/mordred_conf_{{worker_id}}.py"
-
-- name: Configure worker_{{worker_id}} mordred settings
-  template:
-    src: setup-default.cfg.j2
-    dest: "{{ configuration_dir }}/mordred/setup-default.cfg"
-
-
 - name: Run worker {{worker_id}}
   vars:
     docker_worker_name: "{{mordred_name}}_{{worker_id}}"

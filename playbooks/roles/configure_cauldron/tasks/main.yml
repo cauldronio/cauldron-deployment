@@ -11,6 +11,9 @@
 - name: Build django image
   import_tasks: build_django.yml
 
+- name: Configure mordred
+  import_tasks: configure_many_mordred.yml
+
 - name: Build mordred image
   import_tasks: build_mordred.yml
 

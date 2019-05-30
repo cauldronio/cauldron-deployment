@@ -1,8 +1,13 @@
 ---
+- name: Check if database {{db_django_name}} is running
+  shell: "docker run --rm --link {{db_container_name}} mysql sh -c 'mysql -h {{db_container_name}} -u {{db_user}} -p{{db_password}} -D {{db_django_name}}'"
+  register: check_db
+
 - name: Run database
   docker_container:
     name: "{{ db_container_name }}"
     image: "{{ db_image }}"
+    restart: "{{ 'yes' if check_db.rc != 0 else 'no'}}"
     state: started
     networks:
       - name: "{{ network_name }}"

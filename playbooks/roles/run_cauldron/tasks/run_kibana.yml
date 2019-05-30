@@ -1,10 +1,19 @@
 ---
 
+- name: Check Kibana Running
+  uri:
+    url: "http://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{kibana_port}}"
+    method: GET
+  register: check_kibana
+  failed_when: false
+
+
 - name: Run Kibana
   docker_container:
     name: "{{ kibana_container_name }}"
     image: "{{ kibana_image }}"
     state: started
+    restart: "{{ 'yes' if check_kibana.status != 200 else 'no'}}"
     networks:
       - name: "{{ network_name }}"
     ports:
