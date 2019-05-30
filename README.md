@@ -149,3 +149,14 @@ There are some useful **playbooks**. You will need a custom inventory. There are
 ### Help!
 
 In case you have any problem with the deployment or you think this guide is incomplete, open a new issue or contact us please.
+
+
+## Troubleshooting
+
+#### My playbook exits after running ElasticSearch
+If it's the first time running the Cauldron in your computer and ElasticSearch exits before finishing the playbook (`docker ps -a --filter "name=elastic_service"`), it's possible that the `vm.max_map_count` kernel setting needs to be set to at least **262144**:
+
+```bash
+sudo sysctl -w vm.max_map_count=262144
+```
+[More Info](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode)
