@@ -22,7 +22,7 @@ elasticsearch.hosts: https://{{ es_container_name }}:{{ es_port }}
 elasticsearch.ssl.verificationMode: none
 elasticsearch.ssl.certificateAuthorities: ["/usr/share/kibana/config/root-ca.pem"]
 elasticsearch.username: kibanaserver
-elasticsearch.password: kibanaserver
+elasticsearch.password: {{es_kibanaserver_password}}
 elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]
 
 #server.ssl.enabled: true
