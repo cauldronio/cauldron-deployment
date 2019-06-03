@@ -1,5 +1,5 @@
 
-CREATE USER {{ db_user }} IDENTIFIED BY '{{ db_password }}';
+CREATE USER IF NOT EXISTS {{ db_user }} IDENTIFIED BY '{{ db_password }}';
 GRANT ALL PRIVILEGES ON *.* TO "{{ db_user }}"@"%" WITH GRANT OPTION;
 
 CREATE DATABASE IF NOT EXISTS {{ db_sortinghat_name }};
