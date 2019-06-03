@@ -60,6 +60,8 @@ es_kibanaro_password: "kibanaro"
 es_readall_password: "readall"
 es_snapshotrestore_password: "snapshotrestore"
 
+es_memory: "2g"
+
 
 #################################
 ## OPENDISTRO KIBANA CONTAINER ##
