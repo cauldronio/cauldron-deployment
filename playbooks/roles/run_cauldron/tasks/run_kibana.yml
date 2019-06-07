@@ -38,30 +38,3 @@
     port: '{{kibana_port}}'
     host: '{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}'
 
-
-- name: Import panels to Kibana
-  docker_container:
-    name: "{{panels_container}}"
-    image: "{{grimoire_image}}"
-    cleanup : yes
-    detach: no
-    restart: yes
-    entrypoint: ""
-    command: "/panels/import_panels.sh kidash https://admin:{{es_admin_password}}@{{es_container_name}}:{{es_port}} .kibana /panels/"
-    volumes:
-      - "{{configuration_dir}}/panels:/panels"
-    networks:
-      - name: "{{ network_name }}"
-
-- name: Create default index
-  uri:
-    url: "http://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{kibana_port}}/api/kibana/settings/defaultIndex"
-    method: POST
-    user: admin
-    password: "{{es_admin_password}}"
-    force_basic_auth: yes
-    body:
-      value: "{{ kibana_default_index }}"
-    headers:
-      kbn-xsrf: "true"
-    body_format: json

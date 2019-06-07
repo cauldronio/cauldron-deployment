@@ -42,6 +42,7 @@
       - "{{configuration_dir}}/es/elasticsearch-secured.yml:/usr/share/elasticsearch/config/elasticsearch.yml"
 
       - "{{configuration_dir}}/es/internal_users.yml:/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/internal_users.yml"
+      - "{{configuration_dir}}/es/opendistro-config.yml:/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/config.yml"
 
 
 - name: Wait for Elasticsearch 9200 Open

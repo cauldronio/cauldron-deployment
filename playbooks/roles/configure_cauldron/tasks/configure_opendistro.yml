@@ -12,10 +12,17 @@
     mode: 0600
 
 
-- name: Create ElasticSearch configuration
+- name: Create ElasticSearch global configuration
   template:
     src: elasticsearch-secured.yml.j2
     dest: "{{ configuration_dir }}/es/elasticsearch-secured.yml"
+    mode: 0600
+
+
+- name: Create ElasticSearch security configuration
+  template:
+    src: opendistro-config.yml.j2
+    dest: "{{ configuration_dir }}/es/opendistro-config.yml"
     mode: 0600
 
 

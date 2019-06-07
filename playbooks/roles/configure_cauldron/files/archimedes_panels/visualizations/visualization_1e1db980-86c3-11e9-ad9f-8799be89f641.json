@@ -1,0 +1,16 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        },
+        "title": "github_title_issues",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"github_title_issues\",\"type\":\"markdown\",\"params\":{\"fontSize\":17,\"openLinksInNewTab\":false,\"markdown\":\"### GitHub Issues\"},\"aggs\":[]}"
+    },
+    "id": "1e1db980-86c3-11e9-ad9f-8799be89f641",
+    "type": "visualization",
+    "updated_at": "2019-06-05T09:43:27.106Z",
+    "version": "WzEyOSwxXQ=="
+}

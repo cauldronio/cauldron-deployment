@@ -1,0 +1,22 @@
+{
+    "attributes": {
+        "columns": [
+            "_source"
+        ],
+        "description": "",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"index\":\"github_enrich\",\"query\":{\"query_string\":{\"query\":\"pull_request:true\",\"analyze_wildcard\":true}},\"filter\":[],\"highlight\":{\"pre_tags\":[\"@kibana-highlighted-field@\"],\"post_tags\":[\"@/kibana-highlighted-field@\"],\"fields\":{\"*\":{}},\"require_field_match\":false,\"fragment_size\":2147483647}}"
+        },
+        "sort": [
+            "metadata__updated_on",
+            "desc"
+        ],
+        "title": "Search:_pull_request:true",
+        "version": 1
+    },
+    "id": "Search:_pull_request:true",
+    "type": "search",
+    "updated_at": "2019-06-05T09:43:29.115Z",
+    "version": "WzEzMSwxXQ=="
+}

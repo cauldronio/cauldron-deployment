@@ -1,0 +1,16 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        },
+        "title": "git_title",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"git_title\",\"type\":\"markdown\",\"params\":{\"fontSize\":18,\"openLinksInNewTab\":false,\"markdown\":\"# Git Analysis\"},\"aggs\":[]}"
+    },
+    "id": "595ad410-877c-11e9-8c99-73d9660732a3",
+    "type": "visualization",
+    "updated_at": "2019-06-05T10:26:15.632Z",
+    "version": "WzE5NCwxXQ=="
+}

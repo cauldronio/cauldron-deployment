@@ -1,0 +1,16 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        },
+        "title": "github_title_pull_requests",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"github_title_pull_requests\",\"type\":\"markdown\",\"params\":{\"fontSize\":17,\"openLinksInNewTab\":false,\"markdown\":\"### GitHub Pull Requests\"},\"aggs\":[]}"
+    },
+    "id": "f966f650-86c3-11e9-ad9f-8799be89f641",
+    "type": "visualization",
+    "updated_at": "2019-06-05T09:43:28.110Z",
+    "version": "WzEzMCwxXQ=="
+}

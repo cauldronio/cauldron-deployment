@@ -1,0 +1,68 @@
+---
+
+- hosts: all
+  vars_files:
+    - defaults-local.yml
+  tasks:
+    - name: Stop and remove ES container
+      docker_container:
+        name: "{{es_container_name}}"
+        state: absent
+        stop_timeout: 10
+
+    - name: Stop and remove Kibana container
+      docker_container:
+        name: "{{kibana_container_name}}"
+        state: absent
+        stop_timeout: 10
+
+    - name: Stop Mordred services
+      shell: "docker kill $(docker ps -aq --filter name={{mordred_name}})"
+      ignore_errors: yes
+
+    - name: Delete mordred containers
+      shell: "docker rm $(docker ps -aq --filter name={{mordred_name}})"
+      ignore_errors: yes
+
+    - name: Stop and remove django container
+      docker_container:
+        name: "{{django_name}}"
+        state: absent
+        stop_timeout: 10
+
+    - name: Stop and remove database container
+      docker_container:
+        name: "{{db_container_name}}"
+        state: absent
+        stop_timeout: 10
+
+    - name: Remove docker network
+      docker_network:
+        name: "{{network_name}}"
+        state: absent
+        force: yes
+
+    - name: Remove database files
+      file:
+        state: absent
+        path: "{{configuration_dir}}/database"
+
+    - name: Remove django files
+      file:
+        state: absent
+        path: "{{configuration_dir}}/django"
+
+    - name: Remove Kibana files
+      file:
+        state: absent
+        path: "{{configuration_dir}}/kibana"
+
+    - name: Remove ES files
+      file:
+        state: absent
+        path: "{{configuration_dir}}/es"
+
+    - name: Remove Panels files
+      file:
+        state: absent
+        path: "{{ configuration_dir }}/panels"
