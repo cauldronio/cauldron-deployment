@@ -12,9 +12,17 @@ GL_CLIENT_SECRET = '{{ gl_client_secret }}'
 
 GL_PRIVATE_TOKEN = '{{ gl_private_token }}'
 
-ES_URL = '{{ es_container_name }}'
-KIB_URL = '{{ kibana_container_name }}'
+
+ES_IN_HOST = '{{es_container_name}}'
+ES_PORT = '{{es_port}}'
+ES_PROTO = '{{es_protocol}}'
+
 ES_ADMIN_PSW = '{{ es_admin_password }}'
+
+KIB_IN_HOST = '{{kibana_container_name}}'
+KIB_PORT = '{{kibana_port}}'
+KIB_PROTO = '{{kibana_protocol}}'
+KIB_OUT_HOST = '{{kibana_out_host}}'
 
 DEBUG = {{ django_debug }}
 

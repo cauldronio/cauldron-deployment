@@ -28,6 +28,3 @@
 
 - name: Pull mysql for checks
   import_tasks: pull_mysql.yml
-
-- name: Copy panels
-  import_tasks: copy_panels.yml
