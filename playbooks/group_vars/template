@@ -76,7 +76,7 @@ kibana_container_name: "kibana_service"
 kibana_image: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
 
 kibana_port: '5601'
-kibana_protocol: 'http'
+kibana_protocol: 'https'
 kibana_out_host: 'localhost'
 
 # Default index for Kibana

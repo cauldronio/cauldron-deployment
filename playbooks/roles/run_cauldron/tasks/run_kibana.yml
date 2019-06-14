@@ -2,8 +2,9 @@
 
 - name: Check Kibana Running
   uri:
-    url: "http://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{kibana_port}}"
+    url: "https://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{kibana_port}}"
     method: GET
+    validate_certs: no
   register: check_kibana
   failed_when: false
 

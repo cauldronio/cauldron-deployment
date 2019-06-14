@@ -135,7 +135,7 @@ There are some useful **playbooks**. You will need a custom inventory. There are
     If everything works correctly, you can:
     
     - **Analyze** some repositories at http://localhost:8000
-    - Use **Kibana** for your dashboard at http://localhost:5601
+    - Use **Kibana** for your dashboard at https://localhost:5601
     - Browse the data analyzed in a **ElasticSearch**: https://localhost:92000
     
     You can find the default passwords inside `playbooks/defaults.yml`
