@@ -1,0 +1,5 @@
+---
+
+- name: Pull Kibana image of OpenDistro
+  docker_image:
+    name: amazon/opendistro-for-elasticsearch-kibana:0.9.0

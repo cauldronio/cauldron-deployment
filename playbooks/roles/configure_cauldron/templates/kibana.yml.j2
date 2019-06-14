@@ -27,17 +27,16 @@ elasticsearch.username: kibanaserver
 elasticsearch.password: {{es_kibanaserver_password}}
 elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]
 
-#server.ssl.enabled: true
-#server.ssl.certificate:  /usr/share/kibana/config/node-1.pem
-#server.ssl.key:  /usr/share/kibana/config/node-1-key.pem
+server.ssl.enabled: true
+server.ssl.certificate:  /usr/share/kibana/config/kibana.pem
+server.ssl.key:  /usr/share/kibana/config/kibana-key.pem
 #server.ssl.keyPassphrase: ""
-#elasticsearch.ssl.certificateAuthorities: /usr/share/kibana/config/kibana-root-ca.pem
 
 opendistro_security.multitenancy.enabled: true
 opendistro_security.multitenancy.tenants.preferred: ["Private"]
 opendistro_security.readonly_mode.roles: ["kibana_read_only"]
 
-#opendistro_security.cookie.secure: true
+# opendistro_security.cookie.secure: true
 # opendistro_security.cookie.password:
 
 opendistro_security.auth.type: "jwt"

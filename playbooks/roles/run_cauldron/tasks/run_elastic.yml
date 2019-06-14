@@ -30,7 +30,7 @@
       ES_JAVA_OPTS: "-Xms{{es_memory}} -Xmx{{es_memory}}"
 
     volumes:
-      # - "/tmp/es-data:/usr/share/elasticsearch/data"
+      #- "{{configuration_dir}}/es-data:/usr/share/elasticsearch/data"
       - "{{configuration_dir}}/es/keys/root-ca.pem:/usr/share/elasticsearch/config/root-ca.pem"
 
       - "{{configuration_dir}}/es/keys/node-1.pem:/usr/share/elasticsearch/config/node-1.pem"

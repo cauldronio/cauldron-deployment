@@ -1,4 +1,0 @@
----
-
-- name: Build grimoirelab image
-  command: docker build --no-cache -t grimoirelab/installed:0.2.21 -f docker/Dockerfile-installed https://github.com/chaoss/grimoirelab.git#0.2.21

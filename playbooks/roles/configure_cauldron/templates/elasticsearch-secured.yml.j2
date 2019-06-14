@@ -184,12 +184,12 @@ opendistro_security.advanced_modules_enabled: true
 # This settings support wildcards and regular expressions
 # This setting only has effect if 'opendistro_security.cert.intercluster_request_evaluator_class' is not set.
 opendistro_security.nodes_dn:
-  - "CN=node-1,O=Dis,L=All,ST=Any,C=EU"
+  - "CN=elastic_service,O=Dis,L=All,ST=Any,C=EU"
 
 # Defines the DNs (distinguished names) of certificates
 # to which admin privileges should be assigned (mandatory)
 opendistro_security.authcz.admin_dn:
-  - "CN=Admin,O=Dis,L=All,ST=Any,C=EU"
+  - "CN=admin,O=Dis,L=All,ST=Any,C=EU"
 
 # Define how backend roles should be mapped to Open Distro Security roles
 # MAPPING_ONLY - mappings must be configured explicitely in roles_mapping.yml (default)
