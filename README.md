@@ -10,18 +10,12 @@ It's necessary that you have **Ansible** installed in your computer in order to 
 The following ports will be used in the target machine. You can change this later in the configuration file.
    
   - **8000.** Cauldron Django server
-  - **9200.** ElasticSearch
-  - **443.** Kibana
+  - **5601.** Kibana
   
 
 ### Download and configure
 
-1. Download the latest tagged version of this repository with `git clone --branch tag` and navigate to that directory:
-    ```bash
-    $ git clone --branch <tag> https://gitlab.com/cauldron2/deployment.git
-    $ cd deployment 
-    ```
-    **Or** you can download the latest version in **development**:
+1. Download the latest version of this repository with `git cloneg` and navigate to that directory:
      ```bash
     $ git clone https://gitlab.com/cauldron2/deployment.git
     $ cd deployment 
@@ -43,23 +37,26 @@ The following ports will be used in the target machine. You can change this late
         - **Scopes**: Select only `api`
         
         After the registration, you can obtain the `Application ID` and `Secret`.
-     
-    - Create a private gitlab token (This is a temporary step until some changes are applied to perceval). [Gitlab personal access tokens](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#creating-a-personal-access-token) 
 
-    - Open the following file (inside the cloned repository) with a text editor: 
+    - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor: 
         ```
-        playbooks/defaults.yml
+        cd playbooks
+        cp group_vars/template group_vars/local
+        <prefered_editor> group_vars/local
         ```
-        - You will need to write:
+        - You will need to fill:
           - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
           - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
-          - Your Gitlab private token (`gl_private_token`)
         
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.
-        - Some configuration files for Docker containers will be mounted in the local filesystem. Now are in `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
-        - If you are using any of the mentioned ports before (443, 8000 or 9200), you can change them here. 
-        - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it before running at any time.
+        - Some configuration files for Docker containers will be mounted in the local filesystem. The default directory is `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
+        - If you are using any of the mentioned ports before (8000 or 5601), you can change them here. 
+        - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it.
+
+3. Finally, it's necessary to have a inventory file for the target machine. If you are running it locally, you can use the `local` file inside `playbooks` directory. 
+
+    If you are going to create a new inventory, it's important that the name for the group (the header between `[]`) is the same as  the file inside `group_vars` that you previously renamed/copied.
 
 ### Running
 Navigate to `playbooks` directory from the root of the repository.
@@ -67,24 +64,25 @@ Navigate to `playbooks` directory from the root of the repository.
 ```
 $ cd playbooks
 ```
-There are some useful **playbooks**. You will need a custom inventory. There are 2 example files: one for a remote machine `production` and another one for your local machine: `local`:
+There you will find some useful files for running Cauldron:
 
 - **`install_docker.yml`**. **Only** run this playbook if you don't have Docker installed in the target machine for running the Cauldron. It will install Docker and its dependencies.
     ```
     $ ansible-playbook -i <inventory_file> install_docker.yml 
     ```
-    If you are running it for localhost, you need to be root (append `-K` to the previous command and it will ask for your password)
+    If you are running it for localhost, you need to be root (append `-K` to the previous command and it will ask for your password). 
 
 - **`configure_cauldron.yml`**. You will need to run this playbook the first time. This playbook will:
     - Create a internal Docker Network
     - Create a Docker Volume
-    - Create the Django configuration and copy to remote
+    - Create the Django configuration and copy to remote (localhost in this guide)
     - Build Django image 
     - Build Mordred image
     - Build Database image
     - Create the Database configuration
     - Create OpenDistro configuration
-    - Pull mysql image
+    - Pull a mysql image
+    - Pull Opendistro images
     - Copy panels for Kibana
 
     The command for running this playbook is:
@@ -97,14 +95,17 @@ There are some useful **playbooks**. You will need a custom inventory. There are
     ```bash
     $ docker images
     REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
-    mordred                 latest              9b33c908fcb6        10 seconds ago      895MB
-    cauldron                latest              36302776d1b7        10 seconds ago      1.09GB
+    mordred                 latest              9b33c908fcb6        10 seconds ago      922MB
+    cauldron                latest              36302776d1b7        10 seconds ago      1.08GB
     database_cauldron       latest              293e6e74dd4b        10 seconds ago      553MB
     mysql                   latest              990386cbd5c0        10 seconds ago      443MB
+    amazon/opendistro-f...  0.9.0               a48c96e7fdb3        10 seconds ago      774MB
+    amazon/opendistro-f...  0.9.0               33244b063d2a        10 seconds ago      443MB
+    grimoirelab/installed   0.2.23              f5ccf846bd4f        10 seconds ago      889MB
     ...
     ```
-    An the configuration created by default in `/tmp/database`, `/tmp/django`, `/tmp/kibana`, `/tmp/mordred`, `/tmp/panels` and `tmp/panels`
-- **`run_cauldron.yml`**. With this playbook you will be able to run the Docker images: `cauldron`, `mordred` and `grimoirelab/secured`
+    And the configuration created by default in `/tmp/database`, `/tmp/django`, `/tmp/kibana`, `/tmp/mordred`, `/tmp/panels` and `tmp/panels`
+- **`run_cauldron.yml`**. With this playbook you will be able to run the Docker images: `cauldron`, `mordred`, `database_cauldron` and `opendistro` images
     ```bash
     $ ansible-playbook -i <inventory_file> run_cauldron.yml
     ```
@@ -135,8 +136,6 @@ There are some useful **playbooks**. You will need a custom inventory. There are
     If everything works correctly, you can:
     
     - **Analyze** some repositories at http://localhost:8000
-    - Use **Kibana** for your dashboard at https://localhost:5601
-    - Browse the data analyzed in a **ElasticSearch**: https://localhost:92000
     
     You can find the default passwords inside `playbooks/defaults.yml`
 

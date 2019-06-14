@@ -28,3 +28,12 @@
 
 - name: Pull mysql for checks
   import_tasks: pull_mysql.yml
+
+- name: Pull ES opendistro image
+  import_tasks: pull_es_opendistro.yml
+
+- name: Pull Kibana opendistro image
+  import_tasks: pull_kibana_opendistro.yml
+
+
+
