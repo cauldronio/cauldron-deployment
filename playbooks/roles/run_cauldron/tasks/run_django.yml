@@ -25,7 +25,7 @@
     volumes:
       - "{{configuration_dir}}/django/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
       - "{{volume_name}}:/dashboard_logs"
-      - "{{configuration_dir}}/django/jwtR256.key:/code/cauldron/Cauldron2/jwtR256.key"
+      - "{{configuration_dir}}/django/jwtR256.key:/code/cauldron/Cauldron2/CauldronApp/jwtR256.key"
       - "{{configuration_dir}}/django/nginx_cauldron.conf:/etc/nginx/sites-enabled/nginx_cauldron.conf"
     env:
       CERTBOT_ENABLED: "{{ certbot_enabled }}"
