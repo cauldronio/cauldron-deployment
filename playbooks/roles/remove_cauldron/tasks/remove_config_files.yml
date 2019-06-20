@@ -24,3 +24,8 @@
   file:
     state: absent
     path: "{{ configuration_dir }}/panels"
+
+- name: Remove Mordred files
+  file:
+    state: absent
+    path: "{{ configuration_dir }}/mordred"

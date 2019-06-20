@@ -12,6 +12,11 @@
     src: django_settings.py.j2
     dest: "{{ configuration_dir }}/django/django_settings.py"
 
+- name: Configure nginx django settings
+  template:
+    src: nginx_cauldron.conf.j2
+    dest: "{{ configuration_dir }}/django/nginx_cauldron.conf"
+
 - name: Copy the private key for JWT
   copy:
     src: "django/jwtR256.key"

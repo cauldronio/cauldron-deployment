@@ -25,15 +25,15 @@ The following ports will be used in the target machine. You can change this late
 
     - Create a **GitHub Oauth App** and get the keys. For creating a new Application [follow this link](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Some information for the application:
         - **Application name**: A name for the application, for example `Bitergia Cauldron`
-        - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `http://localhost:8000/`. (You can change it later)
+        - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `https://localhost:8000/`. (You can change it later)
         - **Application description**: Not required
-        - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `http://localhost:8000/github-login`. (You can change it later)
+        - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `https://localhost:8000/github-login`. (You can change it later)
         
         After the registration, you can obtain the `Client ID` and `Client Secret`.
         
     - Create a **Gitlab Oauth App** and get the keys. For creating a new Application [follow this link](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile). Some information for the application:
         - **Name**: A name for the application, for example `Bitergia Cauldron`
-        - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `http://localhost:8000/gitlab-login`. (You can change it later)
+        - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `https://localhost:8000/gitlab-login`. (You can change it later)
         - **Scopes**: Select only `api`
         
         After the registration, you can obtain the `Application ID` and `Secret`.
@@ -135,7 +135,7 @@ There you will find some useful files for running Cauldron:
     ```
     If everything works correctly, you can:
     
-    - **Analyze** some repositories at http://localhost:8000
+    - **Analyze** some repositories at https://localhost:8000
     
     You can find the default passwords inside `playbooks/defaults.yml`
 

@@ -11,7 +11,6 @@ gh_client_secret: ""
 gl_client_id: ""
 gl_client_secret: ""
 
-gl_private_token: ""
 
 # Where will the configuration files be stored
 # in you computer and mapped to Docker
@@ -102,6 +101,12 @@ django_debug: 'True'
 # Host (Keep same as deployed) All accepted here
 django_hosts: "*"
 
+# Certbot configuration.
+# ONLY enable it (0 -> 1) if you are deploying on a domain
+# Set an email address for important notifications managed by certbot
+certbot_enabled: "0"
+certbot_domain: ""
+certbot_mail: ""
 
 #######################
 ## MORDRED CONTAINER ##

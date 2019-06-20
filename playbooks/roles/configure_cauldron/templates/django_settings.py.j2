@@ -24,7 +24,7 @@ KIB_PORT = '{{kibana_port}}'
 KIB_PROTO = '{{kibana_protocol}}'
 KIB_OUT_HOST = '{{kibana_out_host}}'
 
-DEBUG = {{ django_debug }}
+DEBUG = '{{ django_debug }}'
 
 ALLOWED_HOSTS = [ '{{ django_hosts }}' ]
 
@@ -75,7 +75,7 @@ DATABASES = {
         'USER': '{{ db_user }}',
         'PASSWORD': '{{ db_password }}',
         'HOST': '{{ db_container_name }}',
-        'PORT': {{ db_port }},
+        'PORT': '{{ db_port }}',
         'OPTIONS': {
             'sql_mode': 'traditional'
         }
