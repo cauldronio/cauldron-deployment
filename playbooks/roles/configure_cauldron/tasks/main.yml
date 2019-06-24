@@ -35,5 +35,9 @@
 - name: Pull mysql for checks
   import_tasks: pull_mysql.yml
 
+- name: Build panels container
+  import_tasks: build_panels_container.yml
 
+- name: Crete the configuration for the panels
+  import_tasks: configure_panels.yml
 

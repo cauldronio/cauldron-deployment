@@ -1,0 +1,3 @@
+git+https://github.com/Bitergia/archimedes
+requests
+elasticsearch>=6,<7

@@ -1,7 +1,9 @@
 ---
 - name: Check if already running
   uri:
-    url: http://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{port_django}}
+    url: https://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{port_django}}
+    method: GET
+    validate_certs: no
   register: django_result
   failed_when: false
 
@@ -21,7 +23,7 @@
     networks:
       - name: "{{ network_name }}"
     ports:
-      - "{{ port_django }}:8000"
+      - "{{ port_django }}:{{ port_django }}"
     volumes:
       - "{{configuration_dir}}/django/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
       - "{{volume_name}}:/dashboard_logs"

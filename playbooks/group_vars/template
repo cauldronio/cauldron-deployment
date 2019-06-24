@@ -11,7 +11,6 @@ gh_client_secret: ""
 gl_client_id: ""
 gl_client_secret: ""
 
-
 # Where will the configuration files be stored
 # in you computer and mapped to Docker
 configuration_dir: "/tmp"
@@ -41,6 +40,7 @@ db_password: "ChangeGrimoirePassword"
 db_sortinghat_name: "test_sh"
 db_django_name: "db_cauldron"
 
+
 #############################
 ## OPENDISTRO ES CONTAINER ##
 #############################
@@ -66,6 +66,7 @@ es_jwt_signing_key: "ChangemePlse"
 es_jwt_roles_key: "roles"
 es_jwt_subject_key: "user"
 es_jwt_parameter: "jwtToken"
+
 
 #################################
 ## OPENDISTRO KIBANA CONTAINER ##
@@ -108,6 +109,7 @@ certbot_enabled: "0"
 certbot_domain: ""
 certbot_mail: ""
 
+
 #######################
 ## MORDRED CONTAINER ##
 #######################
@@ -124,3 +126,15 @@ mordred_image: "mordred"
 
 # Name for the temporary container for creating the passwords for the users for Elasticsearch
 passwords_container: "tmp_container_passwords"
+
+
+######################
+## PANELS CONTAINER ##
+######################
+
+# Name for the temporary container for creating the default panels
+panels_container: "tmp_container_panels"
+panels_image: "panels_image"
+# The username should be only with alphabetic characters
+panels_username: "defaultpanels"
+panels_password: "ChangemePlse"

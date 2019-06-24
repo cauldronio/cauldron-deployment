@@ -1,0 +1,8 @@
+---
+- name: Ensures {{configuration_dir}}/archimedes_panels dir exists
+  file: path={{configuration_dir}}/archimedes_panels state=directory
+
+- name: Copy settings for default panels
+  template:
+    src: panels-config.py.j2
+    dest: "{{ configuration_dir }}/archimedes_panels/settings.py"

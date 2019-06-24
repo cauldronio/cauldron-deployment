@@ -29,3 +29,8 @@
   file:
     state: absent
     path: "{{ configuration_dir }}/mordred"
+
+- name: Remove Panels files
+  file:
+    state: absent
+    path: "{{ configuration_dir }}/archimedes_panels"

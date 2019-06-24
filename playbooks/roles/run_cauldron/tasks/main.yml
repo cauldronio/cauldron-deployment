@@ -14,3 +14,6 @@
 
 - name: Run Opendistro Kibana
   import_tasks: run_kibana.yml
+
+- name: Create an index with default panels
+  import_tasks: run_panels.yml
