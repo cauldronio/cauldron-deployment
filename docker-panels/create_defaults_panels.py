@@ -44,6 +44,7 @@ logging.warning("{} - {}".format(r.status_code, r.text))
 
 
 # --- Create default indices to avoid warning when a visualization does not exist ---#
+logging.warning('Add some default indices')
 context = create_ssl_context()
 context.check_hostname = False
 context.verify_mode = ssl.CERT_NONE
@@ -67,3 +68,4 @@ put_alias_no_except(es, index='git_aoc_enriched_*', name='git_aoc_enriched')
 put_alias_no_except(es, index='git_enrich_*', name='git_enrich')
 put_alias_no_except(es, index='github_enrich_*', name='github_enrich')
 put_alias_no_except(es, index='gitlab_enriched_*', name='gitlab_enriched')
+logging.warning('Default indices added')

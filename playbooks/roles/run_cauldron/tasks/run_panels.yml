@@ -1,10 +1,22 @@
 ---
 
-- name: Import default panels
+- name: Wait for Kibana Running
+  uri:
+    url: "https://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{kibana_port}}"
+    method: GET
+    validate_certs: no
+  register: result
+  until: result.status == 200
+  retries: 10
+  delay: 5
+
+
+- name: Import default panels (may take some time)
   docker_container:
     name: "{{panels_container}}"
     image: "{{panels_image}}"
     state: started
+    detach: no
     networks:
       - name: "{{ network_name }}"
     volumes:
