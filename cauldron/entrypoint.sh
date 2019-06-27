@@ -15,5 +15,5 @@ if [[ $CERTBOT_ENABLED -eq 1 ]]; then
 fi
 service nginx restart
 
-
+# Sleep forever
 tail -f /dev/null

@@ -7,7 +7,7 @@ RUN apt-get update && \
         mariadb-client \
         unzip curl wget sudo ssh \
         net-tools
-# TODO: Modify the creation of the user
+
 # Install MariaDB
 RUN apt-get -y install --no-install-recommends mariadb-server
 RUN echo "mysqld_safe &" > /tmp/config && \
