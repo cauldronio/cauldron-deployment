@@ -18,8 +18,15 @@ configuration_dir: "/tmp"
 # Number of mordred worker
 num_workers: 3
 
-# Network and volume names for connecting
-# the containers
+# Port where the APP will be available. 443 for production
+app_port: 8000
+enable_port_80: false
+
+######################
+## DOCKER VARIABLES ##
+######################
+
+# Network and volume names for connecting the containers
 network_name: "network_cauldron"
 volume_name: "cauldron_volume"
 
@@ -31,6 +38,7 @@ volume_name: "cauldron_volume"
 # Database container name
 db_container_name: "db_cauldron_service"
 db_image: "database_cauldron"
+db_image_location: "https://gitlab.com/cauldron2/deployment.git#:database"
 db_port: "3306"
 db_root_password: "ChangeRootPassword"
 db_user: "grimoirelab"
@@ -75,12 +83,20 @@ es_jwt_parameter: "jwtToken"
 kibana_container_name: "kibana_service"
 kibana_image: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
 
-kibana_port: '5601'
-kibana_protocol: 'https'
-kibana_out_host: 'localhost'
+kibana_in_port: '5601'
+kibana_in_protocol: 'http'
+kibana_path: '/kibana'
 
 # Default index for Kibana
 kibana_default_index: 'git_enrich'
+
+
+#####################
+## NGINX CONTAINER ##
+#####################
+
+nginx_container_name: 'nginx_service'
+nginx_image: 'nginx'
 
 
 ######################
@@ -88,10 +104,11 @@ kibana_default_index: 'git_enrich'
 ######################
 
 # Cauldron web server running container
-django_name: "cauldron_service"
+django_container_name: "cauldron_service"
 
 # Cauldron web server image used
 django_image: "cauldron"
+django_image_location: "https://gitlab.com/cauldron2/deployment.git#:cauldron"
 
 # Cauldron web server external port
 port_django: '8000'
@@ -109,6 +126,8 @@ certbot_enabled: "0"
 certbot_domain: ""
 certbot_mail: ""
 
+production_mode: "False"
+
 
 #######################
 ## MORDRED CONTAINER ##
@@ -118,6 +137,7 @@ mordred_name: "mordred_service"
 
 # Mordred image for Docker used
 mordred_image: "mordred"
+mordred_image_location: "https://gitlab.com/cauldron2/deployment.git#:mordred"
 
 
 #########################
@@ -135,6 +155,7 @@ passwords_container: "tmp_container_passwords"
 # Name for the temporary container for creating the default panels
 panels_container: "tmp_container_panels"
 panels_image: "panels_image"
+panels_image_location: "https://gitlab.com/cauldron2/deployment.git#:docker-panels"
 # The username should be only with alphabetic characters
 panels_username: "defaultpanels"
 panels_password: "ChangemePlse"
