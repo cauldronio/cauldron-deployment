@@ -2,7 +2,7 @@
 
 - name: Wait for Kibana Running
   uri:
-    url: "https://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{kibana_port}}"
+    url: "https://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{app_port}}/kibana"
     method: GET
     validate_certs: no
   register: result

@@ -1,0 +1,15 @@
+---
+- name: Run nginx container
+  vars:
+    tmp_nginx_ports:
+      - "{{ app_port }}:{{ app_port }}"
+  docker_container:
+    name: "{{ nginx_container_name }}"
+    image: "{{ nginx_image }}"
+    state: started
+    networks:
+      - name: "{{ network_name }}"
+    ports: "{{tmp_nginx_ports }}"
+    volumes:
+      - "{{configuration_dir}}/nginx/nginx_cauldron.conf:/etc/nginx/conf.d/nginx_cauldron.conf"
+      - "{{configuration_dir}}/nginx/certificates:/certificates"

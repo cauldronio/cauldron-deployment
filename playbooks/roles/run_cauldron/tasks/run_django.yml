@@ -16,21 +16,14 @@
 
 - name: Run cauldron server
   docker_container:
-    name: "{{ django_name }}"
+    name: "{{ django_container_name }}"
     image: "{{ django_image }}"
     state: started
     restart: "{{ 'yes' if django_result.status != 200 else 'no'}}"
     networks:
       - name: "{{ network_name }}"
-    ports:
-      - "{{ port_django }}:{{ port_django }}"
     volumes:
       - "{{configuration_dir}}/django/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
       - "{{volume_name}}:/dashboard_logs"
       - "{{configuration_dir}}/django/jwtR256.key:/code/cauldron/Cauldron2/CauldronApp/jwtR256.key"
-      - "{{configuration_dir}}/django/nginx_cauldron.conf:/etc/nginx/sites-enabled/nginx_cauldron.conf"
-    env:
-      CERTBOT_ENABLED: "{{ certbot_enabled }}"
-      CERTBOT_DOMAIN: "{{ certbot_domain }}"
-      CERTBOT_MAIL: "{{ certbot_mail }}"
 

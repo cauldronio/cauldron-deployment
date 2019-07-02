@@ -1,5 +1,4 @@
 ---
-
 - name: Run database
   import_tasks: run_database.yml
 
@@ -14,6 +13,9 @@
 
 - name: Run Opendistro Kibana
   import_tasks: run_kibana.yml
+
+- name: Run nginx container
+  import_tasks: run_nginx.yml
 
 - name: Create an index with default panels
   import_tasks: run_panels.yml
