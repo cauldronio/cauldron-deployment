@@ -24,7 +24,7 @@
 
     - name: Stop and remove django container
       docker_container:
-        name: "{{django_name}}"
+        name: "{{django_container_name}}"
         state: absent
         stop_timeout: 10
 

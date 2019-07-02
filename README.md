@@ -53,7 +53,19 @@ The following ports will be used in the target machine. You can change this late
         - Some configuration files for Docker containers will be mounted in the local filesystem. The default directory is `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
         - If you are using any of the mentioned ports before (8000 or 5601), you can change them here. 
         - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it.
-
+   
+    - It's important to change the certificates for your deployment machine. All the certificates used are located inside `playbooks/roles/configure_cauldron/files/keys`. 
+      
+      You can generate your self-signed certificates if you are going to run it locally. For that, browse to the previous directory and run `generate.sh`
+    
+        ```
+        cd playbooks/roles/configure_cauldron/files/keys
+        ./generate.sh  
+        ```
+        You can ovewrite those files with  your custom certificates.You can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
+        
+        One of the most important is certificates is `ssl_server`, it is used for the communication outside the containers between the client and the server.
+     
 3. Finally, it's necessary to have a inventory file for the target machine. If you are running it locally, you can use the `local` file inside `playbooks` directory. 
 
     If you are going to create a new inventory, it's important that the name for the group (the header between `[]`) is the same as  the file inside `group_vars` that you previously renamed/copied.
