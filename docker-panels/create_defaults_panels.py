@@ -21,11 +21,12 @@ logging.warning("{} - {}".format(r.status_code, r.text))
 
 # --- Import index patterns --- #
 logging.warning('Import Index patterns')
-kib_url_auth = "{}://{}:{}@{}:{}".format(settings.KIB_PROTO,
-                                         settings.PANELS_USERNAME,
-                                         settings.PANELS_USER_PSW,
-                                         settings.KIB_IN_HOST,
-                                         settings.KIB_PORT)
+kib_url_auth = "{}://{}:{}@{}:{}{}".format(settings.KIB_IN_PROTO,
+                                           settings.PANELS_USERNAME,
+                                           settings.PANELS_USER_PSW,
+                                           settings.KIB_IN_HOST,
+                                           settings.KIB_IN_PORT,
+                                           settings.KIB_PATH)
 
 archimedes = Archimedes(kib_url_auth, '/panels')
 archimedes.import_from_disk(obj_type='dashboard', obj_id='Overview',
