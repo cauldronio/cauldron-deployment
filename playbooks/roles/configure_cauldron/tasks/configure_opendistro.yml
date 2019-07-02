@@ -1,8 +1,8 @@
 ---
-- name: Ensures {{configuration_dir}}/es dir exists
+- name: Create {{configuration_dir}}/es dir if not exists
   file: path={{configuration_dir}}/es state=directory
 
-- name: Ensures {{configuration_dir}}/kibana dir exists
+- name: Create {{configuration_dir}}/kibana dir if not exists
   file: path={{configuration_dir}}/kibana state=directory
 
 - name: Copy keys for Elasticseach and kibana

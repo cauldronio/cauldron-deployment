@@ -1,3 +1,0 @@
----
-- name: Build Panels Docker image
-  command: docker build -t {{panels_image}} https://gitlab.com/cauldron2/deployment.git#:docker-panels

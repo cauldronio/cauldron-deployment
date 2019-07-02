@@ -3,3 +3,7 @@
 - name: Create a volume
   docker_volume:
     name: "{{ volume_name }}"
+#
+#- name: Create keys volume
+#  docker_volume:
+#    name: "keys_volume"

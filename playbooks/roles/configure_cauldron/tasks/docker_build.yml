@@ -1,0 +1,6 @@
+---
+
+- name: Build Docker image {{task_image_name}} from {{task_image_location}}
+  command: docker build -t {{task_image_name}} {{task_image_location}}
+  tags:
+    - "docker_image"

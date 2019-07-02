@@ -17,6 +17,8 @@
 
 server.name: kibana
 server.host: "0"
+server.basePath: "{{kibana_path}}"
+server.rewriteBasePath: true
 
 kibana.defaultAppId: "dashboard/Overview"
 
@@ -27,9 +29,9 @@ elasticsearch.username: kibanaserver
 elasticsearch.password: {{es_kibanaserver_password}}
 elasticsearch.requestHeadersWhitelist: ["securitytenant","Authorization"]
 
-server.ssl.enabled: true
-server.ssl.certificate:  /usr/share/kibana/config/kibana.pem
-server.ssl.key:  /usr/share/kibana/config/kibana-key.pem
+server.ssl.enabled: false
+#server.ssl.certificate:  /usr/share/kibana/config/kibana.pem
+#server.ssl.key:  /usr/share/kibana/config/kibana-key.pem
 #server.ssl.keyPassphrase: ""
 
 opendistro_security.multitenancy.enabled: true

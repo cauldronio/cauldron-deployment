@@ -1,5 +1,5 @@
 ---
-- name: Ensures {{configuration_dir}}/database dir exists
+- name: Create {{configuration_dir}}/database dir if not exists
   file: path={{configuration_dir}}/database state=directory
 
 - name: Configure database settings

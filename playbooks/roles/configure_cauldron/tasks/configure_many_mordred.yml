@@ -1,6 +1,6 @@
 ---
 
-- name: Ensures {{configuration_dir}}/mordred dir exists
+- name: Create {{configuration_dir}}/mordred dir if not exists
   file: path={{configuration_dir}}/mordred state=directory
 
 

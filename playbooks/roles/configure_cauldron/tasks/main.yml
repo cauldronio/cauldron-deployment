@@ -5,38 +5,64 @@
 - name: Create a volume for cauldron
   import_tasks: create_volume.yml
 
+- name: Configure nginx
+  import_tasks: configure_nginx.yml
+
 - name: Configure django
   import_tasks: configure_django.yml
 
 - name: Build django image
-  import_tasks: build_django.yml
+  vars:
+    - task_image_location: "{{django_image_location}}"
+    - task_image_name: "{{django_image}}"
+  import_tasks: docker_build.yml
+
+- name: Build mordred image
+  vars:
+    - task_image_location: "{{mordred_image_location}}"
+    - task_image_name: "{{mordred_image}}"
+  import_tasks: docker_build.yml
+
+- name: Build database image
+  vars:
+    - task_image_location: "{{db_image_location}}"
+    - task_image_name: "{{db_image}}"
+  import_tasks: docker_build.yml
+
+- name: Build panels container
+  vars:
+    - task_image_location: "{{panels_image_location}}"
+    - task_image_name: "{{panels_image}}"
+  import_tasks: docker_build.yml
 
 - name: Pull ES opendistro image
-  import_tasks: pull_es_opendistro.yml
+  vars:
+    - task_image_name: "{{es_image}}"
+  import_tasks: docker_pull.yml
 
 - name: Pull Kibana opendistro image
-  import_tasks: pull_kibana_opendistro.yml
+  vars:
+    - task_image_name: "{{kibana_image}}"
+  import_tasks: docker_pull.yml
+
+- name: Pull mysql for checks
+  vars:
+    - task_image_name: "mysql"
+  import_tasks: docker_pull.yml
+
+- name: Pull nginx image
+  vars:
+    - task_image_name: "{{ nginx_image }}"
+  import_tasks: docker_pull.yml
 
 - name: Configure mordred
   import_tasks: configure_many_mordred.yml
-
-- name: Build mordred image
-  import_tasks: build_mordred.yml
-
-- name: Build database image
-  import_tasks: build_database.yml
 
 - name: Configure database
   import_tasks: configure_database.yml
 
 - name: Configure Opendistro
   import_tasks: configure_opendistro.yml
-
-- name: Pull mysql for checks
-  import_tasks: pull_mysql.yml
-
-- name: Build panels container
-  import_tasks: build_panels_container.yml
 
 - name: Crete the configuration for the panels
   import_tasks: configure_panels.yml

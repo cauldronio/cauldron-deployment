@@ -4,18 +4,13 @@
   command: openssl rand -base64 32
   register: django_key
 
-- name: Ensures {{configuration_dir}}/django dir exists
+- name: Create {{configuration_dir}}/django dir if not exists
   file: path={{configuration_dir}}/django state=directory
 
 - name: Configure django settings
   template:
     src: django_settings.py.j2
     dest: "{{ configuration_dir }}/django/django_settings.py"
-
-- name: Configure nginx django settings
-  template:
-    src: nginx_cauldron.conf.j2
-    dest: "{{ configuration_dir }}/django/nginx_cauldron.conf"
 
 - name: Copy the private key for JWT
   copy:

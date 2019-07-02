@@ -1,0 +1,23 @@
+---
+- name: Create {{configuration_dir}}/nginx dir if not exists
+  file: path={{configuration_dir}}/nginx state=directory
+
+- name: Create {{configuration_dir}}/nginx/certificates dir if not exists
+  file: path={{configuration_dir}}/nginx/certificates state=directory
+
+- name: Configure nginx settings
+  template:
+    src: nginx_cauldron.conf.j2
+    dest: "{{ configuration_dir }}/nginx/nginx_cauldron.conf"
+
+- name: Copy nginx ssl cert
+  copy:
+    src: "keys/ssl_server.crt"
+    dest: "{{ configuration_dir }}/nginx/certificates"
+    mode: 0600
+
+- name: Copy nginx ssl key
+  copy:
+    src: "keys/ssl_server.key"
+    dest: "{{ configuration_dir }}/nginx/certificates"
+    mode: 0600

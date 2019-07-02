@@ -4,10 +4,11 @@ PANELS_USER_PSW = "{{panels_password}}"
 ES_IN_URL = "{{es_protocol}}://{{es_container_name}}:{{es_port}}"
 ES_ADMIN_PSW = "{{es_admin_password}}"
 
-KIB_PROTO = '{{kibana_protocol}}'
+KIB_IN_PROTO = '{{kibana_in_protocol}}'
 KIB_IN_HOST = '{{kibana_container_name}}'
-KIB_PORT = '{{kibana_port}}'
-KIB_IN_URL = "{}://{}:{}".format(KIB_PROTO, KIB_IN_HOST, KIB_PORT)
+KIB_IN_PORT = '{{kibana_in_port}}'
+KIB_PATH = '{{kibana_path}}'
+KIB_IN_URL = "{}://{}:{}{}".format(KIB_IN_PROTO, KIB_IN_HOST, KIB_IN_PORT, KIB_PATH)
 
 ES_PROTO = '{{es_protocol}}'
 ES_IN_HOST = '{{es_container_name}}'
