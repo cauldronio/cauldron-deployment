@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
+##################################################################################
+# IMPORTANT NOTE: If you change the CN in configuration of this file,            #
+# maybe you have to change something in templates/elasticsearch-secured.yml.j2   #
+##################################################################################
+
+
 # Generate Root certificate
 openssl genrsa -out root-ca-key.pem 2048
 openssl req -new -x509 -sha256 -days 3650 -key root-ca-key.pem -out root-ca.pem -subj "/C=EU/ST=Any/L=All/O=Dis/CN=elastic_service"
@@ -15,20 +22,14 @@ openssl pkcs8 -inform PEM -outform PEM -in node-1-key-temp.pem -topk8 -nocrypt -
 openssl req -new -key node-1-key.pem -out node-1.csr -subj "/C=EU/ST=Any/L=All/O=Dis/CN=elastic_service"
 openssl x509 -req -days 3650 -in node-1.csr -CA root-ca.pem -CAkey root-ca-key.pem -CAcreateserial -sha256 -out node-1.pem
 
-# Generate Kibana certificate
-openssl genrsa -out kibana-key-temp.pem 2048
-openssl pkcs8 -inform PEM -outform PEM -in kibana-key-temp.pem -topk8 -nocrypt -v1 PBE-SHA1-3DES -out kibana-key.pem
-openssl req -new -key kibana-key.pem -out kibana.csr -subj "/C=EU/ST=Any/L=All/O=Dis/CN=kibana"
-openssl x509 -req -days 3650 -in kibana.csr -CA root-ca.pem -CAkey root-ca-key.pem -CAcreateserial -sha256 -out kibana.pem
-
+# Generate Nginx certificate
+openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout ssl_server.key -out ssl_server.crt -subj "/C=EU/ST=Any/L=All/O=Dis/CN=selfsigned"
 
 # Clean up
 rm admin-key-temp.pem
 rm admin.csr
 rm node-1-key-temp.pem
 rm node-1.csr
-rm kibana.csr
-rm kibana-key-temp.pem
 
 # Show expiration dates
 echo ""
@@ -36,7 +37,7 @@ echo "Expiration dates:"
 openssl x509 -enddate -noout -in root-ca.pem
 openssl x509 -enddate -noout -in admin.pem
 openssl x509 -enddate -noout -in node-1.pem
-openssl x509 -enddate -noout -in kibana.pem
+openssl x509 -enddate -noout -in ssl_server.crt
 echo ""
 echo "Nodes dn:"
 echo "Root:"
@@ -45,7 +46,7 @@ echo "Admin:"
 openssl x509 -subject -nameopt RFC2253 -noout -in admin.pem
 echo "Node-1:"
 openssl x509 -subject -nameopt RFC2253 -noout -in node-1.pem
-echo "kibana:"
-openssl x509 -subject -nameopt RFC2253 -noout -in kibana.pem
+echo "Nginx ssl:"
+openssl x509 -subject -nameopt RFC2253 -noout -in ssl_server.crt
+
 echo
-echo "If you changed any configuration of this file, maybe you have to change something in templates/elasticsearch-secured.yml.j2"
