@@ -4,4 +4,4 @@
   docker_image:
     name: "{{task_image_name}}"
   tags:
-    - "docker_image"
+    - "create_image"

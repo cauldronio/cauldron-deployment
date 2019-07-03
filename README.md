@@ -9,8 +9,7 @@ It's necessary that you have **Ansible** installed in your computer in order to 
 
 The following ports will be used in the target machine. You can change this later in the configuration file.
    
-  - **8000.** Cauldron Django server
-  - **5601.** Kibana
+  - **9000.** Cauldron server
   
 
 ### Download and configure
@@ -85,18 +84,21 @@ There you will find some useful files for running Cauldron:
     If you are running it for localhost, you need to be root (append `-K` to the previous command and it will ask for your password). 
 
 - **`configure_cauldron.yml`**. You will need to run this playbook the first time. This playbook will:
-    - Create a internal Docker Network
+    - Create a Docker Network
     - Create a Docker Volume
     - Create the Django configuration and copy to remote (localhost in this guide)
-    - Build Django image 
-    - Build Mordred image
-    - Build Database image
     - Create the Database configuration
     - Create OpenDistro configuration
-    - Pull a mysql image
-    - Pull Opendistro images
+    
+    - Build Django image (disable with `--skip-tags create_image`)
+    - Build Mordred image (disable with `--skip-tags create_image`)
+    - Build Database image (disable with `--skip-tags create_image`)
+    - Build Panels image (disable with `--skip-tags create_image`)
+    - Pull a mysql image (disable with `--skip-tags create_image`)
+    - Pull a nginx image (disable with `--skip-tags create_image`)
+    - Pull Opendistro images, ES and Kibana (disable with `--skip-tags create_image`)
     - Copy panels for Kibana
-
+ 
     The command for running this playbook is:
     ```bash
     $ ansible-playbook -i <inventory_file> configure_cauldron.yml
@@ -111,13 +113,15 @@ There you will find some useful files for running Cauldron:
     cauldron                latest              36302776d1b7        10 seconds ago      1.08GB
     database_cauldron       latest              293e6e74dd4b        10 seconds ago      553MB
     mysql                   latest              990386cbd5c0        10 seconds ago      443MB
+    nginx                   latest              f68d6e55e065        10 seconds ago      109MB
+    panels_image            latest              f2084e6ad69b        10 seconds ago      936MB
     amazon/opendistro-f...  0.9.0               a48c96e7fdb3        10 seconds ago      774MB
-    amazon/opendistro-f...  0.9.0               33244b063d2a        10 seconds ago      443MB
+    amazon/opendistro-f...  0.9.0               33244b063d2a        10 seconds ago      527MB
     grimoirelab/installed   0.2.23              f5ccf846bd4f        10 seconds ago      889MB
     ...
     ```
-    And the configuration created by default in `/tmp/database`, `/tmp/django`, `/tmp/kibana`, `/tmp/mordred`, `/tmp/panels` and `tmp/panels`
-- **`run_cauldron.yml`**. With this playbook you will be able to run the Docker images: `cauldron`, `mordred`, `database_cauldron` and `opendistro` images
+    And the configuration created by default in `/tmp/database`, `/tmp/django`, `/tmp/kibana`, `/tmp/mordred`, `/tmp/archimedes_panels`, `/tmp/es` and `/tmp/nginx`.
+- **`run_cauldron.yml`**. With this playbook you will be able to run the Docker images: `cauldron`, `mordred`, `database_cauldron`, `nginx` and `opendistro` images
     ```bash
     $ ansible-playbook -i <inventory_file> run_cauldron.yml
     ```
@@ -125,14 +129,15 @@ There you will find some useful files for running Cauldron:
     ```bash
     $ docker ps
     CONTAINER ID        IMAGE                                              COMMAND                  CREATED             STATUS              PORTS                                                      NAMES
-    81fc9f917120        amazon/opendistro-for-elasticsearch:0.9.0          "/usr/local/bin/dock…"   5 hours ago         Up 5 hours          0.0.0.0:9200->9200/tcp, 0.0.0.0:9600->9600/tcp, 9300/tcp   elastic_service
-    0faeb212a4b3        amazon/opendistro-for-elasticsearch-kibana:0.9.0   "/usr/local/bin/kiba…"   5 hours ago         Up 5 hours          0.0.0.0:5601->5601/tcp                                     kibana_service
+    7f72551f5018        nginx                                              "nginx -g 'daemon of…"   5 hours ago         Up 5 hours          80/tcp, 0.0.0.0:9000->9000/tcp                             nginx_service
+    81fc9f917120        amazon/opendistro-for-elasticsearch:0.9.0          "/usr/local/bin/dock…"   5 hours ago         Up 5 hours          9200/tcp, 9600/tcp, 9300/tcp                               elastic_service
+    0faeb212a4b3        amazon/opendistro-for-elasticsearch-kibana:0.9.0   "/usr/local/bin/kiba…"   5 hours ago         Up 5 hours          5601/tcp                                                   kibana_service
     8ae30f440689        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_3
     bd3996f77f1c        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_2
     cb4e6dcd27d0        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_1
     e997f0a02e67        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_0
-    55cca3a6d1be        cauldron                                           "/entrypoint.sh"         5 hours ago         Up 2 hours          0.0.0.0:80->8000/tcp                                       cauldron_service
-    71eb8dc42702        database_cauldron                                  "/entrypoint.sh"         5 hours ago         Up 5 hours          0.0.0.0:3306->3306/tcp                                     db_cauldron_service
+    55cca3a6d1be        cauldron                                           "/entrypoint.sh"         5 hours ago         Up 2 hours          8000/tcp                                                   cauldron_service
+    71eb8dc42702        database_cauldron                                  "/entrypoint.sh"         5 hours ago         Up 5 hours          3306/tcp                                                   db_cauldron_service
     ...
   
     $ docker volume ls
@@ -147,9 +152,7 @@ There you will find some useful files for running Cauldron:
     ```
     If everything works correctly, you can:
     
-    - **Analyze** some repositories at https://localhost:8000
-    
-    You can find the default passwords inside `playbooks/defaults.yml`
+    - **Analyze** some repositories at https://localhost:9000
 
 - **`remove_cauldron.yml`**. With this playbook you can remove all the containers, images, volumes, networks and configuration generated.
 
@@ -165,6 +168,7 @@ In case you have any problem with the deployment or you think this guide is inco
 ## Troubleshooting
 
 #### My playbook exits after running ElasticSearch
+
 If it's the first time running the Cauldron in your computer and ElasticSearch exits before finishing the playbook (`docker ps -a --filter "name=elastic_service"`), it's possible that the `vm.max_map_count` kernel setting needs to be set to at least **262144**:
 
 ```bash
