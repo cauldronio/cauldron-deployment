@@ -7,6 +7,8 @@ This repository contains relevant information for running Cauldron in your own c
 
 It's necessary that you have **Ansible** installed in your computer in order to run the playbook. You can follow [this link](https://docs.ansible.com/ansible/latest/installation_guide/).
 
+**Docker** is also needed for running the containers. You can install it following [this link](https://docs.docker.com/install/) 
+
 The following ports will be used in the target machine. You can change this later in the configuration file.
    
   - **9000.** Cauldron server
@@ -14,7 +16,7 @@ The following ports will be used in the target machine. You can change this late
 
 ### Download and configure
 
-1. Download the latest version of this repository with `git cloneg` and navigate to that directory:
+1. Download the latest version of this repository with `git clone` and navigate to that directory:
      ```bash
     $ git clone https://gitlab.com/cauldron2/deployment.git
     $ cd deployment 
@@ -24,24 +26,24 @@ The following ports will be used in the target machine. You can change this late
 
     - Create a **GitHub Oauth App** and get the keys. For creating a new Application [follow this link](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Some information for the application:
         - **Application name**: A name for the application, for example `Bitergia Cauldron`
-        - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `https://localhost:8000/`. (You can change it later)
+        - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `https://localhost:9000/`. (You can change it later)
         - **Application description**: Not required
-        - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `https://localhost:8000/github-login`. (You can change it later)
+        - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `https://localhost:9000/github-login`. (You can change it later)
         
         After the registration, you can obtain the `Client ID` and `Client Secret`.
         
     - Create a **Gitlab Oauth App** and get the keys. For creating a new Application [follow this link](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile). Some information for the application:
         - **Name**: A name for the application, for example `Bitergia Cauldron`
-        - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `https://localhost:8000/gitlab-login`. (You can change it later)
+        - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `https://localhost:9000/gitlab-login`. (You can change it later)
         - **Scopes**: Select only `api`
         
         After the registration, you can obtain the `Application ID` and `Secret`.
 
     - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor: 
-        ```
-        cd playbooks
-        cp group_vars/template group_vars/local
-        <prefered_editor> group_vars/local
+        ``` bash
+        $ cd playbooks
+        $ cp group_vars/template group_vars/local
+        $ <prefered_editor> group_vars/local
         ```
         - You will need to fill:
           - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
@@ -50,24 +52,24 @@ The following ports will be used in the target machine. You can change this late
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.
         - Some configuration files for Docker containers will be mounted in the local filesystem. The default directory is `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
-        - If you are using any of the mentioned ports before (8000 or 5601), you can change them here. 
+        - If you are using any of the mentioned ports before (9000), you can change them here. For production port 443 is desirable and set `enable_port_80` to true (for redirects).  
         - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it.
-   
-    - It's important to change the certificates for your deployment machine. All the certificates used are located inside `playbooks/roles/configure_cauldron/files/keys`. 
       
-      You can generate your self-signed certificates if you are going to run it locally. For that, browse to the previous directory and run `generate.sh`
+    - Another important configuration is to change the certificates for your deployment machine. All the certificates used are located inside `playbooks/roles/configure_cauldron/files/keys`. 
+      
+      By default, there aren't certificates, you have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
     
         ```
-        cd playbooks/roles/configure_cauldron/files/keys
-        ./generate.sh  
+        $ cd playbooks/roles/configure_cauldron/files/keys
+        $ ./generate.sh  
         ```
-        You can ovewrite those files with  your custom certificates.You can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
+        One of the most important is certificates is `ssl_server`, it is used for the communication outside the containers. Use a signed certificate for a public machine. (We are working with `certbot`, a playbook will be soon available)
         
-        One of the most important is certificates is `ssl_server`, it is used for the communication outside the containers between the client and the server.
+        For more information about each certificate, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
      
 3. Finally, it's necessary to have a inventory file for the target machine. If you are running it locally, you can use the `local` file inside `playbooks` directory. 
 
-    If you are going to create a new inventory, it's important that the name for the group (the header between `[]`) is the same as  the file inside `group_vars` that you previously renamed/copied.
+    IMPORTANT: If you are going to create a new inventory, the name for the group (the header `[]`) must be the same as the name of the file inside `group_vars` that you previously renamed/copied.
 
 ### Running
 Navigate to `playbooks` directory from the root of the repository.
@@ -76,12 +78,6 @@ Navigate to `playbooks` directory from the root of the repository.
 $ cd playbooks
 ```
 There you will find some useful files for running Cauldron:
-
-- **`install_docker.yml`**. **Only** run this playbook if you don't have Docker installed in the target machine for running the Cauldron. It will install Docker and its dependencies.
-    ```
-    $ ansible-playbook -i <inventory_file> install_docker.yml 
-    ```
-    If you are running it for localhost, you need to be root (append `-K` to the previous command and it will ask for your password). 
 
 - **`configure_cauldron.yml`**. You will need to run this playbook the first time. This playbook will:
     - Create a Docker Network

@@ -19,7 +19,7 @@ configuration_dir: "/tmp"
 num_workers: 3
 
 # Port where the APP will be available. 443 for production
-app_port: 8000
+app_port: 9000
 enable_port_80: false
 
 ######################
