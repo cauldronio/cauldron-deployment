@@ -11,6 +11,9 @@
 - name: Configure django
   import_tasks: configure_django.yml
 
+- name: Configure jwt keys
+  import_tasks: configure_jwt_keys.yml
+
 - name: Build django image
   vars:
     - task_image_location: "{{django_image_location}}"

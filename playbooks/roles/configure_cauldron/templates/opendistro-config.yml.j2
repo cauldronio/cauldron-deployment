@@ -122,11 +122,11 @@ opendistro_security:
           type: jwt
           challenge: false
           config:
-            signing_key: "{{es_jwt_signing_key}}"
+            signing_key: "{{es_jwt_signing_key.stdout}}"
             jwt_header: "Authorization"
-            jwt_url_parameter: "{{es_jwt_parameter}}"
-            roles_key: "{{es_jwt_roles_key}}"
-            subject_key: "{{es_jwt_subject_key}}"
+            jwt_url_parameter: jwtToken
+            roles_key: roles
+            subject_key: user
         authentication_backend:
           type: noop
       clientcert_auth_domain:

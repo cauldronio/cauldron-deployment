@@ -38,16 +38,6 @@ The following ports will be used in the target machine. You can change this late
         - **Scopes**: Select only `api`
         
         After the registration, you can obtain the `Application ID` and `Secret`.
-
-    - You need to create a new jwtKey for the authenticated petitions for Kibana from Django. For that you need to run the `generate_jwt_keys.sh`:
-         ```bash
-        $ ./generate_jwt_keys.sh
-        ```
-        It will create 2 new files: `jwtR256.key` and `jwtR256.key.pub`. The first one you have to copy into `playbooks/roles/configure_cauldron/files/django`:
-        ```bash
-        $ cp jwtR256.key playbooks/roles/configure_cauldron/files/django/
-        ```
-        The second one you have to keep it for the next step.
         
     - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor: 
         ``` bash
@@ -58,7 +48,6 @@ The following ports will be used in the target machine. You can change this late
         - You will need to fill:
           - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
           - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
-          - The key previously created inside `jwtR256.key.pub` you have to copy it in the variable `es_jwt_signing_key`.
         
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.

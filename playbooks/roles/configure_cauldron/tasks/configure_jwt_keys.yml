@@ -1,0 +1,16 @@
+---
+- name: Create the private key for JWT
+  command: "ssh-keygen -q -t rsa -b 4096 -f {{ configuration_dir }}/django/jwtR256.key -N '' -C '' -m pem"
+  args:
+    creates: "{{ configuration_dir }}/django/jwtR256.key"
+
+- name: Create the public key for JWT
+  command: "openssl rsa -in {{ configuration_dir }}/django/jwtR256.key -pubout -out {{ configuration_dir }}/django/jwtR256.key.pub"
+  args:
+    creates: "{{ configuration_dir }}/django/jwtR256.key.pub"
+
+- name: Prepare the JWT public key for ES
+  shell: "sed '1d' {{ configuration_dir }}/django/jwtR256.key.pub | sed '$d' | tr -d '\n'"
+  register: "es_jwt_signing_key"
+  args:
+    warn: no

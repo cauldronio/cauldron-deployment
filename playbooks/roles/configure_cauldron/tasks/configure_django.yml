@@ -11,9 +11,3 @@
   template:
     src: django_settings.py.j2
     dest: "{{ configuration_dir }}/django/django_settings.py"
-
-- name: Copy the private key for JWT
-  copy:
-    src: "django/jwtR256.key"
-    dest: "{{ configuration_dir }}/django/jwtR256.key"
-    mode: "0600"
