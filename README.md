@@ -39,6 +39,16 @@ The following ports will be used in the target machine. You can change this late
         
         After the registration, you can obtain the `Application ID` and `Secret`.
 
+    - You need to create a new jwtKey for the authenticated petitions for Kibana from Django. For that you need to run the `generate_jwt_keys.sh`:
+         ```bash
+        $ ./generate_jwt_keys.sh
+        ```
+        It will create 2 new files: `jwtR256.key` and `jwtR256.key.pub`. The first one you have to copy into `playbooks/roles/configure_cauldron/files/django`:
+        ```bash
+        $ cp jwtR256.key playbooks/roles/configure_cauldron/files/django/
+        ```
+        The second one you have to keep it for the next step.
+        
     - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor: 
         ``` bash
         $ cd playbooks
@@ -48,6 +58,7 @@ The following ports will be used in the target machine. You can change this late
         - You will need to fill:
           - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
           - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
+          - The key previously created inside `jwtR256.key.pub` you have to copy it in the variable `es_jwt_signing_key`.
         
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.
@@ -59,7 +70,7 @@ The following ports will be used in the target machine. You can change this late
       
       By default, there aren't certificates, you have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
     
-        ```
+        ```bash
         $ cd playbooks/roles/configure_cauldron/files/keys
         $ ./generate.sh  
         ```
@@ -74,7 +85,7 @@ The following ports will be used in the target machine. You can change this late
 ### Running
 Navigate to `playbooks` directory from the root of the repository.
 
-```
+```bash
 $ cd playbooks
 ```
 There you will find some useful files for running Cauldron:
@@ -85,15 +96,16 @@ There you will find some useful files for running Cauldron:
     - Create the Django configuration and copy to remote (localhost in this guide)
     - Create the Database configuration
     - Create OpenDistro configuration
-    
-    - Build Django image (disable with `--skip-tags create_image`)
-    - Build Mordred image (disable with `--skip-tags create_image`)
-    - Build Database image (disable with `--skip-tags create_image`)
-    - Build Panels image (disable with `--skip-tags create_image`)
-    - Pull a mysql image (disable with `--skip-tags create_image`)
-    - Pull a nginx image (disable with `--skip-tags create_image`)
-    - Pull Opendistro images, ES and Kibana (disable with `--skip-tags create_image`)
     - Copy panels for Kibana
+    - Build Django image
+    - Build Mordred image
+    - Build Database image
+    - Build Panels image
+    - Pull a mysql image
+    - Pull a nginx image
+    - Pull Opendistro images, ES and Kibana
+    
+    You can skip the creation of the images if you have them locally and just want to update the configuration files. Use for that `--skip-tags create_image`. 
  
     The command for running this playbook is:
     ```bash
@@ -105,15 +117,15 @@ There you will find some useful files for running Cauldron:
     ```bash
     $ docker images
     REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
-    mordred                 latest              9b33c908fcb6        10 seconds ago      922MB
-    cauldron                latest              36302776d1b7        10 seconds ago      1.08GB
-    database_cauldron       latest              293e6e74dd4b        10 seconds ago      553MB
-    mysql                   latest              990386cbd5c0        10 seconds ago      443MB
-    nginx                   latest              f68d6e55e065        10 seconds ago      109MB
-    panels_image            latest              f2084e6ad69b        10 seconds ago      936MB
-    amazon/opendistro-f...  0.9.0               a48c96e7fdb3        10 seconds ago      774MB
-    amazon/opendistro-f...  0.9.0               33244b063d2a        10 seconds ago      527MB
-    grimoirelab/installed   0.2.23              f5ccf846bd4f        10 seconds ago      889MB
+    mordred                 latest              aaabbbcccdd1        0 seconds ago      922MB
+    cauldron                latest              aaabbbcccdd2        0 seconds ago      1.08GB
+    database_cauldron       latest              aaabbbcccdd3        0 seconds ago      553MB
+    mysql                   latest              aaabbbcccdd4        0 seconds ago      443MB
+    nginx                   latest              aaabbbcccdd5        0 seconds ago      109MB
+    panels_image            latest              aaabbbcccdd6        0 seconds ago      936MB
+    amazon/opendistro-f...  0.9.0               aaabbbcccdd7        0 seconds ago      774MB
+    amazon/opendistro-f...  0.9.0               aaabbbcccdd8        0 seconds ago      527MB
+    grimoirelab/installed   0.2.23              aaabbbcccdd9        0 seconds ago      889MB
     ...
     ```
     And the configuration created by default in `/tmp/database`, `/tmp/django`, `/tmp/kibana`, `/tmp/mordred`, `/tmp/archimedes_panels`, `/tmp/es` and `/tmp/nginx`.

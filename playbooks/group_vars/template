@@ -22,6 +22,8 @@ num_workers: 3
 app_port: 9000
 enable_port_80: false
 
+es_jwt_signing_key: "ChangemePlse"
+
 ######################
 ## DOCKER VARIABLES ##
 ######################
@@ -70,7 +72,6 @@ es_snapshotrestore_password: "snapshotrestore"
 es_memory: "2g"
 
 # JSON Web Token for OpenDistro and Kibana
-es_jwt_signing_key: "ChangemePlse"
 es_jwt_roles_key: "roles"
 es_jwt_subject_key: "user"
 es_jwt_parameter: "jwtToken"
