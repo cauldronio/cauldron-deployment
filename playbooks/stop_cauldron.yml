@@ -29,10 +29,10 @@
         stop_timeout: 10
 
     - name: Stop and remove nginx container
-        docker_container:
-          name: "{{nginx_container_name}}"
-          state: absent
-          stop_timeout: 10
+      docker_container:
+        name: "{{nginx_container_name}}"
+        state: absent
+        stop_timeout: 10
 
     - name: Stop and remove database container
       docker_container:
