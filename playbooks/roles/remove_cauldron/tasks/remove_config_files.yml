@@ -34,3 +34,8 @@
   file:
     state: absent
     path: "{{ configuration_dir }}/archimedes_panels"
+
+- name: Remove Nginx files
+  file:
+    state: absent
+    path: "{{ configuration_dir }}/nginx"
