@@ -52,16 +52,27 @@ context.verify_mode = ssl.CERT_NONE
 es = Elasticsearch([settings.ES_IN_HOST], scheme=settings.ES_PROTO, port=settings.ES_PORT,
                    http_auth=("admin", settings.ES_ADMIN_PSW), ssl_context=context)
 
-es.indices.create('git_enrich_default', ignore=400)
-es.indices.create('git_aoc_enriched_default', ignore=400)
-es.indices.create('github_enrich_default', ignore=400)
-es.indices.create('gitlab_enriched_default', ignore=400)
+body = {
+    "mappings": {
+        "_doc": {
+            "properties": {
+                "grimoire_creation_date": {
+                    "type": "date"
+                }
+            }
+        }
+    }
+}
+es.indices.create('git_enrich_default', body=body)
+es.indices.create('git_aoc_enriched_default', body=body)
+es.indices.create('github_enrich_default', body=body)
+es.indices.create('gitlab_enriched_default', body=body)
 
 
 def put_alias_no_except(es_obj, index, name):
     try:
         es_obj.indices.put_alias(index=index, name=name)
-    except NotFoundError:
+    except es.NotFoundError:
         pass
 
 
