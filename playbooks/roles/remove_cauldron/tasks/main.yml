@@ -15,6 +15,9 @@
 - name: Stop and remove database
   import_tasks: remove_database.yml
 
+- name: Stop and remove nginx
+  import_tasks: remove_nginx.yml
+
 - name: Remove network
   import_tasks: remove_network.yml
 

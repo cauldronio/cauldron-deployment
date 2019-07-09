@@ -15,6 +15,7 @@
   docker_container:
     name: "{{panels_container}}"
     image: "{{panels_image}}"
+    auto_remove: yes
     state: started
     detach: no
     networks:
