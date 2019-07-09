@@ -10,12 +10,16 @@
   retries: 10
   delay: 5
 
+- name: Delete panels container if it was created
+  docker_container:
+    name: "{{panels_container}}"
+    state: absent
+    stop_timeout: 10
 
 - name: Import default panels (may take some time)
   docker_container:
     name: "{{panels_container}}"
     image: "{{panels_image}}"
-    auto_remove: yes
     state: started
     detach: no
     networks:
