@@ -1,7 +1,7 @@
 # The container produced with this file contains all GrimoireLab libraries and executables.
 # It is configured for getting repositories from a database and running mordred
 
-FROM grimoirelab/installed:0.2.23
+FROM grimoirelab/installed:0.2.26
 MAINTAINER Jose J Merchante <jjmerchante@bitergia.com>
 
 ENV MORDRED_DIR /code
