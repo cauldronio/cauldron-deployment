@@ -9,7 +9,7 @@
     state: started
     networks:
       - name: "{{ network_name }}"
-    ports: "{{tmp_nginx_ports }}"
+    ports: '{{tmp_nginx_ports + ["80:80"] if enable_port_80 else tmp_nginx_ports}}'
     volumes:
       - "{{configuration_dir}}/nginx/nginx_cauldron.conf:/etc/nginx/conf.d/nginx_cauldron.conf"
       - "{{configuration_dir}}/nginx/certificates:/certificates"
