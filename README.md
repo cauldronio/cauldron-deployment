@@ -5,21 +5,48 @@ This repository contains relevant information for running Cauldron in your own c
 
 ### Requirements
 
-It's necessary that you have **Ansible** installed in your computer in order to run the playbook. You can follow [this link](https://docs.ansible.com/ansible/latest/installation_guide/).
+- It's necessary that you have **Ansible** (~2.8) installed in your computer in order to run the playbooks. You can follow [this link](https://docs.ansible.com/ansible/latest/installation_guide/) to find the installation docs.
 
-**Docker** is also needed for running the containers. You can install it following [this link](https://docs.docker.com/install/) 
+  **NOTE**: Ansible works by default with your system's default Python version, but it is possible to change it. Anyway, please check your Ansible configuration to be sure about which Python version is being used by executing:
+  ```bash
+   $ ansible --version
+  ```
 
-The following ports will be used in the target machine. You can change this later in the configuration file.
-   
-  - **9000.** Cauldron server
-  
+- **Docker** (~18.09) is also needed for running the containers. You can install it by following [this link](https://docs.docker.com/install/).
+
+  **IMPORTANT**: You will also need to add your own user to the docker group created during the installation of Docker in order to execute Docker CLI without `sudo`:
+  ```bash
+   $ sudo usermod -aG docker $USER
+  ```
+
+- **Docker SDK for Python** is required by Ansible to execute Docker commands in Python scripts. Depending on your Ansible's Python version you will need to execute the following:
+
+  - **Python 2 (~2.6)**
+  ```bash
+     $ pip install docker-py
+  ```
+
+  - **Python 2 (~2.7)**
+  ```bash
+     $ pip install docker
+  ```
+
+  - **Python 3**
+  ```bash
+     $ pip3 install docker
+  ```
+
+- The following ports will be used in the target machine. You can change this later in the configuration file.
+
+  - **9000**: Cauldron server
+
 
 ### Download and configure
 
 1. Download the latest version of this repository with `git clone` and navigate to that directory:
      ```bash
     $ git clone https://gitlab.com/cauldron2/deployment.git
-    $ cd deployment 
+    $ cd deployment
     ```
 
 2. You will need to fill some **configuration** before running any task.
@@ -29,17 +56,17 @@ The following ports will be used in the target machine. You can change this late
         - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `https://localhost:9000/`. (You can change it later)
         - **Application description**: Not required
         - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `https://localhost:9000/github-login`. (You can change it later)
-        
+
         After the registration, you can obtain the `Client ID` and `Client Secret`.
-        
+
     - Create a **Gitlab Oauth App** and get the keys. For creating a new Application [follow this link](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile). Some information for the application:
         - **Name**: A name for the application, for example `Bitergia Cauldron`
         - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `https://localhost:9000/gitlab-login`. (You can change it later)
         - **Scopes**: Select only `api`
-        
+
         After the registration, you can obtain the `Application ID` and `Secret`.
-        
-    - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor: 
+
+    - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor:
         ``` bash
         $ cd playbooks
         $ cp group_vars/template group_vars/local
@@ -48,28 +75,28 @@ The following ports will be used in the target machine. You can change this late
         - You will need to fill:
           - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
           - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
-        
+
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.
-        - Some configuration files for Docker containers will be mounted in the local filesystem. The default directory is `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option. 
+        - Some configuration files for Docker containers will be mounted in the local filesystem. The default directory is `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option.
         - If you are using any of the mentioned ports before (9000), you can change them here. For production port 443 is desirable and set `enable_port_80` to true (for redirects).  
         - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it.
-      
-    - Another important configuration is to change the certificates for your deployment machine. All the certificates used are located inside `playbooks/roles/configure_cauldron/files/keys`. 
-      
+
+    - Another important configuration is to change the certificates for your deployment machine. All the certificates used are located inside `playbooks/roles/configure_cauldron/files/keys`.
+
       By default, there aren't certificates, you have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
-    
+
         ```bash
         $ cd playbooks/roles/configure_cauldron/files/keys
         $ ./generate.sh  
         ```
-        One of the most important is certificates is `ssl_server`, it is used for the communication outside the containers. Use a signed certificate for a public machine. (We are working with `certbot`, a playbook will be soon available)
-        
-        For more information about each certificate, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
-     
-3. Finally, it's necessary to have a inventory file for the target machine. If you are running it locally, you can use the `local` file inside `playbooks` directory. 
+        One of the most important certificates generated is `ssl_server`, it is used for the authentication of your public machine. If you use a self-signed certificate, the default case, users will be advised about the insecurity of your site. Please, try to obtain a trusted-signed certificate in order to make your site a safest place (We are working with [`certbot`](https://certbot.eff.org/), a playbook will be soon available).
 
-    IMPORTANT: If you are going to create a new inventory, the name for the group (the header `[]`) must be the same as the name of the file inside `group_vars` that you previously renamed/copied.
+        For more information about each certificate, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
+
+3. Finally, it's necessary to have an inventory file for the target machine. If you are running it locally, you can use the `local` file inside `playbooks` directory.
+
+    **IMPORTANT**: If you are going to create a new inventory, the name for the group (the header `[]`) must be the same as the name of the file inside `group_vars` that you previously renamed/copied.
 
 ### Running
 Navigate to `playbooks` directory from the root of the repository.
@@ -93,15 +120,15 @@ There you will find some useful files for running Cauldron:
     - Pull a mysql image
     - Pull a nginx image
     - Pull Opendistro images, ES and Kibana
-    
-    You can skip the creation of the images if you have them locally and just want to update the configuration files. Use for that `--skip-tags create_image`. 
- 
+
+    You can skip the creation of the images if you have them locally and just want to update the configuration files. Use for that `--skip-tags create_image`.
+
     The command for running this playbook is:
     ```bash
     $ ansible-playbook -i <inventory_file> configure_cauldron.yml
     ```
     It builds the Dockerfile inside `cauldron` and `mordred` that are in this repository.
-    
+
     You can see the images created:
     ```bash
     $ docker images
@@ -136,7 +163,7 @@ There you will find some useful files for running Cauldron:
     55cca3a6d1be        cauldron                                           "/entrypoint.sh"         5 hours ago         Up 2 hours          8000/tcp                                                   cauldron_service
     71eb8dc42702        database_cauldron                                  "/entrypoint.sh"         5 hours ago         Up 5 hours          3306/tcp                                                   db_cauldron_service
     ...
-  
+
     $ docker volume ls
     NETWORK ID          NAME                DRIVER              SCOPE
     b9a99d39aa1c        network_cauldron    bridge              local
@@ -148,7 +175,7 @@ There you will find some useful files for running Cauldron:
     ...
     ```
     If everything works correctly, you can:
-    
+
     - **Analyze** some repositories at https://localhost:9000
 
 - **`remove_cauldron.yml`**. With this playbook you can remove all the containers, images, volumes, networks and configuration generated.
@@ -166,9 +193,9 @@ In case you have any problem with the deployment or you think this guide is inco
 
 #### My playbook exits after running ElasticSearch
 
-If it's the first time running the Cauldron in your computer and ElasticSearch exits before finishing the playbook (`docker ps -a --filter "name=elastic_service"`), it's possible that the `vm.max_map_count` kernel setting needs to be set to at least **262144**:
+If it's the first time running Cauldron in your computer and ElasticSearch exits before finishing the playbook (`docker ps -a --filter "name=elastic_service"`), it's possible that the `vm.max_map_count` kernel setting needs to be set to at least **262144**:
 
 ```bash
 sudo sysctl -w vm.max_map_count=262144
 ```
-[More Info](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode)
+More info following [this link](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
