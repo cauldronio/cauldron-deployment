@@ -1,0 +1,16 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        },
+        "title": "md_growth",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"md_growth\",\"type\":\"markdown\",\"params\":{\"fontSize\":12,\"openLinksInNewTab\":true,\"markdown\":\"For more information on Contributors Growth visit  **[Contributors Growth Dashboard](https://alpha.cauldron.io/kibana/app/kibana#/dashboard/4434c9a0-18dd-11e9-ba47-d5cbef43f8d3)**.\\n![Growth](https://bitergia.gitlab.io/panel-collections/images/screenshots/contributors_growth.png)\"},\"aggs\":[]}"
+    },
+    "id": "141a5bb0-a300-11e9-ac51-1516462fb85e",
+    "type": "visualization",
+    "updated_at": "2019-07-10T10:57:09.270Z",
+    "version": "WzExMSwxXQ=="
+}

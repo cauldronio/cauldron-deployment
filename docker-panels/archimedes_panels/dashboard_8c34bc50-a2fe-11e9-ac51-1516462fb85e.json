@@ -1,0 +1,24 @@
+{
+    "attributes": {
+        "description": "Entry panel showing overall metrics.",
+        "hits": 0,
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"query\":{\"language\":\"lucene\",\"query\":\"\"},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":\"Bots\",\"disabled\":false,\"index\":\"git_enrich\",\"key\":\"author_bot\",\"negate\":true,\"params\":{\"query\":true,\"type\":\"phrase\"},\"type\":\"phrase\",\"value\":\"true\"},\"query\":{\"match\":{\"author_bot\":{\"query\":true,\"type\":\"phrase\"}}}}]}"
+        },
+        "optionsJSON": "{\"darkTheme\":false,\"hidePanelTitles\":false,\"useMargins\":true}",
+        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"x\":0,\"y\":24,\"w\":24,\"h\":20,\"i\":\"2\"},\"id\":\"0fddebf0-14e1-11e9-8aac-ef7fd4d8cbad\",\"panelIndex\":\"2\",\"title\":\"Contributions\",\"type\":\"visualization\",\"version\":\"6.7.1\"},{\"embeddableConfig\":{},\"gridData\":{\"x\":0,\"y\":4,\"w\":24,\"h\":20,\"i\":\"3\"},\"id\":\"8cfe1960-18de-11e9-ba47-d5cbef43f8d3\",\"panelIndex\":\"3\",\"title\":\"Contributors Growth and Difference to the Average\",\"type\":\"visualization\",\"version\":\"6.7.1\"},{\"embeddableConfig\":{},\"gridData\":{\"x\":24,\"y\":44,\"w\":24,\"h\":20,\"i\":\"4\"},\"id\":\"b92683a0-a2ff-11e9-ac51-1516462fb85e\",\"panelIndex\":\"4\",\"title\":\"\",\"type\":\"visualization\",\"version\":\"6.7.1\"},{\"embeddableConfig\":{},\"gridData\":{\"x\":24,\"y\":4,\"w\":24,\"h\":20,\"i\":\"5\"},\"id\":\"141a5bb0-a300-11e9-ac51-1516462fb85e\",\"panelIndex\":\"5\",\"title\":\"\",\"type\":\"visualization\",\"version\":\"6.7.1\"},{\"embeddableConfig\":{},\"gridData\":{\"x\":0,\"y\":64,\"w\":48,\"h\":7,\"i\":\"6\"},\"id\":\"26024040-a300-11e9-ac51-1516462fb85e\",\"panelIndex\":\"6\",\"title\":\"\",\"type\":\"visualization\",\"version\":\"6.7.1\"},{\"embeddableConfig\":{},\"gridData\":{\"x\":24,\"y\":24,\"w\":24,\"h\":20,\"i\":\"7\"},\"id\":\"a4b825d0-a300-11e9-ac51-1516462fb85e\",\"panelIndex\":\"7\",\"title\":\"\",\"type\":\"visualization\",\"version\":\"6.7.1\"},{\"gridData\":{\"x\":0,\"y\":44,\"w\":24,\"h\":20,\"i\":\"8\"},\"version\":\"6.7.1\",\"panelIndex\":\"8\",\"type\":\"visualization\",\"id\":\"d61c9a70-a30a-11e9-ac51-1516462fb85e\",\"embeddableConfig\":{},\"title\":\"Timing\"},{\"gridData\":{\"x\":0,\"y\":0,\"w\":48,\"h\":4,\"i\":\"9\"},\"version\":\"6.7.1\",\"panelIndex\":\"9\",\"type\":\"visualization\",\"id\":\"d69af2a0-14f6-11e9-8aac-ef7fd4d8cbad\",\"embeddableConfig\":{},\"title\":\"\"}]",
+        "refreshInterval": {
+            "pause": true,
+            "value": 0
+        },
+        "timeFrom": "now-2y",
+        "timeRestore": true,
+        "timeTo": "now",
+        "title": "Metrics Overview",
+        "version": 1
+    },
+    "id": "8c34bc50-a2fe-11e9-ac51-1516462fb85e",
+    "type": "dashboard",
+    "updated_at": "2019-07-10T12:13:43.761Z",
+    "version": "WzEzMywxXQ=="
+}

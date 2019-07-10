@@ -1,0 +1,16 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        },
+        "title": "md_engagement",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"md_engagement\",\"type\":\"markdown\",\"params\":{\"fontSize\":12,\"openLinksInNewTab\":true,\"markdown\":\"For more information on Engagement visit  **[Engagement: Contributions overview](https://alpha.cauldron.io/kibana/app/kibana#/dashboard/b7b169e0-14e3-11e9-8aac-ef7fd4d8cbad)**.\\n\\n![Engagement](https://bitergia.gitlab.io/panel-collections/images/screenshots/engagement_contributions_overview.png)\"},\"aggs\":[]}"
+    },
+    "id": "a4b825d0-a300-11e9-ac51-1516462fb85e",
+    "type": "visualization",
+    "updated_at": "2019-07-10T10:59:08.291Z",
+    "version": "WzExNCwxXQ=="
+}

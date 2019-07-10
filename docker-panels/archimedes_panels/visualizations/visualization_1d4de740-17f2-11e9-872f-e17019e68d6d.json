@@ -1,0 +1,16 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"lucene\"},\"filter\":[]}"
+        },
+        "title": "ocean_filters_datasource_organizations_projects",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"ocean_filters_datasource_organizations_projects\",\"type\":\"input_control_vis\",\"params\":{\"controls\":[{\"id\":\"1539605670712\",\"indexPattern\":\"0211efb0-14ca-11e9-8aac-ef7fd4d8cbad\",\"fieldName\":\"data_source\",\"label\":\"Data Source\",\"type\":\"list\",\"options\":{\"type\":\"terms\",\"multiselect\":false,\"size\":50,\"order\":\"desc\"}}],\"updateFiltersOnChange\":true,\"useTimeFilter\":false,\"pinFilters\":false},\"aggs\":[]}"
+    },
+    "id": "1d4de740-17f2-11e9-872f-e17019e68d6d",
+    "type": "visualization",
+    "updated_at": "2019-07-10T12:08:43.618Z",
+    "version": "WzEyNywxXQ=="
+}

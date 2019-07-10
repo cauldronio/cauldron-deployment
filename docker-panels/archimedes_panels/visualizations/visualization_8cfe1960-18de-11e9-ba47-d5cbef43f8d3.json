@@ -1,0 +1,16 @@
+{
+    "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+            "searchSourceJSON": "{}"
+        },
+        "title": "contributors_growth_with_average_and_distance_to_the_average",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"type\":\"timelion\",\"title\":\"contributors_growth_with_average_and_distance_to_the_average\",\"params\":{\"expression\":\".es(index=ocean, timefield=grimoire_creation_date, metric=cardinality:author_uuid).label(\\\"Contributors Active\\\"), .es(index=ocean, timefield=grimoire_creation_date, metric=cardinality:author_uuid).aggregate(avg).label(\\\"Contributors Active Average\\\"), .es(index=ocean, timefield=grimoire_creation_date, metric=cardinality:author_uuid).subtract(.es(index=ocean, timefield=grimoire_creation_date, metric=cardinality:author_uuid).aggregate(avg)).bars().label(\\\"Distance to the Average\\\")\",\"interval\":\"1w\"}}"
+    },
+    "id": "8cfe1960-18de-11e9-ba47-d5cbef43f8d3",
+    "type": "visualization",
+    "updated_at": "2019-07-10T10:32:38.097Z",
+    "version": "WzkzLDFd"
+}
