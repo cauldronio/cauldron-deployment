@@ -29,8 +29,17 @@ kib_url_auth = "{}://{}:{}@{}:{}{}".format(settings.KIB_IN_PROTO,
                                            settings.KIB_PATH)
 
 archimedes = Archimedes(kib_url_auth, '/panels')
-archimedes.import_from_disk(obj_type='dashboard', obj_id='Overview',
+archimedes.import_from_disk(obj_type='dashboard', obj_id='8c34bc50-a2fe-11e9-ac51-1516462fb85e',
                             find=True, force=False)
+archimedes.import_from_disk(obj_type='dashboard', obj_id='4434c9a0-18dd-11e9-ba47-d5cbef43f8d3',
+                            find=True, force=False)
+archimedes.import_from_disk(obj_type='dashboard', obj_id='69208f40-18cb-11e9-ba47-d5cbef43f8d3',
+                            find=True, force=False)
+archimedes.import_from_disk(obj_type='dashboard', obj_id='b7b169e0-14e3-11e9-8aac-ef7fd4d8cbad',
+                            find=True, force=False)
+archimedes.import_from_disk(obj_type='dashboard', obj_id='b7df3b10-a195-11e9-8e03-59480d72fd0a',
+                            find=True, force=False)
+
 logging.warning("Panels successfully created")
 
 # --- Set default index pattern ---#
