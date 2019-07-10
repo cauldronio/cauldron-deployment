@@ -63,10 +63,10 @@ body = {
         }
     }
 }
-es.indices.create('git_enrich_default', body=body)
-es.indices.create('git_aoc_enriched_default', body=body)
-es.indices.create('github_enrich_default', body=body)
-es.indices.create('gitlab_enriched_default', body=body)
+es.indices.create('git_enrich_default', body=body, ignore=400)
+es.indices.create('git_aoc_enriched_default', body=body, ignore=400)
+es.indices.create('github_enrich_default', body=body, ignore=400)
+es.indices.create('gitlab_enriched_default', body=body, ignore=400)
 
 
 def put_alias_no_except(es_obj, index, name):
