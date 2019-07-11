@@ -40,4 +40,4 @@
   delay: 2
 
 - name: Set the default template to 1 shard and 0 replicas per index
-  command: "docker exec {{ es_container_name}} curl -XPOST -k -H \"Content-type: application/json\" \"https://admin:ChangemePlse@elastic_service:9200/_template/default\" -d '{\"template\": \"*\", \"order\": -1, \"settings\": { \"number_of_shards\": \"1\", \"number_of_replicas\": \"0\"}}'"
+  command: "docker exec {{ es_container_name}} curl -XPOST -k -H \"Content-type: application/json\" \"https://admin:{{es_admin_password}}@elastic_service:9200/_template/default\" -d '{\"template\": \"*\", \"order\": -1, \"settings\": { \"number_of_shards\": \"1\", \"number_of_replicas\": \"0\"}}'"
