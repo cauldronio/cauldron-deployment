@@ -32,6 +32,7 @@ db_django_name: "db_cauldron"
 
 es_container_name: "elastic_service"
 es_image: "amazon/opendistro-for-elasticsearch:0.9.0"
+es_volume: "elastic_data"
 
 es_port: '9200'
 es_protocol: 'https'
