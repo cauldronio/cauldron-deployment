@@ -58,8 +58,8 @@
     - task_image_name: "{{ nginx_image }}"
   import_tasks: docker_pull.yml
 
-- name: Configure mordred
-  import_tasks: configure_many_mordred.yml
+- name: Configure workers
+  import_tasks: configure_workers.yml
 
 - name: Configure database
   import_tasks: configure_database.yml
