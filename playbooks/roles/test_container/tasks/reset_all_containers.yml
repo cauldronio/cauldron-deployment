@@ -1,23 +1,26 @@
 ---
-- name: Kill cauldron
-  docker_container:
-    name: cauldron_service
-    state: stopped
-    force_kill: yes
 
-- name: Kill grimoirelab
-  docker_container:
-    name: grimoirelab_service
-    state: stopped
-    force_kill: yes
+- set_fact:
+    container_list:
+      - "{{ db_container_name }}"
+      - "{{ es_container_name }}"
+      - "{{ kibana_container_name }}"
+      - "{{ django_container_name }}"
+      - "{{ nginx_container_name }}"
 
-- name: Kill mordred services
-  shell: "docker kill $(docker ps -aq --filter name=mordred_service)"
-  ignore_errors: yes
+- include_tasks: kill_container.yml
+  loop: "{{ container_list }}"
+  loop_control:
+    loop_var: container_name
 
-- name: Run Role run_cauldron
+- include_tasks: kill_container.yml
+  loop: "{{ range(0, num_workers) | list | map('regex_replace', '^(.*)$', mordred_name + '_\\1') | list }}"
+  loop_control:
+    loop_var: container_name
+
+- name: Run role run_cauldron
   include_role:
     name: run_cauldron
 
-- name: Check containers Running
+- name: Check containers running
   import_tasks: containers_running.yml

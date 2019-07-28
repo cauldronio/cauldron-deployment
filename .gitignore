@@ -1,2 +1,9 @@
 *.retry
 .idea
+
+# Keys and certificates
+
+*.key
+*.pem
+*.srl
+*.crt
