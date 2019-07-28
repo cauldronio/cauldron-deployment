@@ -1,39 +1,38 @@
 ---
+
 - name: Kill cauldron
   docker_container:
-    name: cauldron_service
+    name: "{{ django_container_name }}"
     state: stopped
     force_kill: yes
 
-- name: Run Role run_cauldron
+- name: Run role run_cauldron
   include_role:
     name: run_cauldron
 
-- name: Check containers Running
+- name: Check containers running
   import_tasks: containers_running.yml
 
-- name: Kill grimoirelab
+- name: Kill elasticsearch
   docker_container:
-    name: grimoirelab_service
+    name: "{{ es_container_name }}"
     state: stopped
     force_kill: yes
 
-- name: Run Role run_cauldron
+- name: Run role run_cauldron
   include_role:
     name: run_cauldron
 
-- name: Check containers Running
+- name: Check containers running
   import_tasks: containers_running.yml
-
 
 - name: Kill mordred services
   shell: "docker kill $(docker ps -aq --filter name=mordred_service)"
   ignore_errors: yes
 
-- name: Run Role run_cauldron
+- name: Run role run_cauldron
   include_role:
     name: run_cauldron
 
-- name: Check containers Running
+- name: Check containers running
   import_tasks: containers_running.yml
-

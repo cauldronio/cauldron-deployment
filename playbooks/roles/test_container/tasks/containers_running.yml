@@ -1,9 +1,19 @@
 ---
+
+- set_fact:
+    container_list:
+      - "{{ db_container_name }}"
+      - "{{ es_container_name }}"
+      - "{{ kibana_container_name }}"
+      - "{{ django_container_name }}"
+      - "{{ nginx_container_name }}"
+
 - include_tasks: container_status.yml
-  loop: "{{ range(0, num_workers) | list | map('regex_replace', '^(.*)$', mordred_name + '_\\1') | list }}"
+  loop: "{{ container_list }}"
   loop_control:
     loop_var: container_name
 
 - include_tasks: container_status.yml
-  vars:
-    container_name: "{{ grimoirelab_name }}"
+  loop: "{{ range(0, num_workers) | list | map('regex_replace', '^(.*)$', mordred_name + '_\\1') | list }}"
+  loop_control:
+    loop_var: container_name

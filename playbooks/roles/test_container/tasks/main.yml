@@ -1,4 +1,5 @@
 ---
+
 - name: Assert containers running
   import_tasks: containers_running.yml
 
@@ -7,4 +8,3 @@
 
 - name: Selective kill containers and check if restart
   import_tasks: selective_reset.yml
-
