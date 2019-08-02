@@ -3,7 +3,7 @@
 This repository contains relevant information for running Cauldron in your own computer or in a specific machine.
 
 
-### Requirements
+## Requirements
 
 - It's necessary that you have **Ansible** (~2.8) installed in your computer in order to run the playbooks. You can follow [this link](https://docs.ansible.com/ansible/latest/installation_guide/) to find the installation docs.
 
@@ -41,7 +41,7 @@ This repository contains relevant information for running Cauldron in your own c
   - **9000**: Cauldron server
 
 
-### Download and configure
+## Clone and configure
 
 1. Download the latest version of this repository with `git clone` and navigate to that directory:
      ```bash
@@ -98,7 +98,8 @@ This repository contains relevant information for running Cauldron in your own c
 
     **IMPORTANT**: If you are going to create a new inventory, the name for the group (the header `[]`) must be the same as the name of the file inside `group_vars` that you previously renamed/copied.
 
-### Running
+## Run
+
 Navigate to `playbooks` directory from the root of the repository.
 
 ```bash
@@ -174,9 +175,12 @@ There you will find some useful files for running Cauldron:
     local               cauldron_volume
     ...
     ```
+
     If everything works correctly, you can:
 
     - **Analyze** some repositories at https://localhost:9000
+
+    If it doesn't work, check the Troubleshooting section, below.
 
 - **`remove_cauldron.yml`**. With this playbook you can remove all the containers, images, volumes, networks and configuration generated.
 
@@ -184,18 +188,77 @@ There you will find some useful files for running Cauldron:
     $ ansible-playbook -i <inventory_file> remove_cauldron.yml
     ```
 
-### Help!
+## Help!
 
 In case you have any problem with the deployment or you think this guide is incomplete, open a new issue or contact us please.
 
 
 ## Troubleshooting
 
-#### My playbook exits after running ElasticSearch
+### My playbook exits after running ElasticSearch
 
-If it's the first time running Cauldron in your computer and ElasticSearch exits before finishing the playbook (`docker ps -a --filter "name=elastic_service"`), it's possible that the `vm.max_map_count` kernel setting needs to be set to at least **262144**:
+If it's the first time running Cauldron in your computer and ElasticSearch
+exits before finishing the playbook
+(check with `docker ps -a --filter "name=elastic_service"`),
+it is likely that the `vm.max_map_count` kernel setting needs
+to be set to at least **262144**.
+
+This is a likely cause of the playbook ending after 10 attempts to
+"run securityadmin to initialize Open Distro Security", which will produce
+the following output in your screen:
+
+```
+TASK [run_cauldron : Run securityadmin to initialize Open Distro Security] *******************************************
+FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (10 retries left).
+FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (9 retries left).
+...
+FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (2 retries left).
+FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (1 retries left).
+fatal: [localhost]: FAILED! => {"attempts": 10, "changed": true, "cmd": 
+["docker", "exec", "elastic_service", "plugins/opendistro_security/tools/securityadmin.sh", "-cd", "plugins/opendistro_security/securityconfig/", "-cacert", "config/root-ca.pem", "-cert", "config/admin.pem", "-key", "config/admin-key.pem", "-icl", "-nhnv"],
+"delta": "0:00:00.028153", "end": "2019-08-02 17:38:51.778859", "msg": "non-zero return code", "rc": 1,
+"start": "2019-08-02 17:38:51.750706",
+"stderr": "Error response from daemon: Container xxxx is not running",
+"stderr_lines": ["Error response from daemon: Container xxxx is not running"],
+"stdout": "", "stdout_lines": []}
+```
+
+You can check the details with `docker logs elastic_service`,
+which will show something like:
+
+```
+[2019-08-02T16:18:13,273][INFO ][o.e.b.BootstrapChecks    ] [48xfr6h] bound or publishing to a non-loopback address, enforcing bootstrap checks
+ERROR: [1] bootstrap checks failed
+[1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]
+[2019-08-02T16:18:13,313][INFO ][o.e.n.Node               ] [48xfr6h] stopping ...
+[2019-08-02T16:18:13,314][INFO ][c.a.o.s.a.s.SinkProvider ] [48xfr6h] Closing InternalESSink
+[2019-08-02T16:18:13,317][INFO ][c.a.o.s.a.s.SinkProvider ] [48xfr6h] Closing DebugSink
+[2019-08-02T16:18:13,346][INFO ][o.e.n.Node               ] [48xfr6h] stopped
+[2019-08-02T16:18:13,346][INFO ][o.e.n.Node               ] [48xfr6h] closing ...
+[2019-08-02T16:18:13,370][INFO ][o.e.n.Node               ] [48xfr6h] closed
+```
+
+The fix is to increase `vm.max_map_count` in the controlled host.
+You can do that on the fly (in Linux-based systems) by:
 
 ```bash
 sudo sysctl -w vm.max_map_count=262144
 ```
-More info following [this link](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
+
+But the value will be lost when the maching reboots. For a permanent
+fix in Debian, produce a file `/etc/sysctl.d/local.conf` with the
+following content (or add to it, if it already exists):
+
+```
+###################################################################
+# Settings for Elasticsearch to run in production mode
+vm.max_map_count=262144
+```
+
+Then, to put it into effect now:
+
+```bash
+sudo sysctl -p /etc/sysctl.d/local.conf
+```
+
+[More info in the Elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
