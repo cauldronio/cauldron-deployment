@@ -1,6 +1,8 @@
 ---
+# Load default Kibana panels into Elasticsearch
+#   (needs Kibana up and running, so first wait for it)
 
-- name: Wait for Kibana Running
+- name: Wait until Kibana is done starting
   uri:
     url: "https://{{ (ansible_ssh_host|default(ansible_host))|default(inventory_hostname) }}:{{app_port}}/kibana"
     method: GET
@@ -10,17 +12,15 @@
   retries: 10
   delay: 5
 
-- name: Delete panels container if it was created
-  docker_container:
-    name: "{{panels_container}}"
-    state: absent
-    stop_timeout: 10
-
-- name: Import default panels (may take some time)
+# The panels container will load default Kibana paneles into Elasticsearch,
+#   and will be auto removed afterwards.
+- name: "Load default panels (may take some time): {{panels_container}}"
   docker_container:
     name: "{{panels_container}}"
     image: "{{panels_image}}"
     state: started
+    auto_remove: true
+    restart: true
     detach: no
     networks:
       - name: "{{ network_name }}"
