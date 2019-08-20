@@ -26,4 +26,3 @@
       - name: "{{ network_name }}"
     volumes:
       - "{{configuration_dir}}/archimedes_panels/settings.py:/settings.py"
-

@@ -4,6 +4,7 @@ import os
 import requests
 import settings
 import ssl
+import json
 from elasticsearch import Elasticsearch
 from elasticsearch.client import CatClient
 from elasticsearch.connection import create_ssl_context
@@ -61,21 +62,13 @@ context.verify_mode = ssl.CERT_NONE
 es = Elasticsearch([settings.ES_IN_HOST], scheme=settings.ES_PROTO, port=settings.ES_PORT,
                    http_auth=("admin", settings.ES_ADMIN_PSW), ssl_context=context)
 
-body = {
-    "mappings": {
-        "_doc": {
-            "properties": {
-                "grimoire_creation_date": {
-                    "type": "date"
-                }
-            }
-        }
-    }
-}
+body = dict()
+with open('git_aoc.json') as json_file:
+    body = json.load(json_file)
 
 es.indices.create('git_raw_index', ignore=400)
 es.indices.create('git_enrich_index', ignore=400)
-es.indices.create('git_aoc_enriched_index', ignore=400)
+es.indices.create('git_aoc_enriched_index', body=body, ignore=400)
 es.indices.create('github_raw_index', ignore=400)
 es.indices.create('github_enrich_index', ignore=400)
 es.indices.create('gitlab_raw_index', ignore=400)
