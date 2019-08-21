@@ -20,6 +20,7 @@ url = https://admin:{{es_admin_password}}@{{es_container_name}}:{{es_port}}
 
 [es_enrichment]
 url = https://admin:{{es_admin_password}}@{{es_container_name}}:{{es_port}}
+autorefresh = False
 
 [sortinghat]
 host = {{ db_container_name }}
@@ -50,7 +51,7 @@ raw_index = git_raw
 enriched_index = git_enrich
 latest-items = true
 category = commit
-studies = [enrich_demography:git, enrich_areas_of_code:git]
+studies = [enrich_areas_of_code:git]
 
 [enrich_demography:git]
 date_field = utc_commit
