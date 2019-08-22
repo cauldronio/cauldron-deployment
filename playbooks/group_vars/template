@@ -11,6 +11,10 @@ gh_client_secret: ""
 gl_client_id: ""
 gl_client_secret: ""
 
+# Meetup Oauth App keys
+meetup_client_id: ""
+meetup_client_secret: ""
+
 # Where will the configuration files be stored
 # in you computer and mapped to Docker
 configuration_dir: "/tmp"

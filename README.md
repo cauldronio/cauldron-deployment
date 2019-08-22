@@ -66,6 +66,13 @@ This repository contains relevant information for running Cauldron in your own c
 
         After the registration, you can obtain the `Application ID` and `Secret`.
 
+    - Create a **Meetup Oauth App** and get the keys. For creating a new Application [follow this link](https://secure.meetup.com/meetup_api/oauth_consumers/create/). Some information for the application:
+        - **Consumer Name**: A name for the application, for example `Bitergia Cauldron`
+        - **Application website**: A website for the application, for example `https://cauldron2.gitlab.io/`
+        - **Redirect URI **: This is important. It should be the Homepage URL and `/meetup-login`. For example, for your local computer: `https://localhost:9000/meetup-login`. (You can change it later)
+        - **Phone number and Description**: this is for accepting the application, provide some description.
+        Finally read and accept the terms and conditions. After the registration it may take one day to be available. Later, you can obtain the `Application ID` and `Secret`
+
     - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor:
         ``` bash
         $ cd playbooks
