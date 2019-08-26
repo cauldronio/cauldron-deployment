@@ -15,11 +15,8 @@ volume_name: "cauldron_volume"
 # Database container name
 db_container_name: "db_cauldron_service"
 db_image: "database_cauldron"
-db_image_location: "https://gitlab.com/cauldron2/deployment.git#:database"
 db_port: "3306"
-db_root_password: "ChangeRootPassword"
 db_user: "grimoirelab"
-db_password: "ChangeGrimoirePassword"
 
 # Names for the tables created
 db_sortinghat_name: "test_sh"
@@ -37,30 +34,16 @@ es_volume: "elastic_data"
 es_port: '9200'
 es_protocol: 'https'
 
-# password for ES users
-es_admin_password: "ChangeAdminPassword"
-es_logstash_password: "logstash"
-es_kibanaserver_password: "kibanaserver"
-es_kibanaro_password: "kibanaro"
-es_readall_password: "readall"
-es_snapshotrestore_password: "snapshotrestore"
-
-es_memory: "2g"
-
 
 #################################
 ## OPENDISTRO KIBANA CONTAINER ##
 #################################
 
 kibana_container_name: "kibana_service"
-kibana_image: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
 
 kibana_in_port: '5601'
 kibana_in_protocol: 'http'
 kibana_path: '/kibana'
-
-# Default index for Kibana
-kibana_default_index: 'git_enrich'
 
 
 #####################
@@ -80,16 +63,9 @@ django_container_name: "cauldron_service"
 
 # Cauldron web server image used
 django_image: "cauldron"
-django_image_location: "https://gitlab.com/cauldron2/deployment.git#:cauldron"
 
 # Cauldron web server external port. DO NOT MODIFY
 port_django: '8000'
-
-## DJANGO CONFIGURATION ##
-# Debug
-django_debug: 'True'
-# Host (Keep same as deployed) All accepted here
-django_hosts: "*"
 
 # Certbot configuration.
 # ONLY enable it (0 -> 1) if you are deploying on a domain
@@ -109,7 +85,6 @@ mordred_name: "mordred_service"
 
 # Mordred image for Docker used
 mordred_image: "mordred"
-mordred_image_location: "https://gitlab.com/cauldron2/deployment.git#:mordred"
 
 
 #########################
@@ -127,7 +102,5 @@ passwords_container: "tmp_container_passwords"
 # Name for the temporary container for creating the default panels
 panels_container: "tmp_container_panels"
 panels_image: "panels_image"
-panels_image_location: "https://gitlab.com/cauldron2/deployment.git#:docker-panels"
 # The username should be only with alphabetic characters
 panels_username: "defaultpanels"
-panels_password: "ChangemePlse"

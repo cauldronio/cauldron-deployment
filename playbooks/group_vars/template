@@ -54,7 +54,6 @@ es_memory: "2g"
 #################################
 
 kibana_image: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
-kibana_path: '/kibana'
 
 kibana_default_index: 'git_enrich'
 
