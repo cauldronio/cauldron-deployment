@@ -40,6 +40,8 @@ archimedes.import_from_disk(obj_type='dashboard', obj_id='b7b169e0-14e3-11e9-8aa
                             find=True, force=False)
 archimedes.import_from_disk(obj_type='dashboard', obj_id='b7df3b10-a195-11e9-8e03-59480d72fd0a',
                             find=True, force=False)
+archimedes.import_from_disk(obj_type='dashboard', obj_id='Meetup',
+                            find=True, force=False)
 
 logging.warning("Panels successfully created")
 
@@ -76,11 +78,13 @@ es.indices.create('gitlab_enriched_index', ignore=400)
 es.indices.create('meetup_raw_index', ignore=400)
 es.indices.create('meetup_enriched_index', ignore=400)
 
+
 def put_alias_no_except(es_obj, index, name):
     try:
         es_obj.indices.put_alias(index=index, name=name)
     except es.NotFoundError:
         pass
+
 
 put_alias_no_except(es, index='git_aoc_enriched_*', name='git_aoc_enriched')
 put_alias_no_except(es, index='git_enrich_*', name='git_enrich')

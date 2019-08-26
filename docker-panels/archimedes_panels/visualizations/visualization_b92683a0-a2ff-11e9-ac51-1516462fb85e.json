@@ -7,10 +7,10 @@
         "title": "md_timing",
         "uiStateJSON": "{}",
         "version": 1,
-        "visState": "{\"title\":\"md_timing\",\"type\":\"markdown\",\"params\":{\"fontSize\":12,\"openLinksInNewTab\":true,\"markdown\":\"For more information on Efficiency visit  **[Efficiency: Timing Overview Dashboard](https://alpha.cauldron.io/kibana/app/kibana#/dashboard/69208f40-18cb-11e9-ba47-d5cbef43f8d3)**.\\n![Timing](https://bitergia.gitlab.io/panel-collections/images/screenshots/efficiency_timing_overview.png)\"},\"aggs\":[]}"
+        "visState": "{\"title\":\"md_timing\",\"type\":\"markdown\",\"params\":{\"fontSize\":20,\"openLinksInNewTab\":true,\"markdown\":\"Open **[Efficiency: Timing Overview Dashboard](/kibana/app/kibana#/dashboard/69208f40-18cb-11e9-ba47-d5cbef43f8d3)**.\\n![Timing](https://bitergia.gitlab.io/panel-collections/images/screenshots/efficiency_timing_overview.png)\"},\"aggs\":[]}"
     },
     "id": "b92683a0-a2ff-11e9-ac51-1516462fb85e",
     "type": "visualization",
-    "updated_at": "2019-07-10T10:58:14.406Z",
-    "version": "WzExMywxXQ=="
+    "updated_at": "2019-08-26T14:44:00.157Z",
+    "version": "WzEyMCwxXQ=="
 }

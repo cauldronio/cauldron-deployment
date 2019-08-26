@@ -7,10 +7,10 @@
         "title": "md_overview",
         "uiStateJSON": "{}",
         "version": 1,
-        "visState": "{\"title\":\"md_overview\",\"type\":\"markdown\",\"params\":{\"fontSize\":14,\"openLinksInNewTab\":true,\"markdown\":\"Do you want to see more metrics?\\n\\nVisit  the **[Extended Overview Dashboard](https://alpha.cauldron.io/kibana/app/kibana#/dashboard/b7df3b10-a195-11e9-8e03-59480d72fd0a)**.\"},\"aggs\":[]}"
+        "visState": "{\"title\":\"md_overview\",\"type\":\"markdown\",\"params\":{\"fontSize\":16,\"openLinksInNewTab\":true,\"markdown\":\"Do you want to see more metrics?\\n\\nVisit  the **[Extended Overview Dashboard](/kibana/app/kibana#/dashboard/b7df3b10-a195-11e9-8e03-59480d72fd0a)**.\"},\"aggs\":[]}"
     },
     "id": "26024040-a300-11e9-ac51-1516462fb85e",
     "type": "visualization",
-    "updated_at": "2019-07-10T10:49:58.462Z",
-    "version": "WzEwNSwxXQ=="
+    "updated_at": "2019-08-26T14:44:45.805Z",
+    "version": "WzEyMSwxXQ=="
 }
