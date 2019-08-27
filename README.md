@@ -69,6 +69,7 @@ This repository contains relevant information for running Cauldron in your own c
     - Create a **Meetup Oauth App** and get the keys. For creating a new Application [follow this link](https://secure.meetup.com/meetup_api/oauth_consumers/create/). Some information for the application:
         - **Consumer Name**: A name for the application, for example `Bitergia Cauldron`
         - **Application website**: A website for the application, for example `https://cauldron2.gitlab.io/`
+        - Request access for personal use if you are going to deploy locally, request for organization if you are going to deploy it publicly (The second may take some days to be accepted).
         - **Redirect URI **: This is important. It should be the Homepage URL and `/meetup-login`. For example, for your local computer: `https://localhost:9000/meetup-login`. (You can change it later)
         - **Phone number and Description**: this is for accepting the application, provide some description.
         Finally read and accept the terms and conditions. After the registration it may take one day to be available. Later, you can obtain the `Application ID` and `Secret`
@@ -82,6 +83,7 @@ This repository contains relevant information for running Cauldron in your own c
         - You will need to fill:
           - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
           - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
+          - Your Meetup Oauth keys (`meetup_client_id` and `meetup_client_secret`).
 
         You can leave the other configuration as it is, but there are some points that could be interesting:
         - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.
