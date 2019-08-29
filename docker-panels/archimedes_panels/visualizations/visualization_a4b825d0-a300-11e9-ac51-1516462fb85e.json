@@ -7,10 +7,10 @@
         "title": "md_engagement",
         "uiStateJSON": "{}",
         "version": 1,
-        "visState": "{\"aggs\":[],\"params\":{\"fontSize\":20,\"markdown\":\"Open **[Engagement: Contributions overview](/kibana/app/kibana#/dashboard/b7b169e0-14e3-11e9-8aac-ef7fd4d8cbad)**.\\n\\n![Engagement](https://bitergia.gitlab.io/panel-collections/images/screenshots/engagement_contributions_overview.png)\",\"openLinksInNewTab\":true},\"title\":\"md_engagement\",\"type\":\"markdown\"}"
+        "visState": "{\"title\":\"md_engagement\",\"type\":\"markdown\",\"params\":{\"fontSize\":20,\"markdown\":\"Open **[Engagement: Contributions overview](/kibana/app/kibana#/dashboard/b7b169e0-14e3-11e9-8aac-ef7fd4d8cbad)**.\\n\\n[![Engagement](https://cauldron2.gitlab.io/img/cauldron-dashboards/Engagement%20Contributions%20overview%20-%20Kibana.png)](/kibana/app/kibana#/dashboard/b7b169e0-14e3-11e9-8aac-ef7fd4d8cbad)\",\"openLinksInNewTab\":true},\"aggs\":[]}"
     },
     "id": "a4b825d0-a300-11e9-ac51-1516462fb85e",
     "type": "visualization",
-    "updated_at": "2019-08-26T14:43:32.693Z",
-    "version": "WzExOSwxXQ=="
+    "updated_at": "2019-08-29T11:53:22.694Z",
+    "version": "WzExMywxXQ=="
 }

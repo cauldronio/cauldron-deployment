@@ -7,10 +7,10 @@
         "title": "md_growth",
         "uiStateJSON": "{}",
         "version": 1,
-        "visState": "{\"title\":\"md_growth\",\"type\":\"markdown\",\"params\":{\"fontSize\":20,\"openLinksInNewTab\":true,\"markdown\":\"Open  **[Contributors Growth Dashboard](/kibana/app/kibana#/dashboard/4434c9a0-18dd-11e9-ba47-d5cbef43f8d3)**.\\n\\n![Growth](https://bitergia.gitlab.io/panel-collections/images/screenshots/contributors_growth.png)\"},\"aggs\":[]}"
+        "visState": "{\"title\":\"md_growth\",\"type\":\"markdown\",\"params\":{\"fontSize\":20,\"openLinksInNewTab\":true,\"markdown\":\"Open  **[Contributors Growth Dashboard](/kibana/app/kibana#/dashboard/4434c9a0-18dd-11e9-ba47-d5cbef43f8d3)**.\\n\\n[![Growth](https://cauldron2.gitlab.io/img/cauldron-dashboards/Contributors%20Growth%20-%20Kibana.png)](/kibana/app/kibana#/dashboard/4434c9a0-18dd-11e9-ba47-d5cbef43f8d3)\"},\"aggs\":[]}"
     },
     "id": "141a5bb0-a300-11e9-ac51-1516462fb85e",
     "type": "visualization",
-    "updated_at": "2019-08-26T14:42:50.951Z",
-    "version": "WzExOCwxXQ=="
+    "updated_at": "2019-08-29T11:52:21.844Z",
+    "version": "WzExMSwxXQ=="
 }
