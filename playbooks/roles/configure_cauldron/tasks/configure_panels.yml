@@ -1,7 +1,12 @@
 ---
+
+# @action configure_panels.yml # Create `<configuration_dir>/archimedes_panels` directory if not exists.
+# @var configuration_dir: /tmp # Main configuration directory.
 - name: Create {{configuration_dir}}/archimedes_panels dir if not exists
   file: path={{configuration_dir}}/archimedes_panels state=directory
 
+# @action configure_panels.yml # Copy the file `panels-config.py.j2` to `<configuration_dir>/archimedes_panels/settings.py`
+# @var configuration_dir: /tmp # Main configuration directory.
 - name: Copy settings for default panels
   template:
     src: panels-config.py.j2

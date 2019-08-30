@@ -1,5 +1,9 @@
 ---
 
+# @action docker_build.yml # Build a Docker image.
+# @var task_image_name # Name of the Docker image.
+# @var task_image_location # Path or URL of the Docker image.
+# @tag create_image # Tasks related with the creation of Docker images.
 - name: Build Docker image {{task_image_name}} from {{task_image_location}}
   command: docker build -t {{task_image_name}} {{task_image_location}}
   tags:

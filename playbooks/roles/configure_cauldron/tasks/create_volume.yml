@@ -1,15 +1,13 @@
 ---
 
+# @action create_volume.yml # Create a Docker volume for Cauldron, named by var `<volume_name>`.
+# @var volume_name: cauldron_volume # Name of the Cauldron volume.
 - name: Create a volume
   docker_volume:
     name: "{{ volume_name }}"
 
+# @action create_volume.yml # Create a Docker volume for Elasticsearch, named by var `<es_volume>`.
+# @var es_volume: elastic_data # Name of the Elasticsearch volume.
 - name: Create a ES volume
   docker_volume:
     name: "{{ es_volume }}"
-
-
-#
-#- name: Create keys volume
-#  docker_volume:
-#    name: "keys_volume"
