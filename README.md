@@ -223,7 +223,7 @@ FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (9 retri
 ...
 FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (2 retries left).
 FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (1 retries left).
-fatal: [localhost]: FAILED! => {"attempts": 10, "changed": true, "cmd": 
+fatal: [localhost]: FAILED! => {"attempts": 10, "changed": true, "cmd":
 ["docker", "exec", "elastic_service", "plugins/opendistro_security/tools/securityadmin.sh", "-cd", "plugins/opendistro_security/securityconfig/", "-cacert", "config/root-ca.pem", "-cert", "config/admin.pem", "-key", "config/admin-key.pem", "-icl", "-nhnv"],
 "delta": "0:00:00.028153", "end": "2019-08-02 17:38:51.778859", "msg": "non-zero return code", "rc": 1,
 "start": "2019-08-02 17:38:51.750706",

@@ -9,28 +9,28 @@
   copy:
     src: "keys"
     dest: "{{ configuration_dir }}/es/"
-    mode: 0600
+    mode: 0644
 
 
 - name: Create ElasticSearch global configuration
   template:
     src: elasticsearch-secured.yml.j2
     dest: "{{ configuration_dir }}/es/elasticsearch-secured.yml"
-    mode: 0600
+    mode: 0644
 
 
 - name: Create ElasticSearch security configuration
   template:
     src: opendistro-config.yml.j2
     dest: "{{ configuration_dir }}/es/opendistro-config.yml"
-    mode: 0600
+    mode: 0644
 
 
 - name: Create Kibana configuration
   template:
     src: kibana.yml.j2
     dest: "{{ configuration_dir }}/kibana/kibana.yml"
-    mode: 0600
+    mode: 0644
 
 
 - name: Create hashes for elasticsearch passwords
@@ -48,4 +48,4 @@
   template:
     src: internal_users.yml.j2
     dest: "{{ configuration_dir }}/es/internal_users.yml"
-    mode: 0600
+    mode: 0644
