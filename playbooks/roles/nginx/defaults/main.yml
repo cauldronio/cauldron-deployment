@@ -1,0 +1,5 @@
+---
+
+NGINX_CONTAINER_NAME: 'nginx_service'
+
+NGINX_IMAGE_NAME: 'nginx:latest'

@@ -1,0 +1,7 @@
+---
+
+ELASTIC_CONTAINER_NAME: "elastic_service"
+
+ELASTIC_PORT: '9200'
+
+ELASTIC_PROTOCOL: 'https'

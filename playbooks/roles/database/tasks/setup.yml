@@ -1,0 +1,15 @@
+---
+
+- name: Ensures {{CAULDRON_CONFIG_DIR}}/database dir exists
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/database"
+    state: directory
+    recurse: yes
+  tags: [database]
+
+
+- name: Crete Database settings and copy to {{CAULDRON_CONFIG_DIR}}/database
+  template:
+    src: database.sql.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/database/database.sql"
+  tags: [database]

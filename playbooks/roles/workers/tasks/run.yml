@@ -1,0 +1,8 @@
+---
+
+- name: "Run {{NUM_WORKERS}} workers"
+  include_tasks: worker_run.yml
+  loop: "{{ range(0, NUM_WORKERS)|list }}"
+  loop_control:
+    loop_var: worker_id
+  tags: [worker]

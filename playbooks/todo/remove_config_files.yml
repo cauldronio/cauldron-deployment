@@ -1,0 +1,41 @@
+---
+
+- name: Remove database files
+  file:
+    state: absent
+    path: "{{CAULDRON_CONFIG_DIR}}/database"
+
+- name: Remove django files
+  file:
+    state: absent
+    path: "{{CAULDRON_CONFIG_DIR}}/django"
+
+- name: Remove Kibana files
+  file:
+    state: absent
+    path: "{{CAULDRON_CONFIG_DIR}}/kibana"
+
+- name: Remove ES files
+  file:
+    state: absent
+    path: "{{CAULDRON_CONFIG_DIR}}/es"
+
+- name: Remove Panels files
+  file:
+    state: absent
+    path: "{{ CAULDRON_CONFIG_DIR }}/panels"
+
+- name: Remove Mordred files
+  file:
+    state: absent
+    path: "{{ CAULDRON_CONFIG_DIR }}/mordred"
+
+- name: Remove Panels files
+  file:
+    state: absent
+    path: "{{ CAULDRON_CONFIG_DIR }}/archimedes_panels"
+
+- name: Remove Nginx files
+  file:
+    state: absent
+    path: "{{ CAULDRON_CONFIG_DIR }}/nginx"

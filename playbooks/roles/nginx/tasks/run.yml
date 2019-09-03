@@ -1,0 +1,18 @@
+---
+
+- name: Run NGINX
+  vars:
+    tmp_nginx_ports:
+      - "{{ CAULDRON_PORT }}:{{ CAULDRON_PORT }}"
+  docker_container:
+    name: "{{ NGINX_CONTAINER_NAME }}"
+    image: "{{ NGINX_IMAGE_NAME }}"
+    state: started
+    restart_policy: "always"
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+    ports: '{{tmp_nginx_ports + ["80:80"] if ENABLE_PORT_80 else tmp_nginx_ports}}'
+    volumes:
+      - "{{CAULDRON_CONFIG_DIR}}/nginx/nginx_cauldron.conf:/etc/nginx/conf.d/nginx_cauldron.conf"
+      - "{{CAULDRON_CONFIG_DIR}}/nginx/certificates:/certificates"
+  tags: [nginx]

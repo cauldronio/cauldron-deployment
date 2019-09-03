@@ -1,0 +1,24 @@
+---
+
+- name: Ensures {{CAULDRON_CONFIG_DIR}}/nginx/certificates dir exists
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/nginx/certificates"
+    state: directory
+    recurse: yes
+  tags: [nginx]
+
+
+- name: Create NGINX config file
+  template:
+    src: nginx_cauldron.conf.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/nginx/nginx_cauldron.conf"
+  tags: [nginx]
+
+
+- name: Copy NGINX SSL Keys
+  synchronize:
+    src: "{{inventory_hostname}}/nginx_keys/"
+    dest: "{{ CAULDRON_CONFIG_DIR }}/nginx/certificates"
+    recursive: yes
+    delete: yes
+  tags: [nginx]

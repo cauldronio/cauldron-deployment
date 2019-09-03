@@ -1,0 +1,29 @@
+---
+
+## Setup and run Cauldron
+##
+## For this playbook to work, ensure docker-py is installed
+##
+## For running:
+## ansible-playbook cauldron.yml -i inventories/<name>
+##
+## You can run a single container using tags.
+## ansible-playbook cauldron.yml -i inventories/<name> -t webserver
+##
+## Available tags: worker, webserver, panels, database, nginx, elastic, kibana
+##
+## Variables are defined in the inventory file
+
+
+- import_playbook: create_network.yml
+
+- hosts: all
+  roles:
+    - common
+    - database
+    - webserver
+    - elasticsearch
+    - kibana
+    - workers
+    - nginx
+    - panels

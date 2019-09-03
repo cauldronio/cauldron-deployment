@@ -1,0 +1,10 @@
+---
+
+- name: "Remove {{WORKER_CONTAINER_NAME}}_{{worker_id}} container"
+  vars:
+    docker_worker_name: "{{WORKER_CONTAINER_NAME}}_{{worker_id}}"
+  docker_container:
+    name: "{{ docker_worker_name }}"
+    state: absent
+    force_kill: yes
+  tags: [worker]

@@ -1,0 +1,16 @@
+---
+
+- name: Ensures {{CAULDRON_CONFIG_DIR}}/kibana dir exists
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/kibana"
+    state: directory
+    recurse: yes
+  tags: [kibana]
+
+
+- name: Kibana config files
+  template:
+    src: kibana.yml.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/kibana/kibana.yml"
+    mode: 0644
+  tags: [kibana]

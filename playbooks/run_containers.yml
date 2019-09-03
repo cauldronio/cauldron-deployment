@@ -1,0 +1,39 @@
+---
+
+- hosts: all
+  tasks:
+  - include_role:
+      name: database
+      tasks_from: run
+    tags: [database]
+
+  - include_role:
+      name: elasticsearch
+      tasks_from: run
+    tags: [elastic]
+
+  - include_role:
+      name: kibana
+      tasks_from: run
+    tags: [kibana]
+
+  - include_role:
+      name: nginx
+      tasks_from: run
+    tags: [nginx]
+
+  - include_role:
+      name: webserver
+      tasks_from: run
+    tags: [webserver]
+
+  - include_role:
+      name: workers
+      tasks_from: run
+    tags: [worker]
+
+  - include_role:
+      name: panels
+      tasks_from: run
+    tags: [panels]
+

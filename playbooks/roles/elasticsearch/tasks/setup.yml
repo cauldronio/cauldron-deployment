@@ -1,0 +1,54 @@
+---
+
+- name: "Ensures {{CAULDRON_CONFIG_DIR}}/es dir exists"
+  file: path={{CAULDRON_CONFIG_DIR}}/es state=directory
+  tags: [elastic]
+
+- name: "Copy SSL keys for Elasticseach"
+  synchronize:
+    src: "{{inventory_hostname}}/es_keys/"
+    dest: "{{ CAULDRON_CONFIG_DIR }}/es/keys"
+    recursive: yes
+    delete: yes
+  tags: [elastic]
+
+
+- name: ES global files
+  template:
+    src: elasticsearch-secured.yml.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/es/elasticsearch-secured.yml"
+  tags: [elastic]
+
+
+- name: ES security files
+  template:
+    src: opendistro-config.yml.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/es/opendistro-config.yml"
+  tags: [elastic]
+
+
+- name: Create venv for passwords
+  pip:
+    name: bcrypt
+    virtualenv: "{{ CAULDRON_CONFIG_DIR }}/bcrypt-env"
+  tags: [elastic]
+
+
+- name: Create hashes for ES passwords
+  include: hash_password.yml
+  with_items:
+      - { loop_psw: "{{ ELASTIC_ADMIN_PASSWORD }}", loop_output: "hash_ELASTIC_ADMIN_PASSWORD" }
+      - { loop_psw: "{{ ELASTIC_LOGSTASH_PASSWORD }}", loop_output: "hash_ELASTIC_LOGSTASH_PASSWORD" }
+      - { loop_psw: "{{ ELASTIC_KIBANASERVER_PASSWORD }}", loop_output: "hash_ELASTIC_KIBANASERVER_PASSWORD" }
+      - { loop_psw: "{{ ELASTIC_KIBANARO_PASSWORD }}", loop_output: "hash_ELASTIC_KIBANARO_PASSWORD" }
+      - { loop_psw: "{{ ELASTIC_READALL_PASSWORD }}", loop_output: "hash_ELASTIC_READALL_PASSWORD" }
+      - { loop_psw: "{{ ELASTIC_SNAPSHOTRESTORE_PASSWORD }}", loop_output: "hash_ELASTIC_SNAPSHOTRESTORE_PASSWORD" }
+  tags: [elastic]
+
+
+- name: Create ES internal_users configuration and copy to {{ CAULDRON_CONFIG_DIR }}/es/
+  template:
+    src: internal_users.yml.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/es/internal_users.yml"
+    mode: 0644
+  tags: [elastic]

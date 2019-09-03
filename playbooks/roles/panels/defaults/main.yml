@@ -1,0 +1,17 @@
+---
+
+PANELS_CONTAINER_NAME: "panels_cauldron"
+
+PANELS_USERNAME: "defaultpanels"
+
+
+CAULDRON_CONFIG_DIR: "/tmp/cauldron"
+PANELS_IMAGE_NAME: "cauldron2-panels:test"
+PANELS_IMAGE_DOCKERFILE_PATH: "../docker/panels/"
+PANELS_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/panels-build"
+
+ELASTIC_PROTOCOL: "https"
+ELASTIC_PORT: '9200'
+KIBANA_PROTOCOL: 'http'
+KIBANA_PORT: '5601'
+KIBANA_URL_PATH: '/kibana'

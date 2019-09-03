@@ -1,0 +1,47 @@
+---
+## Build Cauldron worker image
+##
+## For this playbook to work, ensure docker-py is installed
+##
+## You can modify the variables in inventories/<name>/group_vars/worker.yml
+
+- name: "Ensures {{ WORKER_IMAGE_BUILD_DIR }} exists"
+  file:
+    path: "{{ WORKER_IMAGE_BUILD_DIR }}"
+    state: directory
+  tags: [worker]
+
+- name: "Copy Docker context to {{ WORKER_IMAGE_BUILD_DIR }}"
+  synchronize:
+    src: "{{ WORKER_IMAGE_DOCKERFILE_PATH }}"
+    dest: "{{ WORKER_IMAGE_BUILD_DIR }}"
+    recursive: yes
+    delete: yes
+  tags: [worker]
+
+- name: "Copy source code from {{ WORKER_IMAGE_LOCAL_CODE | default('\"undefined\"') }} to {{ WORKER_IMAGE_BUILD_DIR }}/src"
+  synchronize:
+    src: "{{ WORKER_IMAGE_LOCAL_CODE }}/"
+    dest: "{{ WORKER_IMAGE_BUILD_DIR }}/src"
+    recursive: yes
+    delete: yes
+  when: 'WORKER_IMAGE_LOCAL_CODE is defined'
+  tags: [worker]
+
+- name: "Clone source code from {{ WORKER_IMAGE_GIT_CODE  | default('\"undefined\"') }} to {{ WORKER_IMAGE_BUILD_DIR }}/src"
+  git:
+    repo: "{{ WORKER_IMAGE_GIT_CODE }}"
+    dest: "{{ WORKER_IMAGE_BUILD_DIR }}/src"
+    version: "{{ WORKER_IMAGE_GIT_VERSION }}"
+  when: 'WORKER_IMAGE_LOCAL_CODE is not defined'
+  tags: [worker]
+
+- name: "Build the image for Cauldron worker"
+  docker_image:
+    name: "{{ WORKER_IMAGE_NAME }}"
+    build:
+      path: "{{ WORKER_IMAGE_BUILD_DIR }}/"
+      pull: "no"
+    source: build
+    state: present
+  tags: [worker]

@@ -1,0 +1,47 @@
+---
+## Build Cauldron images
+##
+## For this playbook to work, ensure docker-py is installed
+##
+## For running:
+## ansible-playbook build_images.yml -i inventories/<name>
+##
+## You can build a single image using tags.
+## ansible-playbook build_images.yml -i inventories/<name> -t webserver
+##
+## Available tags: worker, webserver, panels, database
+##
+## ::: VARIABLES USED :::
+## --- Name for the image ---
+## WEB_IMAGE_NAME, WORKER_IMAGE_NAME, PANELS_IMAGE_NAME, DB_IMAGE_NAME
+## --- Path for the context build. It will include the Dockerfile and the files needed to that directory  ---
+## PANELS_IMAGE_BUILD_DIR, DB_IMAGE_BUILD_DIR, WEB_IMAGE_BUILD_DIR, WORKER_IMAGE_BUILD_DIR
+## --- Location of the Dockerfile in this repository ---
+## PANELS_IMAGE_DOCKERFILE_PATH, DB_IMAGE_DOCKERFILE_PATH, WEB_IMAGE_DOCKERFILE_PATH, WORKER_IMAGE_DOCKERFILE_PATH
+## --- Define this variable if you want to use local code for the image ---
+## WEB_IMAGE_LOCAL_CODE, WORKER_IMAGE_LOCAL_CODE
+## --- Git location of the code to be cloned ---
+## WEB_IMAGE_GIT_CODE, WEB_IMAGE_GIT_VERSION, WORKER_IMAGE_GIT_CODE, WORKER_IMAGE_GIT_VERSION
+
+
+- hosts: all
+  tasks:
+    - import_role:
+        name: webserver
+        tasks_from: build
+      tags: [webserver]
+
+    - import_role:
+        name: workers
+        tasks_from: build
+      tags: [worker]
+
+    - import_role:
+        name: database
+        tasks_from: build
+      tags: [database]
+
+    - import_role:
+        name: panels
+        tasks_from: build
+      tags: [panels]

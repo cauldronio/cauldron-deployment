@@ -1,0 +1,21 @@
+---
+
+- name: Run worker {{worker_id}}
+  vars:
+    docker_worker_name: "{{WORKER_CONTAINER_NAME}}_{{worker_id}}"
+    worker_volumes:
+      - "{{CAULDRON_CONFIG_DIR}}/mordred/worker_config.py:/code/MordredManager/config.py"
+      - "{{CAULDRON_CONFIG_DIR}}/mordred/setup-default.cfg:/code/MordredManager/mordred/setup-default.cfg"
+      - "{{LOGS_MOUNT_POINT}}:/dashboard_logs"
+  docker_container:
+    name: "{{ docker_worker_name }}"
+    image: "{{ WORKER_IMAGE_NAME }}"
+    restart_policy: "on-failure"
+    restart_retries: 5
+    state: started
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+    env:
+      WORKER_NAME: "{{ docker_worker_name }}"
+    volumes: '{{worker_volumes + [WORKER_MOUNT_CODE + ":/code"] if WORKER_MOUNT_CODE is defined else worker_volumes}}'
+  tags: [worker]

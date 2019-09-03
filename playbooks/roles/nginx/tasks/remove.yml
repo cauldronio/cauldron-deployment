@@ -1,0 +1,8 @@
+---
+
+- name: "Remove {{NGINX_CONTAINER_NAME}} container"
+  docker_container:
+    name: "{{ NGINX_CONTAINER_NAME }}"
+    state: absent
+    force_kill: yes
+  tags: [nginx]

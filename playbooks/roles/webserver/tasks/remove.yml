@@ -1,0 +1,8 @@
+---
+
+- name: "Remove {{WEB_CONTAINER_NAME}} container"
+  docker_container:
+    name: "{{ WEB_CONTAINER_NAME }}"
+    state: absent
+    force_kill: yes
+  tags: [webserver]

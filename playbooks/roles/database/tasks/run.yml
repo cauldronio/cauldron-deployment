@@ -1,0 +1,14 @@
+---
+
+- name: Run database
+  docker_container:
+    name: "{{ DB_CONTAINER_NAME }}"
+    image: "{{ DB_IMAGE_NAME }}"
+    state: started
+    restart_policy: "always"
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+    volumes:
+      - "{{CAULDRON_CONFIG_DIR}}/database:/docker-entrypoint-initdb.d"
+      - "{{DB_MOUNT_POINT}}:/var/lib/mysql"
+  tags: [database]

@@ -21,24 +21,21 @@ This repository contains relevant information for running Cauldron in your own c
 
 - **Docker SDK for Python** is required by Ansible to execute Docker commands in Python scripts. Depending on your Ansible's Python version you will need to execute the following:
 
-  - **Python 2 (~2.6)**
+  - **Python <= 2.6**
   ```bash
      $ pip install docker-py
   ```
 
-  - **Python 2 (~2.7)**
+  - **Python 2.7 and > 3**
   ```bash
      $ pip install docker
-  ```
-
-  - **Python 3**
-  ```bash
+     # or
      $ pip3 install docker
   ```
 
 - The following ports will be used in the target machine. You can change this later in the configuration file.
 
-  - **9000**: Cauldron server
+  - **9000**: Cauldron web interface
 
 
 ## Clone and configure
@@ -46,10 +43,10 @@ This repository contains relevant information for running Cauldron in your own c
 1. Download the latest version of this repository with `git clone` and navigate to that directory:
      ```bash
     $ git clone https://gitlab.com/cauldron2/cauldron-deployment.git
-    $ cd deployment
+    $ cd cauldron-deployment
     ```
 
-2. You will need to fill some **configuration** before running any task.
+2. Create Oauth application keys for each backend or the those that you want to use:
 
     - Create a **GitHub Oauth App** and get the keys. For creating a new Application [follow this link](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Some information for the application:
         - **Application name**: A name for the application, for example `Bitergia Cauldron`
@@ -66,136 +63,231 @@ This repository contains relevant information for running Cauldron in your own c
 
         After the registration, you can obtain the `Application ID` and `Secret`.
 
-    - Create a **Meetup Oauth App** and get the keys. For creating a new Application [follow this link](https://secure.meetup.com/meetup_api/oauth_consumers/create/). Some information for the application:
+    - ~~Create a **Meetup Oauth App** and get the keys. For creating a new Application [follow this link](https://secure.meetup.com/meetup_api/oauth_consumers/create/).~~ **Meetup API has changed and you cannot create free applications anymore. We keep this section if you have already one for testing the site**. Some information for the application:
         - **Consumer Name**: A name for the application, for example `Bitergia Cauldron`
         - **Application website**: A website for the application, for example `https://cauldron2.gitlab.io/`
         - Request access for personal use if you are going to deploy locally, request for organization if you are going to deploy it publicly (The second may take some days to be accepted).
         - **Redirect URI **: This is important. It should be the Homepage URL and `/meetup-login`. For example, for your local computer: `https://localhost:9000/meetup-login`. (You can change it later)
         - **Phone number and Description**: this is for accepting the application, provide some description.
-        Finally read and accept the terms and conditions. After the registration it may take one day to be available. Later, you can obtain the `Application ID` and `Secret`
+        Finally read and accept the terms and conditions. After the registration, you can obtain the `Application ID` and `Secret`
 
-    - Rename the file `template` inside playbooks/group_vars  as `local` and open it with a text editor:
+3. Change **Cauldron variables** for your host:
+
+    - If you want to run Cauldron locally, rename (or duplicate) the directory `template` inside playbooks/inventories as `local`. This directory contains all the variables that could be different for each host.
         ``` bash
-        $ cd playbooks
-        $ cp group_vars/template group_vars/local
-        $ <prefered_editor> group_vars/local
+        $ cd playbooks/inventories
+        $ cp -r template local
         ```
-        - You will need to fill:
+
+    - *Only if you want to change the host*: open the file `playbooks/inventories/local/hosts` and modify the variables included. [You can also add another variables defined in this link](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters).
+
+    - Finally change the variables related to Cauldron. Open the file `playbooks/inventories/local/host_vars/cauldron_host.yml` and fill the configuration:
+        ``` bash
+        $ <prefered_editor> local/host_vars/cauldron_host.yml
+        ```
+        - Fill the Oauth keys:
           - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
           - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
-          - Your Meetup Oauth keys (`meetup_client_id` and `meetup_client_secret`).
+          - *Only if you have the Meetup keys*: Your Meetup Oauth keys (`meetup_client_id` and `meetup_client_secret`).
 
-        You can leave the other configuration as it is, but there are some points that could be interesting:
-        - If you are going to run Cauldron in a public IP is important that you change some of the passwords: `db_root_password`, `db_password` and `es_admin_password` are the most important.
-        - Some configuration files for Docker containers will be mounted in the local filesystem. The default directory is `/tmp` because of permissions. If you want another directory, you can modify it with the `configuration_dir` option.
-        - If you are using any of the mentioned ports before (9000), you can change them here. For production port 443 is desirable and set `enable_port_80` to true (for redirects).  
-        - You can select how many workers for mordred will be running in the `num_workers` option. By default is **3**, but you can change it.
+        - You can leave the other configuration as it is, but there are some variables that could be interesting:
 
-    - Another important configuration is to change the certificates for your deployment machine. All the certificates used are located inside `playbooks/roles/configure_cauldron/files/keys`.
+          - Some configuration files for containers will be stored in the target host. The default directory is `/tmp/cauldron-data` because of permissions. If you want another directory, you can modify it with the `CAULDRON_CONFIG_DIR` option.
+          - You can select how many workers for mordred will be running in the `NUM_WORKERS` option. By default is **5**, but you can change it.
+          - If you are using the port 9000, you can change it here. For production, use the port 443 and set `ENABLE_PORT_80` to true (only for nginx redirects).
+          - If you are going to run Cauldron in a public IP is important that you change some of the passwords. The default is: `test-password`.
 
-      By default, there aren't certificates, you have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
+4. Create/change the certificates for your deployment machine.
 
-        ```bash
-        $ cd playbooks/roles/configure_cauldron/files/keys
-        $ ./generate.sh  
-        ```
-        One of the most important certificates generated is `ssl_server`, it is used for the authentication of your public machine. If you use a self-signed certificate, the default case, users will be advised about the insecurity of your site. Please, try to obtain a trusted-signed certificate in order to make your site a safest place (We are working with [`certbot`](https://certbot.eff.org/), a playbook will be soon available).
+    All the certificates used are located inside `playbooks/files/cauldron_host`.
 
-        For more information about each certificate, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
+    You have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
 
-3. Finally, it's necessary to have an inventory file for the target machine. If you are running it locally, you can use the `local` file inside `playbooks` directory.
+    ```bash
+    $ cd playbooks/files/cauldron_host
+    $ ./generate.sh  
+    ```
+    One of the most important certificates generated is `ssl_server`, it is used for the authentication of your public machine. If you use a self-signed certificate, the default case, users will be advised about the insecurity of your site. Please, try to obtain a trusted-signed certificate in order to make your site a safest place.
 
-    **IMPORTANT**: If you are going to create a new inventory, the name for the group (the header `[]`) must be the same as the name of the file inside `group_vars` that you previously renamed/copied.
+    For more information about each certificate, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
 
-## Run
+## Run for impatients
 
 Navigate to `playbooks` directory from the root of the repository.
 
 ```bash
 $ cd playbooks
 ```
-There you will find some useful files for running Cauldron:
+There you will find some useful Ansible playbooks for running Cauldron. If you just want to **run Cauldron**, run the following command:
+  ``` bash
+  $ ansible-playbook -i inventories/local cauldron.yml
+  ```
+  It will deploy Cauldron in the specified host in the inventory file. All the images will be pulled from [DockerHub](https://hub.docker.com/u/cauldron2):
+  - Create Docker network
+  - Run Cauldron web interface in Docker
+  - Run ElasticSearch (OpenDistro) in Docker
+  - Run Kibana (OpenDistro) in Docker
+  - Run MariaDB in Docker
+  - Import default panels for Kibana
 
-- **`configure_cauldron.yml`**. You will need to run this playbook the first time. This playbook will:
-    - Create a Docker Network
-    - Create a Docker Volume
-    - Create the Django configuration and copy to remote (localhost in this guide)
-    - Create the Database configuration
-    - Create OpenDistro configuration
-    - Copy panels for Kibana
-    - Build Django image
-    - Build Mordred image
-    - Build Database image
-    - Build Panels image
-    - Pull a mysql image
-    - Pull a nginx image
-    - Pull Opendistro images, ES and Kibana
+## Run Step by step
 
-    You can skip the creation of the images if you have them locally and just want to update the configuration files. Use for that `--skip-tags create_image`.
+Now we will detail all the steps for running Cauldron and the variables that can be modified.
 
-    The command for running this playbook is:
+All the playbooks are tagged, therefore you can run them with the flag `-t` and any of the following keyworks: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `panels`
+
+- **Build the images.**
+
+  All the images are available in DockerHub with the latest stable version, but you can build them locally with `build_images.yml`. It builds all the images necessary for Cauldron. The Dockerfiles and inside the `docker` directory in the root of this repository. You can modify or overwrite the variables for a specific host in `inventories/<name>/host_vars`. The most important variables are:
+    - `XYZ_IMAGE_NAME`: Name for the image
+    - `WEB_LOCAL_CODE`/`WORKER_LOCAL_CODE`: Define this variable for including your local code in  the image that you want to create. By default the code is cloned from the repository and included in the image.
+
+  A complete list of the variables used are described in `build_images.yml`.
+
+  For running this playbook execute the following command:
+  > Tags available for this playbook are: `webserver`, `worker`, `database`, `panels`
+
+  ``` bash
+  $ ansible-playbook -i inventories/local build_images.yml
+  ```
+
+  You can see the images created:
+  ```bash
+  $ docker images
+  REPOSITORY               TAG        IMAGE ID           CREATED           SIZE
+  cauldron2/panels         X          aaabbbccc11        1 hour ago        925MB
+  cauldron2/worker         X          aaabbbccc22        1 hour ago        1.03GB
+  cauldron2/webserver      X          aaabbbccc33        1 hour ago        1.05GB
+  cauldron2/database       X          aaabbbccc44        1 hour ago        553MB
+  ...                      ...        ...                ...                ...
+  ```
+  You can push the images created to DockerHub with [docker push](https://docs.docker.com/engine/reference/commandline/push/)
+
+
+- **Create the Cauldron internal network.**
+
+  You can change the name of the network in `inventories/<xxx>/host_vars/<yyy>`: `NETWORK_NAME`
+
+  ``` bash
+  $ ansible-playbook -i inventories/local create_network.yml
+  ```
+
+  You can see the network created:
+  ``` bash
+  $ docker network ls
+  NETWORK ID         NAME                DRIVER              SCOPE
+  aaabbbccc55        network_cauldron    bridge              local
+  ...                 ...                 ...                 ...
+  ```
+
+
+- **Create configuration files for containers**
+
+    In this step we will create all the configuration files for Cauldron. This files will be stored in the directory defined by `CAULDRON_CONFIG_DIR`. That variable can be modified for each host. Run the following command:
+
+    > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `panels`
+
     ```bash
-    $ ansible-playbook -i <inventory_file> configure_cauldron.yml
+    $ ansible-playbook -i inventories/local create_setup_files.yml
     ```
-    It builds the Dockerfile inside `cauldron` and `mordred` that are in this repository.
 
-    You can see the images created:
-    ```bash
-    $ docker images
-    REPOSITORY              TAG                 IMAGE ID            CREATED             SIZE
-    mordred                 latest              aaabbbcccdd1        0 seconds ago      922MB
-    cauldron                latest              aaabbbcccdd2        0 seconds ago      1.08GB
-    database_cauldron       latest              aaabbbcccdd3        0 seconds ago      553MB
-    mysql                   latest              aaabbbcccdd4        0 seconds ago      443MB
-    nginx                   latest              aaabbbcccdd5        0 seconds ago      109MB
-    panels_image            latest              aaabbbcccdd6        0 seconds ago      936MB
-    amazon/opendistro-f...  0.9.0               aaabbbcccdd7        0 seconds ago      774MB
-    amazon/opendistro-f...  0.9.0               aaabbbcccdd8        0 seconds ago      527MB
-    grimoirelab/installed   0.2.23              aaabbbcccdd9        0 seconds ago      889MB
-    ...
+    This will create in the host and directory defined in your inventory the following directories and files:
     ```
-    And the configuration created by default in `/tmp/database`, `/tmp/django`, `/tmp/kibana`, `/tmp/mordred`, `/tmp/archimedes_panels`, `/tmp/es` and `/tmp/nginx`.
-- **`run_cauldron.yml`**. With this playbook you will be able to run the Docker images: `cauldron`, `mordred`, `database_cauldron`, `nginx` and `opendistro` images
-    ```bash
-    $ ansible-playbook -i <inventory_file> run_cauldron.yml
+  cauldron-data
+  ├── bcrypt-env
+  ├── database
+  │   └── database.sql
+  ├── django
+  │   └── django_settings.py
+  ├── es
+  │   ├── elasticsearch-secured.yml
+  │   ├── internal_users.yml
+  │   ├── keys
+  │   │   ├── admin-key.pem
+  │   │   ├── admin.pem
+  │   │   ├── node-1-key.pem
+  │   │   ├── node-1.pem
+  │   │   ├── root-ca-key.pem
+  │   │   ├── root-ca.pem
+  │   │   └── root-ca.srl
+  │   └── opendistro-config.yml
+  ├── jwt_key
+  │   ├── jwtR256.key
+  │   ├── jwtR256.key.pub
+  │   └── pub.jwtR256.key
+  ├── kibana
+  │   └── kibana.yml
+  ├── mordred
+  │   ├── setup-default.cfg
+  │   └── worker_config.py
+  ├── nginx
+  │   ├── certificates
+  │   │   ├── ssl_server.crt
+  │   │   └── ssl_server.key
+  │   └── nginx_cauldron.conf
+  └── panels
+      └── settings.py
     ```
-    Once it has finished, you can see the running containers and the volume and network created:
+
+- **Run Cauldron**
+
+    In this last step we run the Cauldron containers.
+
+    > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `panels`
+
+    ``` bash
+    $ ansible-playbook -i inventories/local run_containers.yml
+    ```
+
+    Once it has finished, you can see the running containers:
     ```bash
     $ docker ps
-    CONTAINER ID        IMAGE                                              COMMAND                  CREATED             STATUS              PORTS                                                      NAMES
-    7f72551f5018        nginx                                              "nginx -g 'daemon of…"   5 hours ago         Up 5 hours          80/tcp, 0.0.0.0:9000->9000/tcp                             nginx_service
-    81fc9f917120        amazon/opendistro-for-elasticsearch:0.9.0          "/usr/local/bin/dock…"   5 hours ago         Up 5 hours          9200/tcp, 9600/tcp, 9300/tcp                               elastic_service
-    0faeb212a4b3        amazon/opendistro-for-elasticsearch-kibana:0.9.0   "/usr/local/bin/kiba…"   5 hours ago         Up 5 hours          5601/tcp                                                   kibana_service
-    8ae30f440689        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_3
-    bd3996f77f1c        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_2
-    cb4e6dcd27d0        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_1
-    e997f0a02e67        mordred                                            "python3 manager.py"     5 hours ago         Up 5 hours                                                                     mordred_service_0
-    55cca3a6d1be        cauldron                                           "/entrypoint.sh"         5 hours ago         Up 2 hours          8000/tcp                                                   cauldron_service
-    71eb8dc42702        database_cauldron                                  "/entrypoint.sh"         5 hours ago         Up 5 hours          3306/tcp                                                   db_cauldron_service
-    ...
-
-    $ docker volume ls
-    NETWORK ID          NAME                DRIVER              SCOPE
-    b9a99d39aa1c        network_cauldron    bridge              local
-    ...
-
-    $ docker network ls
-    DRIVER              VOLUME NAME
-    local               cauldron_volume
-    ...
+    CONTAINER ID        IMAGE                              COMMAND                  ...   PORTS                            NAMES
+    abcdefghij01        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_4
+    abcdefghij02        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_3
+    abcdefghij03        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_2
+    abcdefghij04        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_1
+    abcdefghij05        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_0
+    abcdefghij06        cauldron2/webserver:X              "/entrypoint.sh"         ...   8000/tcp                         cauldron_service
+    abcdefghij07        nginx:latest                       "nginx -g 'daemon of…"   ...   80/tcp, 0.0.0.0:9000->9000/tcp   nginx_service
+    abcdefghij08        amazon/opendi...arch-kibana:0.9.0  "/usr/local/bin/kiba…"   ...                                    kibana_service
+    abcdefghij09        amazon/opendi..arch:0.9.0          "/usr/local/bin/dock…"   ...   9200/tcp, 9300/tcp, 9600/tcp     elastic_service
+    abcdefghij10        cauldron2/database:X               "/entrypoint.sh"         ...   3306/tcp                         db_cauldron_service
     ```
 
-    If everything works correctly, you can:
+    If everything works correctly, you can **Analyze** some repositories at https://localhost:9000
 
-    - **Analyze** some repositories at https://localhost:9000
+  If it doesn't work, check the **Troubleshooting** section, below.
 
-    If it doesn't work, check the Troubleshooting section, below.
+- **Stop and remove**.
 
-- **`remove_cauldron.yml`**. With this playbook you can remove all the containers, images, volumes, networks and configuration generated.
+  - Stop and remove all the containers running:
+  > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`
 
     ```bash
-    $ ansible-playbook -i <inventory_file> remove_cauldron.yml
+    $ ansible-playbook -i inventories/local rm_containers.yml
     ```
+  - Remove network:
+
+    ```bash
+    $ ansible-playbook -i inventories/local rm_network.yml
+    ```
+
+  - Remove volumes:
+  > Tags available for this playbook are: `logs`, `elastic`, `database`
+
+    ```bash
+    $ ansible-playbook -i inventories/local rm_volumes.yml
+    ```
+
+## Development environment
+
+For running your Django and Worker local code in the container for development purposes, you need to define the location of the code with the variables `WEB_MOUNT_CODE` and `WORKER_MOUNT_CODE`. If this variables are not defined the containers will use the code from the images.
+
+
+> TODO:
+> - Script for remove configuration
+> - Include documentation for certbot (git add playbook)
 
 ## Admin page
 

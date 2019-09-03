@@ -1,0 +1,15 @@
+---
+
+- name: "Load default panels (may take some time): {{PANELS_CONTAINER_NAME}}"
+  docker_container:
+    name: "{{ PANELS_CONTAINER_NAME }}"
+    image: "{{ PANELS_IMAGE_NAME }}"
+    state: started
+    restart: true
+    detach: false
+    cleanup: yes
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+    volumes:
+      - "{{CAULDRON_CONFIG_DIR}}/panels/settings.py:/settings.py"
+  tags: [panels]

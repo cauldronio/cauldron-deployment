@@ -1,7 +1,0 @@
----
-
-- name: Remove docker network
-  docker_network:
-    name: "{{network_name}}"
-    state: absent
-    force: yes

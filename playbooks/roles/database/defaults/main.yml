@@ -1,0 +1,15 @@
+---
+
+DB_CONTAINER_NAME: "db_cauldron_service"
+
+DB_USER: "grimoirelab"
+DB_PORT: "3306"
+
+DB_SORTINGHAT_NAME: "db_sortinghat"
+DB_DJANGO_NAME: "db_cauldron"
+
+
+CAULDRON_CONFIG_DIR: "/tmp/cauldron"
+DB_IMAGE_NAME: "cauldron2-database:test"
+DB_IMAGE_DOCKERFILE_PATH: "../docker/database/"
+DB_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/database-build"

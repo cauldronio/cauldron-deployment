@@ -1,0 +1,8 @@
+---
+
+- name: "Remove {{NUM_WORKERS}} workers"
+  include_tasks: worker_remove.yml
+  loop: "{{ range(0, NUM_WORKERS)|list }}"
+  loop_control:
+    loop_var: worker_id
+  tags: [worker]

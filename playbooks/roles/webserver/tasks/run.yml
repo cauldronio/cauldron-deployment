@@ -1,0 +1,17 @@
+---
+
+- name: Run Django webserver
+  vars:
+    webserver_volumes:
+      - "{{CAULDRON_CONFIG_DIR}}/django/django_settings.py:/code/Cauldron2/Cauldron2/settings.py"
+      - "{{LOGS_MOUNT_POINT}}:/dashboard_logs"
+      - "{{CAULDRON_CONFIG_DIR}}/jwt_key/jwtR256.key:/code/Cauldron2/CauldronApp/jwtR256.key"
+  docker_container:
+    name: "{{ WEB_CONTAINER_NAME }}"
+    image: "{{ WEB_IMAGE_NAME }}"
+    state: started
+    restart_policy: "always"
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+    volumes: '{{webserver_volumes + [WEB_MOUNT_CODE + ":/code"] if WEB_MOUNT_CODE is defined else webserver_volumes}}'
+  tags: [webserver]

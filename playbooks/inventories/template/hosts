@@ -1,0 +1,16 @@
+[server]
+# Name for the host, same file name in hosts_vars
+cauldron_host
+
+
+[server:vars]
+# Type of connection: ssh or local
+ansible_connection=local
+
+# Location of the host: localhost, IP or domain:
+ansible_host=localhost
+
+# User used for the remote location
+# ansible_ssh_user=
+
+# ansible_python_interpreter="{{ansible_playbook_python}}"

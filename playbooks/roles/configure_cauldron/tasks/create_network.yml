@@ -1,7 +1,0 @@
----
-
-# @action create_network.yml # Create a Docker network to connect every container, specifying the name of the network with the variable `<network_name>`.
-# @var network_name: network_cauldron # Name of the Docker network used.
-- name: Create a network for cauldron
-  docker_network:
-    name: "{{ network_name }}"

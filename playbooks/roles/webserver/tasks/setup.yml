@@ -1,0 +1,21 @@
+---
+
+- name: "Ensures {{CAULDRON_CONFIG_DIR}}/django dir exists"
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/django"
+    state: directory
+    recurse: yes
+  tags: [webserver]
+
+
+- name: Django Secret Key for settings.py
+  command: openssl rand -base64 32
+  register: django_secret_key
+  tags: [webserver]
+
+
+- name: Crete Django setting.py
+  template:
+    src: django_settings.py.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/django/django_settings.py"
+  tags: [webserver]

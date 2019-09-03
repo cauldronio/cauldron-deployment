@@ -1,0 +1,21 @@
+---
+- name: "Ensures {{CAULDRON_CONFIG_DIR}}/mordred dir exists"
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/mordred"
+    state: directory
+    recurse: yes
+  tags: [worker]
+
+
+- name: "Create workers config files "
+  template:
+    src: worker_config.py.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/mordred/worker_config.py"
+  tags: [worker]
+
+
+- name: "Create setup.cfg for sirmordred"
+  template:
+    src: setup.cfg.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/mordred/setup-default.cfg"
+  tags: [worker]

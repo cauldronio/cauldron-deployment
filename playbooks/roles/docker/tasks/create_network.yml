@@ -1,0 +1,5 @@
+---
+
+- name: "Create a Docker network for Cauldron: {{ NETWORK_NAME}}"
+  docker_network:
+    name: "{{ NETWORK_NAME }}"

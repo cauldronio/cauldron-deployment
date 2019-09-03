@@ -15,7 +15,7 @@
 
 - name: Kill elasticsearch
   docker_container:
-    name: "{{ es_container_name }}"
+    name: "{{ ELASTIC_CONTAINER_NAME }}"
     state: stopped
     force_kill: yes
 

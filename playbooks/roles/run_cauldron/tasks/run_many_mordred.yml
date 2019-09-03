@@ -1,7 +1,0 @@
----
-
-- name: Run many mordred
-  include_tasks: run_mordred.yml
-  loop: "{{ range(0, num_workers)|list }}"
-  loop_control:
-    loop_var: worker_id

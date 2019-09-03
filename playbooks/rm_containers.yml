@@ -1,0 +1,34 @@
+---
+
+- hosts: all
+  tasks:
+  - include_role:
+      name: database
+      tasks_from: remove
+    tags: [database]
+
+  - include_role:
+      name: elasticsearch
+      tasks_from: remove
+    tags: [elastic]
+
+  - include_role:
+      name: kibana
+      tasks_from: remove
+    tags: [kibana]
+
+  - include_role:
+      name: nginx
+      tasks_from: remove
+    tags: [nginx]
+
+  - include_role:
+      name: webserver
+      tasks_from: remove
+    tags: [webserver]
+
+  - include_role:
+      name: workers
+      tasks_from: remove
+    tags: [worker]
+
