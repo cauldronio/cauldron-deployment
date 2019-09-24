@@ -197,6 +197,18 @@ There you will find some useful files for running Cauldron:
     $ ansible-playbook -i <inventory_file> remove_cauldron.yml
     ```
 
+## Admin page
+
+Cauldron comes with an admin page you can use to monitor the status of the server. To access this feature navigate to `/admin-page`, but you will need a user with superuser privileges.
+
+To make the creation of superusers easier, Cauldron provides a Django custom command to promote an existing user to a superuser. For example, if you want to convert the user `alice` into a superuser, you should execute the following command:
+
+```py
+python3 manage.py promote alice
+```
+
+**NOTE**: The command `promote` will set to True the flags `is_staff` and `is_superuser`, so the user promoted will be able to access the Django admin site too.
+
 ## Help!
 
 In case you have any problem with the deployment or you think this guide is incomplete, open a new issue or contact us please.
