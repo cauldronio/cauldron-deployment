@@ -143,7 +143,7 @@ This playbook makes the initial steps in order to deploy cauldron and its depend
 
 
 
-* `django_image_location`: `https://gitlab.com/cauldron2/deployment.git#:cauldron` - URL of the Django Docker image.
+* `django_image_location`: `https://gitlab.com/cauldron2/cauldron-deployment.git#:cauldron` - URL of the Django Docker image.
 
 
 
@@ -151,7 +151,7 @@ This playbook makes the initial steps in order to deploy cauldron and its depend
 
 
 
-* `mordred_image_location`: `https://gitlab.com/cauldron2/deployment.git#:mordred` - URL of the Mordred Docker image.
+* `mordred_image_location`: `https://gitlab.com/cauldron2/cauldron-deployment.git#:mordred` - URL of the Mordred Docker image.
 
 
 
@@ -159,7 +159,7 @@ This playbook makes the initial steps in order to deploy cauldron and its depend
 
 
 
-* `db_image_location`: `https://gitlab.com/cauldron2/deployment.git#:database` - URL of the Database Docker image.
+* `db_image_location`: `https://gitlab.com/cauldron2/cauldron-deployment.git#:database` - URL of the Database Docker image.
 
 
 
@@ -167,7 +167,7 @@ This playbook makes the initial steps in order to deploy cauldron and its depend
 
 
 
-* `panels_image_location`: `https://gitlab.com/cauldron2/deployment.git#:docker-panels` - URL of the Panels Docker image.
+* `panels_image_location`: `https://gitlab.com/cauldron2/cauldron-deployment.git#:docker-panels` - URL of the Panels Docker image.
 
 
 

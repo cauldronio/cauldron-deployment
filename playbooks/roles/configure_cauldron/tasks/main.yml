@@ -17,7 +17,7 @@
   import_tasks: configure_jwt_keys.yml
 
 # @action docker_build.yml (Django) # Build the Django Docker image `<django_image>` located at `<django_image_location>`.
-# @var django_image_location: https://gitlab.com/cauldron2/deployment.git:cauldron # URL of the Django Docker image.
+# @var django_image_location: https://gitlab.com/cauldron2/cauldron-deployment.git:cauldron # URL of the Django Docker image.
 # @var django_image: cauldron # Name of the Django Docker image.
 - name: Build django image
   vars:
@@ -26,7 +26,7 @@
   import_tasks: docker_build.yml
 
 # @action docker_build.yml (Mordred) # Build the Mordred Docker image `<mordred_image>` located at `<mordred_image_location>`.
-# @var mordred_image_location: https://gitlab.com/cauldron2/deployment.git:mordred # URL of the Mordred Docker image.
+# @var mordred_image_location: https://gitlab.com/cauldron2/cauldron-deployment.git:mordred # URL of the Mordred Docker image.
 # @var mordred_image: cauldron # Name of the Mordred Docker image.
 - name: Build mordred image
   vars:
@@ -35,7 +35,7 @@
   import_tasks: docker_build.yml
 
 # @action docker_build.yml (Database) # Build the Database Docker image `<db_image>` located at `<db_image_location>`.
-# @var db_image_location: https://gitlab.com/cauldron2/deployment.git:database # URL of the Database Docker image.
+# @var db_image_location: https://gitlab.com/cauldron2/cauldron-deployment.git:database # URL of the Database Docker image.
 # @var db_image: database_cauldron # Name of the Database Docker image.
 - name: Build database image
   vars:
@@ -44,7 +44,7 @@
   import_tasks: docker_build.yml
 
 # @action docker_build.yml (Panels) # Build the Panels Docker image `<panels_image>` located at `<panels_image_location>`.
-# @var panels_image_location: https://gitlab.com/cauldron2/deployment.git:docker-panels # URL of the Panels Docker image.
+# @var panels_image_location: https://gitlab.com/cauldron2/cauldron-deployment.git:docker-panels # URL of the Panels Docker image.
 # @var panels_image: panels_image # Name of the Panels Docker image.
 - name: Build panels container
   vars:

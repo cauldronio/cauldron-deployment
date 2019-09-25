@@ -30,7 +30,7 @@ enable_port_80: false
 ## DATABASE CONTAINER ##
 ########################
 
-db_image_location: "https://gitlab.com/cauldron2/deployment.git#:database"
+db_image_location: "https://gitlab.com/cauldron2/cauldron-deployment.git#:database"
 db_root_password: "ChangeRootPassword"
 db_password: "ChangeGrimoirePassword"
 
@@ -62,7 +62,7 @@ kibana_default_index: 'git_enrich'
 ## DJANGO CONTAINER ##
 ######################
 
-django_image_location: "https://gitlab.com/cauldron2/deployment.git#:cauldron"
+django_image_location: "https://gitlab.com/cauldron2/cauldron-deployment.git#:cauldron"
 
 # Debug
 django_debug: 'True'
@@ -74,12 +74,12 @@ django_hosts: "*"
 ## MORDRED CONTAINER ##
 #######################
 
-mordred_image_location: "https://gitlab.com/cauldron2/deployment.git#:mordred"
+mordred_image_location: "https://gitlab.com/cauldron2/cauldron-deployment.git#:mordred"
 
 
 ######################
 ## PANELS CONTAINER ##
 ######################
 
-panels_image_location: "https://gitlab.com/cauldron2/deployment.git#:docker-panels"
+panels_image_location: "https://gitlab.com/cauldron2/cauldron-deployment.git#:docker-panels"
 panels_password: "ChangemePlse"

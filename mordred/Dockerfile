@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y default-libmysqlclient-dev
 
 # Download Mordred code
 WORKDIR ${MORDRED_DIR}
-RUN git clone https://gitlab.com/cauldron2/mordred.git --depth 1
+RUN git clone https://gitlab.com/cauldron2/cauldron-worker.git --depth 1
 
 # Install requirements
 WORKDIR ${MORDRED_DIR}/mordred

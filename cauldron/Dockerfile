@@ -9,7 +9,7 @@ WORKDIR /code
 RUN apt-get update && apt-get install -y default-mysql-client
 
 # Download Cauldron code
-RUN git clone https://gitlab.com/cauldron2/cauldron.git --depth 1
+RUN git clone https://gitlab.com/cauldron2/cauldron-web.git --depth 1
 
 # Add and install requirements
 WORKDIR /code/cauldron
