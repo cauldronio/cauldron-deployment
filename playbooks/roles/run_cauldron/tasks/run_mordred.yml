@@ -12,6 +12,6 @@
     env:
       WORKER_NAME: "{{ docker_worker_name }}"
     volumes:
-      - "{{configuration_dir}}/mordred/worker_config.py:/code/mordred/MordredManager/config.py"
-      - "{{configuration_dir}}/mordred/setup-default.cfg:/code/mordred/MordredManager/mordred/setup-default.cfg"
+      - "{{configuration_dir}}/mordred/worker_config.py:/code/cauldron-worker/MordredManager/config.py"
+      - "{{configuration_dir}}/mordred/setup-default.cfg:/code/cauldron-worker/MordredManager/mordred/setup-default.cfg"
       - "{{volume_name}}:/dashboard_logs"

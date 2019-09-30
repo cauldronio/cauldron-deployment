@@ -2,9 +2,10 @@ FROM python:3.6
 MAINTAINER Jose J Merchante <jjmerchante@bitergia.com>
 
 ENV PYTHONBUFFERED 1
+ENV CODE_DIR /code
+ENV WEB_DIR ${CODE_DIR}/cauldron-web
 
-RUN mkdir /code
-WORKDIR /code
+WORKDIR ${CODE_DIR}
 
 RUN apt-get update && apt-get install -y default-mysql-client
 
@@ -12,7 +13,7 @@ RUN apt-get update && apt-get install -y default-mysql-client
 RUN git clone https://gitlab.com/cauldron2/cauldron-web.git --depth 1
 
 # Add and install requirements
-WORKDIR /code/cauldron
+WORKDIR ${WEB_DIR}
 RUN pip install -q -r requirements.txt
 
 ADD entrypoint.sh /entrypoint.sh

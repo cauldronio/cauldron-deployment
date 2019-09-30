@@ -4,7 +4,8 @@
 FROM cauldron2/grimoirelab:0.2.29
 MAINTAINER Jose J Merchante <jjmerchante@bitergia.com>
 
-ENV MORDRED_DIR /code
+ENV CODE_DIR /code
+ENV WORKER_DIR ${CODE_DIR}/cauldron-worker
 
 USER root
 
@@ -12,14 +13,14 @@ USER root
 RUN apt-get update && apt-get install -y default-libmysqlclient-dev
 
 # Download Mordred code
-WORKDIR ${MORDRED_DIR}
+WORKDIR ${CODE_DIR}
 RUN git clone https://gitlab.com/cauldron2/cauldron-worker.git --depth 1
 
 # Install requirements
-WORKDIR ${MORDRED_DIR}/mordred
+WORKDIR ${WORKER_DIR}
 RUN pip install -q -r requirements.txt
 
-WORKDIR ${MORDRED_DIR}/mordred/MordredManager/
+WORKDIR ${WORKER_DIR}/MordredManager/
 
 VOLUME ["/dashboard_logs"]
 

@@ -23,7 +23,6 @@
     networks:
       - name: "{{ network_name }}"
     volumes:
-      - "{{configuration_dir}}/django/django_settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py"
+      - "{{configuration_dir}}/django/django_settings.py:/code/cauldron-web/Cauldron2/Cauldron2/settings.py"
       - "{{volume_name}}:/dashboard_logs"
-      - "{{configuration_dir}}/django/jwtR256.key:/code/cauldron/Cauldron2/CauldronApp/jwtR256.key"
-
+      - "{{configuration_dir}}/django/jwtR256.key:/code/cauldron-web/Cauldron2/CauldronApp/jwtR256.key"
