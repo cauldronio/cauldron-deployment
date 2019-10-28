@@ -33,6 +33,16 @@ This repository contains relevant information for running Cauldron in your own c
      $ pip3 install docker
   ```
 
+- **virtualenv** is necessary for creating a Python environment for generating the hashed keys for OpenDistro for ElasticSearch:
+  ``` bash
+    virtualenv --version
+  ```
+
+- **rsync** is necessary for copying the files to a remote machine. To check if you have it installed:
+  ``` bash
+    rsync --version
+  ```
+
 - The following ports will be used in the target machine. You can change this later in the configuration file.
 
   - **9000**: Cauldron web interface
