@@ -29,16 +29,15 @@
       - "{{CAULDRON_CONFIG_DIR}}/es/opendistro-config.yml:/usr/share/elasticsearch/plugins/opendistro_security/securityconfig/config.yml"
   tags: [elastic]
 
-- name: Check if there are indices created for initializing Security index
-  command: "docker exec {{ ELASTIC_CONTAINER_NAME }} test -d /usr/share/elasticsearch/data/nodes/0/indices"
+- name: Check if there are indices created in the volume
+  shell: "docker exec {{ ELASTIC_CONTAINER_NAME }} test -d /usr/share/elasticsearch/data/nodes/0/indices ; echo $?"
   register: es_indices_output
-  ignore_errors: True
   changed_when: False
   tags: [elastic]
 
 - name: Permission to execute securityadmin for Elastic Search
   command: "docker exec {{ ELASTIC_CONTAINER_NAME }} chmod +x 'plugins/opendistro_security/tools/securityadmin.sh'"
-  when: es_indices_output.rc == 1
+  when: es_indices_output.stdout == "1"
   tags: [elastic]
 
 - name: Run securityadmin to initialize Open Distro Security (wait for Elastic running)
@@ -47,9 +46,10 @@
   until: securityadmin_result.rc == 0
   retries: 10
   delay: 5
-  when: es_indices_output.rc == 1
+  when: es_indices_output.stdout == "1"
   tags: [elastic]
 
 - name: Set the default template to 1 shard and 0 replicas per index
   command: "docker exec {{ ELASTIC_CONTAINER_NAME}} curl -XPOST -k -H \"Content-type: application/json\" \"https://admin:{{ELASTIC_ADMIN_PASSWORD}}@elastic_service:9200/_template/default\" -d '{\"template\": \"*\", \"order\": -1, \"settings\": { \"number_of_shards\": \"1\", \"number_of_replicas\": \"0\"}}'"
+  when: es_indices_output.stdout == "1"
   tags: [elastic]
