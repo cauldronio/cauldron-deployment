@@ -1,6 +1,8 @@
 ---
 
-- name: "Delete Docker network: {{ NETWORK_NAME }}"
-  docker_network:
-    name: "{{ NETWORK_NAME }}"
-    state: absent
+- hosts: all
+  tasks:
+    - name: "Delete Docker network: {{ NETWORK_NAME }}"
+      docker_network:
+        name: "{{ NETWORK_NAME }}"
+        state: absent
