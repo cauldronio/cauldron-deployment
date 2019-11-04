@@ -2,9 +2,6 @@
 # Commented to avoid problems loading this file by default
 ####
 
-# PANELS_USERNAME = "defaultpanels"
-# PANELS_USER_PSW = 'ChangemePlse'
-#
 # ES_IN_URL = "https://elastic_service:9200"
 # ES_ADMIN_PSW = "ChangemePlse"
 #

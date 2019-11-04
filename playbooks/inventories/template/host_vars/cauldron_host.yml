@@ -98,7 +98,6 @@ PANELS_CONTAINER_NAME: "panels_cauldron"
 
 PANELS_IMAGE_NAME: "cauldron2/panels:latest"
 
-PANELS_PASSWORD: "test-password"
 
 #################### NETWORK ####################
 NETWORK_NAME: "network_cauldron"

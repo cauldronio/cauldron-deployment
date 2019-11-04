@@ -8,17 +8,31 @@ from elasticsearch import Elasticsearch
 from elasticsearch.connection import create_ssl_context
 import time
 
+# Create the logger
+log_format = logging.Formatter("[%(name)s] %(asctime)s [%(levelname)s] %(message)s", "%d-%m-%Y %H:%M:%S")
+log_handler = logging.StreamHandler()
+log_handler.setLevel(logging.DEBUG)
+log_handler.setFormatter(log_format)
+Logger = logging.getLogger("panels")
+Logger.addHandler(log_handler)
+Logger.setLevel(logging.DEBUG)
+
+
 # --- Wait for ES Running --- #
 while True:
-    logging.warning("Waiting for ES...")
+    Logger.info("Waiting for ES...")
     headers = {'Content-Type': 'application/json'}
-    r = requests.get("{}".format(settings.ES_IN_URL),
-                     auth=('admin', settings.ES_ADMIN_PSW),
-                     json={"password": settings.PANELS_USER_PSW},
-                     verify=False,
-                     headers=headers)
+    try:
+        r = requests.get("{}".format(settings.ES_IN_URL),
+                         auth=('admin', settings.ES_ADMIN_PSW),
+                         verify=False,
+                         headers=headers)
+    except requests.exceptions.ConnectionError:
+        Logger.warning("Connection error. Retry in 5 seconds")
+        time.sleep(5)
+        continue
     if r.ok:
-        logging.warning("Connected to ES")
+        Logger.info("Connected to ES")
         break
     time.sleep(5)
 
@@ -31,27 +45,16 @@ es = Elasticsearch([settings.ES_IN_HOST], scheme=settings.ES_PROTO, port=setting
                    http_auth=("admin", settings.ES_ADMIN_PSW), ssl_context=context)
 
 while not es.ping():
-    logging.warning("Connection failed... Retry")
+    Logger.warning("Connection failed... Retry")
 
-
-# --- Create ES User --- #
-logging.warning('Creating ES user: <{}>'.format(settings.PANELS_USERNAME))
-headers = {'Content-Type': 'application/json'}
-r = requests.put("{}/_opendistro/_security/api/internalusers/{}".format(settings.ES_IN_URL, settings.PANELS_USERNAME),
-                 auth=('admin', settings.ES_ADMIN_PSW),
-                 json={"password": settings.PANELS_USER_PSW},
-                 verify=False,
-                 headers=headers)
-logging.warning("{} - {}".format(r.status_code, r.text))
 
 # --- Import index patterns --- #
-logging.warning('Import Index patterns')
-kib_url_auth = "{}://{}:{}@{}:{}{}".format(settings.KIB_IN_PROTO,
-                                           settings.PANELS_USERNAME,
-                                           settings.PANELS_USER_PSW,
-                                           settings.KIB_IN_HOST,
-                                           settings.KIB_IN_PORT,
-                                           settings.KIB_PATH)
+Logger.info('Import Index patterns')
+kib_url_auth = "{}://admin:{}@{}:{}{}".format(settings.KIB_IN_PROTO,
+                                              settings.ES_ADMIN_PSW,
+                                              settings.KIB_IN_HOST,
+                                              settings.KIB_IN_PORT,
+                                              settings.KIB_PATH)
 
 archimedes = Archimedes(kib_url_auth, '/panels')
 archimedes.import_from_disk(obj_type='dashboard', obj_id='8c34bc50-a2fe-11e9-ac51-1516462fb85e',
@@ -67,21 +70,26 @@ archimedes.import_from_disk(obj_type='dashboard', obj_id='b7df3b10-a195-11e9-8e0
 archimedes.import_from_disk(obj_type='dashboard', obj_id='Meetup',
                             find=True, force=False)
 
-logging.warning("Panels successfully created")
+Logger.info("Panels successfully created")
 
 # --- Set default index pattern ---#
-logging.warning('Set default index pattern')
+Logger.info('Set default index pattern')
 headers = {'Content-Type': 'application/json', 'kbn-xsrf': 'true'}
 r = requests.post('{}/api/kibana/settings/defaultIndex'.format(settings.KIB_IN_URL),
-              auth=(settings.PANELS_USERNAME, settings.PANELS_USER_PSW),
+              auth=("admin", settings.ES_ADMIN_PSW),
               json={"value": "git_enrich"},
               verify=False,
               headers=headers)
-logging.warning("{} - {}".format(r.status_code, r.text))
+Logger.info("{} - {}".format(r.status_code, r.text))
+
+
+# --- Copy panels and index patters to Global index ---#
+# Logger.info("Copy panels from {} to Global .kibana".format("admin"))
+# es.reindex(body={"source": {"index": ".kibana_*_admin"}, "dest": {"index": ".kibana"}})
 
 
 # --- Create default indices to avoid warning when a visualization does not exist ---#
-logging.warning('Add some default indices')
+Logger.info('Add some default indices')
 
 body = dict()
 with open('git_aoc.json') as json_file:
@@ -117,4 +125,4 @@ put_alias_no_except(es, index='meetup_enriched_*', name='ocean')
 put_alias_no_except(es, index='github_enrich_*', name='ocean_tickets')
 put_alias_no_except(es, index='gitlab_enriched_*', name='ocean_tickets')
 put_alias_no_except(es, index='meetup_enriched_*', name='ocean_tickets')
-logging.warning('Default indices added')
+Logger.info('Default indices added')
