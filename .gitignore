@@ -9,6 +9,5 @@
 *.crt
 
 # Ignore personal vars
-playbooks/group_vars/*
-!playbooks/group_vars/all
-!playbooks/group_vars/template
+playbooks/inventories/*
+!playbooks/inventories/template
