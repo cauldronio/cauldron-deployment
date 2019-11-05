@@ -22,27 +22,10 @@ url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELAS
 url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELASTIC_PORT}}
 autorefresh = False
 
-[sortinghat]
-host = {{ DB_CONTAINER_NAME }}
-user = {{ DB_USER }}
-password = {{ DB_USER_PASSWORD }}
-database = {{ DB_SORTINGHAT_NAME }}
-load_orgs = true
-orgs_file = data/orgs_sortinghat.json
-identities_api_token = 'xxxx'
-identities_file = [data/perceval_identities_sortinghat.json]
-affiliate = true
-# commonly: Unknown
-unaffiliated_group = Unknown
-autoprofile = [customer,git,github]
-matching = [email]
-sleep_for = 120
-bots_names = [Beloved Bot]
-
 # This section is ignored in Cauldron mordred
 [phases]
 collection = true
-identities = true
+identities = false
 enrichment = true
 panels = true
 
@@ -66,6 +49,8 @@ out_index = git_aoc_enriched
 api-token = xxxx
 raw_index = github_raw
 enriched_index = github_enrich
+no-archive = true
+filter-classified = true
 
 [gitlab]
 raw_index = gitlab_raw
