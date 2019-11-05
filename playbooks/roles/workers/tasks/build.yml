@@ -19,6 +19,12 @@
     delete: yes
   tags: [worker]
 
+- name: "Ensures {{ WORKER_IMAGE_BUILD_DIR }}/src exists"
+  file:
+    path: "{{ WORKER_IMAGE_BUILD_DIR }}/src"
+    state: directory
+  tags: [worker]
+
 - name: "Copy source code from {{ WORKER_IMAGE_LOCAL_CODE | default('\"undefined\"') }} to {{ WORKER_IMAGE_BUILD_DIR }}/src"
   synchronize:
     src: "{{ WORKER_IMAGE_LOCAL_CODE }}/"

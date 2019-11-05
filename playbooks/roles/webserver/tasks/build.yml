@@ -26,6 +26,12 @@
     delete: yes
   tags: [webserver]
 
+- name: "Ensures {{ WEB_IMAGE_BUILD_DIR }}/src exists"
+  file:
+    path: "{{ WEB_IMAGE_BUILD_DIR }}/src"
+    state: directory
+  tags: [webserver]
+
 - name: "Copy source code from {{ WEB_IMAGE_LOCAL_CODE | default('\"undefined\"') }} to {{ WEB_IMAGE_BUILD_DIR }}/src"
   synchronize:
     src: "{{ WEB_IMAGE_LOCAL_CODE }}/"
