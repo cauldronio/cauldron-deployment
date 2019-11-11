@@ -11,3 +11,5 @@
 # Ignore personal vars
 playbooks/inventories/*
 !playbooks/inventories/template
+playbooks/files/*
+!playbooks/files/cauldron_host
