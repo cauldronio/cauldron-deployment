@@ -50,6 +50,6 @@
   tags: [elastic]
 
 - name: Set the default template to 1 shard and 0 replicas per index
-  command: "docker exec {{ ELASTIC_CONTAINER_NAME}} curl -XPOST -k -H \"Content-type: application/json\" \"https://admin:{{ELASTIC_ADMIN_PASSWORD}}@elastic_service:9200/_template/default\" -d '{\"template\": \"*\", \"order\": -1, \"settings\": { \"number_of_shards\": \"1\", \"number_of_replicas\": \"0\"}}'"
+  command: "docker exec {{ ELASTIC_CONTAINER_NAME}} curl -XPOST -k -H \"Content-type: application/json\" \"https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:9200/_template/default\" -d '{\"template\": \"*\", \"order\": -1, \"settings\": { \"number_of_shards\": \"1\", \"number_of_replicas\": \"0\"}}'"
   when: es_indices_output.stdout == "1"
   tags: [elastic]

@@ -1,7 +1,0 @@
-
-
-- Update django
-  - Stop and remove container
-  - Start container from new image
-  - Problem: migrations
-

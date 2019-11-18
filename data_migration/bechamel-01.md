@@ -28,7 +28,7 @@ PANELS_PASSWORD: "test-password"
 Run from `cauldron-deployment/playbooks`:
 ```
 ansible-playbook -i inventories/<name> rm_containers.yml
-ansible-playbook -i inventories/<name> cauldron.yml --skip-tags workers
+ansible-playbook -i inventories/<name> cauldron.yml --skip-tags worker
 ```
 
 Wait for all the containers ready
@@ -46,5 +46,5 @@ docker exec cauldron_service python Cauldron2/bechamel-01-migrations.py
 ```
 
 ```
-ansible-playbook -i inventories/<name> cauldron.yml -t workers
+ansible-playbook -i inventories/<name> cauldron.yml -t worker
 ```

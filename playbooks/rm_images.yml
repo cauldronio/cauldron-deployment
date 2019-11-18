@@ -1,0 +1,27 @@
+---
+
+- hosts: all
+  tasks:
+    - name: "Delete webserver image"
+      docker_image:
+        state: absent
+        name: "{{ WEB_IMAGE_NAME }}"
+      tags: [webserver]
+
+    - name: "Delete worker image"
+      docker_image:
+        state: absent
+        name: "{{ WORKER_IMAGE_NAME }}"
+      tags: [worker]
+
+    - name: "Delete database image"
+      docker_image:
+        state: absent
+        name: "{{ DB_IMAGE_NAME }}"
+      tags: [database]
+
+    - name: "Delete database image"
+      docker_image:
+        state: absent
+        name: "{{ PANELS_IMAGE_NAME }}"
+      tags: [panels]
