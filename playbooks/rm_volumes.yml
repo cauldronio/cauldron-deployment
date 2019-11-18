@@ -18,3 +18,9 @@
       name: "{{ DB_MOUNT_POINT }}"
       state: absent
     tags: [database]
+
+  - name: "Remove Git Perceval Repositories volume: {{PERCEVAL_REPOS_MOUNT_POINT}}"
+    docker_volume:
+      name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"
+      state: absent
+    tags: [worker]

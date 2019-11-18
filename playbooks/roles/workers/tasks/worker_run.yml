@@ -7,6 +7,7 @@
       - "{{CAULDRON_CONFIG_DIR}}/mordred/worker_config.py:/code/MordredManager/config.py"
       - "{{CAULDRON_CONFIG_DIR}}/mordred/setup-default.cfg:/code/MordredManager/mordred/setup-default.cfg"
       - "{{LOGS_MOUNT_POINT}}:/dashboard_logs"
+      - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git-perceval"
   docker_container:
     name: "{{ docker_worker_name }}"
     image: "{{ WORKER_IMAGE_NAME }}"

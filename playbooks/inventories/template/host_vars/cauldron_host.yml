@@ -61,6 +61,8 @@ WORKER_IMAGE_NAME: "cauldron2/worker:latest"
 
 WORKER_IMAGE_GIT_VERSION: "master"
 
+PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
+
 # WORKER_IMAGE_LOCAL_CODE: ""
 
 # (Only dev) WORKER_MOUNT_CODE: "/home/user/src/cauldron-web"
