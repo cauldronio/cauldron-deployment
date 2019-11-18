@@ -80,7 +80,7 @@ ELASTIC_MEMORY: "4g"
 
 ELASTIC_CONTAINER_NAME: "elastic_service"
 
-ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:0.9.0"
+ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.2.0"
 
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
 
@@ -88,7 +88,7 @@ ELASTIC_MOUNT_POINT: "elastic_data_volume"
 #################### KIBANA CONFIGURATION ####################
 KIBANA_CONTAINER_NAME: "kibana_service"
 
-KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
+KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.2.0"
 
 
 #################### NGINX CONFIGURATION ####################

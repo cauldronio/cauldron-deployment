@@ -47,7 +47,7 @@ es = Elasticsearch([settings.ES_IN_HOST], scheme=settings.ES_PROTO, port=setting
 while not es.ping():
     Logger.warning("Connection failed... Retry")
 
-
+Logger.info("Ignore import panels")
 # --- Import index patterns --- #
 Logger.info('Import Index patterns')
 kib_url_auth = "{}://admin:{}@{}:{}{}".format(settings.KIB_IN_PROTO,
@@ -84,12 +84,12 @@ Logger.info("{} - {}".format(r.status_code, r.text))
 
 
 # --- Copy panels and index patters to Global index ---#
-# Logger.info("Copy panels from {} to Global .kibana".format("admin"))
-# es.reindex(body={"source": {"index": ".kibana_*_admin"}, "dest": {"index": ".kibana"}})
+Logger.info("Copy panels from {} to Global .kibana".format("admin"))
+es.reindex(body={"source": {"index": ".kibana_*_admin"}, "dest": {"index": ".kibana"}})
 
 
 # --- Create default indices to avoid warning when a visualization does not exist ---#
-Logger.info('Add some default indices')
+Logger.info('Add default indices')
 
 body = dict()
 with open('git_aoc.json') as json_file:
@@ -105,24 +105,17 @@ es.indices.create('gitlab_enriched_index', ignore=400)
 es.indices.create('meetup_raw_index', ignore=400)
 es.indices.create('meetup_enriched_index', ignore=400)
 
-
-def put_alias_no_except(es_obj, index, name):
-    try:
-        es_obj.indices.put_alias(index=index, name=name)
-    except es.NotFoundError:
-        pass
-
-
-put_alias_no_except(es, index='git_aoc_enriched_*', name='git_aoc_enriched')
-put_alias_no_except(es, index='git_enrich_*', name='git_enrich')
-put_alias_no_except(es, index='github_enrich_*', name='github_enrich')
-put_alias_no_except(es, index='gitlab_enriched_*', name='gitlab_enriched')
-put_alias_no_except(es, index='meetup_enriched_*', name='meetup_enriched')
-put_alias_no_except(es, index='git_enrich_*', name='ocean')
-put_alias_no_except(es, index='github_enrich_*', name='ocean')
-put_alias_no_except(es, index='gitlab_enriched_*', name='ocean')
-put_alias_no_except(es, index='meetup_enriched_*', name='ocean')
-put_alias_no_except(es, index='github_enrich_*', name='ocean_tickets')
-put_alias_no_except(es, index='gitlab_enriched_*', name='ocean_tickets')
-put_alias_no_except(es, index='meetup_enriched_*', name='ocean_tickets')
-Logger.info('Default indices added')
+Logger.info('Creating aliases...')
+es.indices.put_alias(index='git_aoc_enriched_*', name='git_aoc_enriched')
+es.indices.put_alias(index='git_enrich_*', name='git_enrich')
+es.indices.put_alias(index='github_enrich_*', name='github_enrich')
+es.indices.put_alias(index='gitlab_enriched_*', name='gitlab_enriched')
+es.indices.put_alias(index='meetup_enriched_*', name='meetup_enriched')
+es.indices.put_alias(index='git_enrich_*', name='ocean')
+es.indices.put_alias(index='github_enrich_*', name='ocean')
+es.indices.put_alias(index='gitlab_enriched_*', name='ocean')
+es.indices.put_alias(index='meetup_enriched_*', name='ocean')
+es.indices.put_alias(index='github_enrich_*', name='ocean_tickets')
+es.indices.put_alias(index='gitlab_enriched_*', name='ocean_tickets')
+es.indices.put_alias(index='meetup_enriched_*', name='ocean_tickets')
+Logger.info('Aliases created')

@@ -12,7 +12,7 @@
       - 'memlock:-1:-1'
     env:
       ES_JAVA_OPTS: "-Xms{{ELASTIC_MEMORY}} -Xmx{{ELASTIC_MEMORY}}"
-
+      node.name: "{{ ELASTIC_CONTAINER_NAME }}"
     volumes:
       - "{{ELASTIC_MOUNT_POINT}}:/usr/share/elasticsearch/data"
       - "{{CAULDRON_CONFIG_DIR}}/es/keys/root-ca.pem:/usr/share/elasticsearch/config/root-ca.pem"

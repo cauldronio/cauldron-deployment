@@ -1,3 +1,5 @@
+---
+
 # This is the main Open Distro Security configuration file where authentication
 # and authorization is defined.
 #
@@ -15,8 +17,6 @@
 # Both, authc and auth can be enabled/disabled separately for REST and TRANSPORT layer. Default is true for both.
 #        http_enabled: true
 #        transport_enabled: true
-#
-# 5.x Migration: "enabled: true/false" will also be respected currently but only to provide backward compatibility.
 #
 # For HTTP it is possible to allow anonymous authentication. If that is the case then the HTTP authenticators try to
 # find user credentials in the HTTP request. If credentials are found then the user gets regularly authenticated.
@@ -52,26 +52,31 @@
 #   ldap
 #   noop
 
-opendistro_security:
+
+
+_meta:
+  type: "config"
+  config_version: 2
+
+config:
   dynamic:
     # Set filtered_alias_mode to 'disallow' to forbid more than 2 filtered aliases per index
     # Set filtered_alias_mode to 'warn' to allow more than 2 filtered aliases per index but warns about it (default)
     # Set filtered_alias_mode to 'nowarn' to allow more than 2 filtered aliases per index silently
     #filtered_alias_mode: warn
-    kibana:
-      # Kibana multitenancy - As default
-      #multitenancy_enabled: true
-      #server_username: kibanaserver
-      #index: '.kibana'
-      do_not_fail_on_forbidden: true
+    do_not_fail_on_forbidden: true
+    #kibana:
+    # Kibana multitenancy
+    #multitenancy_enabled: true
+    #server_username: kibanaserver
+    #index: '.kibana'
     http:
       anonymous_auth_enabled: false
       xff:
         enabled: false
         internalProxies: '192\.168\.0\.10|192\.168\.0\.11' # regex pattern
         #internalProxies: '.*' # trust all internal proxies, regex pattern
-        remoteIpHeader:  'x-forwarded-for'
-        proxiesHeader:   'x-forwarded-by'
+        #remoteIpHeader:  'x-forwarded-for'
         #trustedProxies: '.*' # trust all external proxies, regex pattern
         ###### see https://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html for regex help
         ###### more information about XFF https://en.wikipedia.org/wiki/X-Forwarded-For
@@ -93,6 +98,7 @@ opendistro_security:
         authentication_backend:
           type: noop
       basic_internal_auth_domain:
+        description: "Authenticate via HTTP Basic against internal users database"
         http_enabled: true
         transport_enabled: true
         order: 4
@@ -102,6 +108,7 @@ opendistro_security:
         authentication_backend:
           type: intern
       proxy_auth_domain:
+        description: "Authenticate via proxy"
         http_enabled: false
         transport_enabled: false
         order: 3
@@ -114,7 +121,7 @@ opendistro_security:
         authentication_backend:
           type: noop
       jwt_auth_domain:
-        enabled: true
+        description: "Authenticate via Json Web Token"
         http_enabled: true
         transport_enabled: true
         order: 0
@@ -130,6 +137,7 @@ opendistro_security:
         authentication_backend:
           type: noop
       clientcert_auth_domain:
+        description: "Authenticate via SSL client certificates"
         http_enabled: false
         transport_enabled: false
         order: 2
@@ -141,6 +149,7 @@ opendistro_security:
         authentication_backend:
           type: noop
       ldap:
+        description: "Authenticate via LDAP or Active Directory"
         http_enabled: false
         transport_enabled: false
         order: 5
@@ -160,7 +169,7 @@ opendistro_security:
             # verify ldap hostname
             verify_hostnames: true
             hosts:
-              - localhost:8389
+            - localhost:8389
             bind_dn: null
             password: null
             userbase: 'ou=people,dc=example,dc=com'
@@ -171,6 +180,7 @@ opendistro_security:
             username_attribute: null
     authz:
       roles_from_myldap:
+        description: "Authorize via LDAP or Active Directory"
         http_enabled: false
         transport_enabled: false
         authorization_backend:
@@ -186,7 +196,7 @@ opendistro_security:
             # verify ldap hostname
             verify_hostnames: true
             hosts:
-              - localhost:8389
+            - localhost:8389
             bind_dn: null
             password: null
             rolebase: 'ou=groups,dc=example,dc=com'
@@ -214,7 +224,25 @@ opendistro_security:
             #  - 'cn=Michael Jackson,ou*people,o=TEST'
             #  - '/\S*/'
       roles_from_another_ldap:
-        enabled: false
+        description: "Authorize via another Active Directory"
+        http_enabled: false
+        transport_enabled: false
         authorization_backend:
           type: ldap
           #config goes here ...
+  #    auth_failure_listeners:
+  #      ip_rate_limiting:
+  #        type: ip
+  #        allowed_tries: 10
+  #        time_window_seconds: 3600
+  #        block_expiry_seconds: 600
+  #        max_blocked_clients: 100000
+  #        max_tracked_clients: 100000
+  #      internal_authentication_backend_limiting:
+  #        type: username
+  #        authentication_backend: intern
+  #        allowed_tries: 10
+  #        time_window_seconds: 3600
+  #        block_expiry_seconds: 600
+  #        max_blocked_clients: 100000
+  #        max_tracked_clients: 100000

@@ -1,39 +1,50 @@
+---
 # This is the internal user database
 # The hash value is a bcrypt hash and can be generated with plugin/tools/hash.sh
 
-admin:
-  readonly: true
-  hash: {{ hash_ELASTIC_ADMIN_PASSWORD}}
-  roles:
-    - admin
-  attributes:
-    #no dots allowed in attribute names
-    attribute1: value1
-    attribute2: value2
-    attribute3: value3
+_meta:
+  type: "internalusers"
+  config_version: 2
 
-logstash:
-  hash: {{ hash_ELASTIC_LOGSTASH_PASSWORD }}
-  roles:
-    - logstash
+# Define your internal users here
+
+admin:
+  hash: {{ hash_ELASTIC_ADMIN_PASSWORD}}
+  reserved: true
+  backend_roles:
+  - "admin"
+  description: "Demo admin user"
 
 kibanaserver:
-  readonly: true
   hash: {{ hash_ELASTIC_KIBANASERVER_PASSWORD }}
+  reserved: true
+  description: "Demo kibanaserver user"
 
 kibanaro:
   hash: {{ hash_ELASTIC_KIBANARO_PASSWORD }}
-  roles:
-    - kibanauser
-    - readall
+  reserved: false
+  backend_roles:
+  - "kibanauser"
+  - "readall"
+  description: "Demo kibanaro user"
+
+logstash:
+  hash: {{ hash_ELASTIC_LOGSTASH_PASSWORD }}
+  reserved: false
+  backend_roles:
+  - "logstash"
+  description: "Demo logstash user"
 
 readall:
   hash: {{ hash_ELASTIC_READALL_PASSWORD }}
-  #password is: readall
-  roles:
-    - readall
+  reserved: false
+  backend_roles:
+  - "readall"
+  description: "Demo readall user"
 
 snapshotrestore:
   hash: {{ hash_ELASTIC_SNAPSHOTRESTORE_PASSWORD }}
-  roles:
-    - snapshotrestore
+  reserved: false
+  backend_roles:
+  - "snapshotrestore"
+  description: "Demo snapshotrestore user"
