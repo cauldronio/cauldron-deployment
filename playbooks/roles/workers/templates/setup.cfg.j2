@@ -22,6 +22,21 @@ url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELAS
 url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELASTIC_PORT}}
 autorefresh = False
 
+[sortinghat]
+host = {{ DB_CONTAINER_NAME }}
+user = {{ DB_USER }}
+password = {{ DB_USER_PASSWORD }}
+database = {{ DB_SORTINGHAT_NAME }}
+load_orgs = true
+orgs_file = data/orgs_sortinghat.json
+identities_api_token = 'xxxx'
+identities_file = [data/perceval_identities_sortinghat.json]
+affiliate = true
+unaffiliated_group = Unknown
+autoprofile = [customer,git,github]
+matching = [email]
+sleep_for = 120
+
 # This section is ignored in Cauldron mordred
 [phases]
 collection = true
