@@ -36,6 +36,26 @@ while True:
         break
     time.sleep(5)
 
+# --- Wait for Kibana Running --- #
+while True:
+    Logger.info("Waiting for Kibana...")
+    headers = {'Content-Type': 'application/json'}
+    try:
+        r = requests.get('{}/api/status'.format(settings.KIB_IN_URL),
+                         headers=headers)
+    except requests.exceptions.ConnectionError:
+        Logger.warning("Connection error. Retry in 5 seconds")
+        time.sleep(5)
+        continue
+    if r.ok and r.text == "Kibana server is not ready yet":
+        Logger.warning("{}. Retry in 5 seconds".format(r.text))
+        time.sleep(5)
+        continue
+    if r.ok:
+        Logger.info("Connected to Kibana")
+        break
+    time.sleep(5)
+
 
 # --- Create instance of ES --- #
 context = create_ssl_context()
