@@ -1,0 +1,156 @@
+{
+  "mappings": {
+    "properties": {
+      "grimoire_creation_date": {
+        "type": "date"
+      },
+      "assignee_gender_acc": {
+        "type": "long"
+      },
+      "uuid": {
+        "type": "keyword"
+      },
+      "title": {
+        "type": "keyword"
+      },
+      "is_gitlab_issue": {
+        "type": "long"
+      },
+      "assignee_user_name": {
+        "type": "keyword"
+      },
+      "gitlab_repo": {
+        "type": "keyword"
+      },
+      "assignee_bot": {
+        "type": "boolean"
+      },
+      "milestone_id": {
+        "type": "long"
+      },
+      "time_to_close_days": {
+        "type": "float"
+      },
+      "assignee_gender": {
+        "type": "keyword"
+      },
+      "milestone": {
+        "type": "keyword"
+      },
+      "url": {
+        "type": "keyword"
+      },
+      "url_id": {
+        "type": "keyword"
+      },
+      "metadata__updated_on": {
+        "type": "date"
+      },
+      "state": {
+        "type": "keyword"
+      },
+      "author_user_name": {
+        "type": "keyword"
+      },
+      "assignee_org_name": {
+        "type": "keyword"
+      },
+      "closed_at": {
+        "type": "date"
+      },
+      "assignee_uuid": {
+        "type": "keyword"
+      },
+      "assignee_domain": {
+        "type": "keyword"
+      },
+      "project": {
+        "type": "keyword"
+      },
+      "author_id": {
+        "type": "keyword"
+      },
+      "author_gender": {
+        "type": "keyword"
+      },
+      "time_open_days": {
+        "type": "float"
+      },
+      "author_username": {
+        "type": "keyword"
+      },
+      "milestone_iid": {
+        "type": "long"
+      },
+      "metadata__timestamp": {
+        "type": "date"
+      },
+      "repository": {
+        "type": "keyword"
+      },
+      "author_gender_acc": {
+        "type": "long"
+      },
+      "tag": {
+        "type": "keyword"
+      },
+      "id_in_repo": {
+        "type": "long"
+      },
+      "origin": {
+        "type": "keyword"
+      },
+      "labels": {
+        "type": "keyword"
+      },
+      "assignee_username": {
+        "type": "keyword"
+      },
+      "author_org_name": {
+        "type": "keyword"
+      },
+      "author_bot": {
+        "type": "boolean"
+      },
+      "title_analyzed": {
+        "type": "text"
+      },
+      "assignee_name": {
+        "type": "keyword"
+      },
+      "id": {
+        "type": "long"
+      },
+      "milestone_url": {
+        "type": "keyword"
+      },
+      "time_to_first_attention": {
+        "type": "float"
+      },
+      "assignee_id": {
+        "type": "keyword"
+      },
+      "author_name": {
+        "type": "keyword"
+      },
+      "author_uuid": {
+        "type": "keyword"
+      },
+      "metadata__gelk_version": {
+        "type": "keyword"
+      },
+      "milestone_start_date": {
+        "type": "date"
+      },
+      "created_at": {
+        "type": "date"
+      },
+      "updated_at": {
+        "type": "date"
+      },
+      "project_1": {
+        "type": "keyword"
+      }
+    }
+  }
+}
