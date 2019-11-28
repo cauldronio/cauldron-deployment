@@ -100,6 +100,8 @@ This repository contains relevant information for running Cauldron in your own c
           - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
           - *Only if you have the Meetup keys*: Your Meetup Oauth keys (`meetup_client_id` and `meetup_client_secret`).
 
+        - Define if you want Hatstall enabled and the use of Sortinghat with `HATSTALL_ENABLED`
+
         - You can leave the other configuration as it is, but there are some variables that could be interesting:
 
           - Some configuration files for containers will be stored in the target host. The default directory is `/tmp/cauldron-data` because of permissions. If you want another directory, you can modify it with the `CAULDRON_CONFIG_DIR` option.

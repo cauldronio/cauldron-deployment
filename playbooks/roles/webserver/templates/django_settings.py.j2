@@ -25,6 +25,9 @@ KIB_IN_PROTO = '{{KIBANA_PROTOCOL}}'
 KIB_PATH = '{{KIBANA_URL_PATH}}'
 KIB_OUT_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{CAULDRON_PORT}}{{KIBANA_URL_PATH}}'
 
+HATSTALL_ENABLED = {{ HATSTALL_ENABLED }}
+HATSTALL_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{HATSTALL_PORT}}'
+
 DEBUG = '{{ DJANGO_DEBUG }}'
 
 ALLOWED_HOSTS = [ '{{ DJANGO_HOSTS }}' ]

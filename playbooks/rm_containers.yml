@@ -32,3 +32,9 @@
       tasks_from: remove
     tags: [worker]
 
+  - include_role:
+      name: hatstall
+      tasks_from: remove
+    when: HATSTALL_ENABLED
+    tags: [hatstall]
+

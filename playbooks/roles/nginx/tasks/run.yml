@@ -2,8 +2,16 @@
 
 - name: Run NGINX
   vars:
-    tmp_nginx_ports:
-      - "{{ CAULDRON_PORT }}:{{ CAULDRON_PORT }}"
+    conditional_ports:
+      - name: cauldron
+        mapping: "{{ CAULDRON_PORT }}:{{ CAULDRON_PORT }}"
+        enabled: true
+      - name: port80
+        mapping: "80:80"
+        enabled: "{{ ENABLE_PORT_80 }}"
+      - name: hatstall
+        mapping: "{{ HATSTALL_PORT }}:{{ HATSTALL_PORT }}"
+        enabled: "{{ HATSTALL_ENABLED }}"
   docker_container:
     name: "{{ NGINX_CONTAINER_NAME }}"
     image: "{{ NGINX_IMAGE_NAME }}"
@@ -11,7 +19,7 @@
     restart_policy: "always"
     networks:
       - name: "{{ NETWORK_NAME }}"
-    ports: '{{tmp_nginx_ports + ["80:80"] if ENABLE_PORT_80 else tmp_nginx_ports}}'
+    ports: "{{ conditional_ports | selectattr('enabled', 'equalto', true) | map(attribute='mapping') | list }}"
     volumes:
       - "{{CAULDRON_CONFIG_DIR}}/nginx/nginx_cauldron.conf:/etc/nginx/conf.d/nginx_cauldron.conf"
       - "{{CAULDRON_CONFIG_DIR}}/nginx/certificates:/certificates"

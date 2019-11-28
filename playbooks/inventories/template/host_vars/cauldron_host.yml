@@ -4,6 +4,7 @@ DB_IMAGE_NAME: "cauldron2/database:latest"
 WEB_IMAGE_NAME: "cauldron2/webserver:latest"
 WORKER_IMAGE_NAME: "cauldron2/worker:latest"
 PANELS_IMAGE_NAME: "cauldron2/panels:latest"
+HATSTALL_IMAGE_NAME: "grimoirelab/hatstall:latest"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.2.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.2.0"
 
@@ -25,11 +26,17 @@ meetup_client_secret: ""
 #################### BASE CONFIGURATION ####################
 CAULDRON_CONFIG_DIR: "/tmp/cauldron-data"
 
+# If enabled, Grimoirelab will use Sortinghat and fetch GitHub users information.
+HATSTALL_ENABLED: false
+
 # Number of mordred worker. Use ~15/20 for production.
 NUM_WORKERS: 5
 
 # Port where the APP will be available. Use 443 for production
 CAULDRON_PORT: 9000
+
+# Port where Hatstall will be available.
+HATSTALL_PORT: 9001
 
 # Enable port 80 for redirecting to https. Use true for production
 ENABLE_PORT_80: false
@@ -51,6 +58,9 @@ ELASTIC_KIBANARO_PASSWORD: "test-password"
 ELASTIC_READALL_PASSWORD: "test-password"
 ELASTIC_SNAPSHOTRESTORE_PASSWORD: "test-password"
 
+HATSTALL_USER: "cauldron"
+HATSTALL_PASSWORD: "test-password"
+
 
 ################## DOCKER MOUNT POINT #####################
 # Could be either a path or a Docker volume
@@ -58,6 +68,7 @@ DB_MOUNT_POINT: "database_volume"
 LOGS_MOUNT_POINT: "cauldron_logs_volume"
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
+HATSTALL_DB_MOUNT_POINT: "hatstall_db"
 
 
 #################### DOCKER NAMES ####################
@@ -69,6 +80,7 @@ ELASTIC_CONTAINER_NAME: "elastic_service" # NEVER change it
 KIBANA_CONTAINER_NAME: "kibana_service"
 NGINX_CONTAINER_NAME: 'nginx_service'
 PANELS_CONTAINER_NAME: "panels_cauldron"
+HATSTALL_CONTAINER_NAME: "hatstall"
 
 NETWORK_NAME: "network_cauldron"
 

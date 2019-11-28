@@ -14,8 +14,8 @@
   tags: [worker]
 
 
-- name: "Create setup.cfg for sirmordred"
+- name: "Create setup.cfg for sirmordred {{ HATSTALL_ENABLED | ternary('with Hatstall', '') }}"
   template:
-    src: setup.cfg.j2
+    src: "{{ HATSTALL_ENABLED | ternary('setup-hatstall.cfg.j2', 'setup.cfg.j2') }}"
     dest: "{{ CAULDRON_CONFIG_DIR }}/mordred/setup-default.cfg"
   tags: [worker]

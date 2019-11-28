@@ -27,3 +27,5 @@
     - workers
     - nginx
     - panels
+    - role: hatstall
+      when: HATSTALL_ENABLED

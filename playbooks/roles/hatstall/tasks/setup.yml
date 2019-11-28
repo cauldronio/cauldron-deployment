@@ -1,0 +1,24 @@
+---
+
+- name: Ensures {{CAULDRON_CONFIG_DIR}}/hatstall dir exists
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/hatstall"
+    state: directory
+    recurse: yes
+  tags: [hatstall]
+
+
+- name: Hatstall database configuration
+  template:
+    src: shdb.cfg.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/hatstall/shdb.cfg"
+    mode: 0644
+  tags: [hatstall]
+
+
+- name: Hatstall Apache configuration
+  copy:
+    src: apache-hatstall.conf
+    dest: "{{ CAULDRON_CONFIG_DIR }}/hatstall/apache-hatstall.conf"
+    mode: 0644
+  tags: [hatstall]

@@ -37,3 +37,9 @@
       tasks_from: run
     tags: [panels]
 
+  - include_role:
+      name: hatstall
+      tasks_from: run
+    when: HATSTALL_ENABLED
+    tags: [hatstall]
+

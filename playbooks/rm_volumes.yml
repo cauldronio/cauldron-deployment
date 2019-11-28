@@ -24,3 +24,10 @@
       name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"
       state: absent
     tags: [worker]
+
+  - name: "Remove Hatstall volume: {{HATSTALL_DB_MOUNT_POINT}}"
+    docker_volume:
+      name: "{{ HATSTALL_DB_MOUNT_POINT }}"
+      state: absent
+    when: HATSTALL_ENABLED
+    tags: [hatstall]

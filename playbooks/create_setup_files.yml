@@ -42,3 +42,9 @@
       tasks_from: setup
     tags: [panels]
 
+  - include_role:
+      name: hatstall
+      tasks_from: setup
+    when: HATSTALL_ENABLED
+    tags: [hatstall]
+

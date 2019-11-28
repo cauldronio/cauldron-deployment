@@ -6,6 +6,12 @@ upstream kibana {
     server {{KIBANA_CONTAINER_NAME}}:5601;
 }
 
+{% if HATSTALL_ENABLED %}
+upstream hatstall {
+    server {{HATSTALL_CONTAINER_NAME}}:80;
+}
+{% endif %}
+
 {% if ENABLE_PORT_80 %}
 server {
     listen 80;
@@ -49,3 +55,32 @@ server {
     }
 
 }
+
+
+{% if HATSTALL_ENABLED %}
+server {
+    listen        {{HATSTALL_PORT}} ssl;
+    server_name   {{ ansible_ssh_host|default(ansible_host) }};
+
+    # If the user try to access the app port with http, redirect to https
+    error_page 497 https://$host:{{HATSTALL_PORT}}$request_uri;
+
+    client_max_body_size 100M;
+
+    ssl_certificate         /certificates/ssl_server.crt;
+    ssl_certificate_key     /certificates/ssl_server.key;
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+
+        if (!-f $request_filename) {
+            proxy_pass http://hatstall;
+            break;
+        }
+    }
+
+}
+{% endif %}
