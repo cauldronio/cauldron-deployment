@@ -28,6 +28,8 @@ KIB_OUT_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{CAULDRON_P
 HATSTALL_ENABLED = {{ HATSTALL_ENABLED }}
 HATSTALL_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{HATSTALL_PORT}}'
 
+GOOGLE_ANALYTICS_ID = '{{ GOOGLE_ANALYTICS_ID }}'
+
 DEBUG = '{{ DJANGO_DEBUG }}'
 
 ALLOWED_HOSTS = [ '{{ DJANGO_HOSTS }}' ]

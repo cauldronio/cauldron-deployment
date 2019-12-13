@@ -47,6 +47,9 @@ DJANGO_HOSTS: "*"
 # Increase in production
 ELASTIC_MEMORY: "4g"
 
+# Write your Google Analytics ID if you want it enabled
+GOOGLE_ANALYTICS_ID: ""
+
 
 #################### PASSWORDS #######################
 DB_USER_PASSWORD: "test-password"

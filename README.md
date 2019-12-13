@@ -108,6 +108,7 @@ This repository contains relevant information for running Cauldron in your own c
           - You can select how many workers for mordred will be running in the `NUM_WORKERS` option. By default is **5**, but you can change it.
           - If you are using the port 9000, you can change it here. For production, use the port 443 and set `ENABLE_PORT_80` to true (only for nginx redirects).
           - If you are going to run Cauldron in a public IP is important that you change some of the passwords. The default is: `test-password`.
+          - If you want Google Analytics for analyzing the traffic, you can activate it by providing an ID: `GOOGLE_ANALYTICS_ID`
 
 4. Create/change the certificates for your deployment machine.
 
