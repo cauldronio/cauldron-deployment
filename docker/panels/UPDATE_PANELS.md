@@ -33,7 +33,7 @@ You will need an instance of Cauldron running with all its components up and ful
     Once you have created your dashboard, it is important to include data in order to visualize the results.
     
     You have to remember the ID of the dashboards inside Kibana you have modified. You can look at the URL and you can see something like:
-    `https://alpha.cauldron.io/kibana/app/kibana#/dashboard/`**4434c9a0-18dd-11e9-ba47-d5cbef43f8d3**`?_g=(...`. You need to copy the bold text.
+    `https://cauldron.io/kibana/app/kibana#/dashboard/`**4434c9a0-18dd-11e9-ba47-d5cbef43f8d3**`?_g=(...`. You need to copy the bold text.
     If you don't remember what have you modified but you know what you are doing, you can get all the dashboards IDs.
 
 
