@@ -70,6 +70,7 @@ HATSTALL_PASSWORD: "test-password"
 DB_MOUNT_POINT: "database_volume"
 LOGS_MOUNT_POINT: "cauldron_logs_volume"
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
+ELASTIC_SNAPSHOT_MOUNT_POINT: "elastic_snapshots"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
 HATSTALL_DB_MOUNT_POINT: "hatstall_db"
 

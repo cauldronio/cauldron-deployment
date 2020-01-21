@@ -67,7 +67,6 @@ es = Elasticsearch([settings.ES_IN_HOST], scheme=settings.ES_PROTO, port=setting
 while not es.ping():
     Logger.warning("Connection failed... Retry")
 
-Logger.info("Ignore import panels")
 # --- Import index patterns --- #
 Logger.info('Import Index patterns')
 kib_url_auth = "{}://admin:{}@{}:{}{}".format(settings.KIB_IN_PROTO,
@@ -141,3 +140,19 @@ es.indices.put_alias(index='github_enrich_*', name='ocean_tickets')
 es.indices.put_alias(index='gitlab_enriched_*', name='ocean_tickets')
 es.indices.put_alias(index='meetup_enriched_*', name='ocean_tickets')
 Logger.info('Aliases created')
+
+
+Logger.info('Defining snapshot location for ElasticSearch')
+headers_snapshot = {'Content-Type': 'application/json', 'kbn-xsrf': 'true'}
+data_snapshot = {
+                    "type": "fs",
+                    "settings": {
+                        "location": "/mnt/snapshots"
+                    }
+                }
+req = requests.put('{}/_snapshot/cauldron_backup'.format(settings.ES_IN_URL),
+                   auth=('admin', settings.ES_ADMIN_PSW),
+                   verify=False,
+                   headers=headers_snapshot,
+                   json=data_snapshot)
+Logger.info(req.json())

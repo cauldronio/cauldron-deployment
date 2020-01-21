@@ -15,6 +15,8 @@
       node.name: "{{ ELASTIC_CONTAINER_NAME }}"
     volumes:
       - "{{ELASTIC_MOUNT_POINT}}:/usr/share/elasticsearch/data"
+      - "{{ELASTIC_SNAPSHOT_MOUNT_POINT}}:/mnt/snapshots"
+
       - "{{CAULDRON_CONFIG_DIR}}/es/keys/root-ca.pem:/usr/share/elasticsearch/config/root-ca.pem"
 
       - "{{CAULDRON_CONFIG_DIR}}/es/keys/node-1.pem:/usr/share/elasticsearch/config/node-1.pem"
@@ -47,4 +49,8 @@
   retries: 10
   delay: 5
   when: es_indices_output.stdout == "1"
+  tags: [elastic]
+
+- name: Change permissions for snapshots directory
+  shell: "docker exec {{ ELASTIC_CONTAINER_NAME }} chown -R elasticsearch:elasticsearch /mnt/snapshots"
   tags: [elastic]

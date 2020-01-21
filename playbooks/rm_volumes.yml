@@ -13,6 +13,12 @@
       state: absent
     tags: [elastic]
 
+  - name: "Remove Elasticsearch snapshots volume: {{ ELASTIC_SNAPSHOT_MOUNT_POINT }}"
+    docker_volume:
+      name: "{{ ELASTIC_SNAPSHOT_MOUNT_POINT }}"
+      state: absent
+    tags: [elastic]
+
   - name: "Remove Database volume: {{ DB_MOUNT_POINT }}"
     docker_volume:
       name: "{{ DB_MOUNT_POINT }}"
