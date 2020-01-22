@@ -1,4 +1,4 @@
-upstream cauldron2 {
+upstream cauldronio {
     server {{WEB_CONTAINER_NAME}}:8000;
 }
 
@@ -49,7 +49,7 @@ server {
         proxy_redirect off;
 
         if (!-f $request_filename) {
-            proxy_pass http://cauldron2;
+            proxy_pass http://cauldronio;
             break;
         }
     }

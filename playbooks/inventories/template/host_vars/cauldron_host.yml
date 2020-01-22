@@ -1,9 +1,9 @@
 ---
 ################### DOCKER IMAGES #####################
-DB_IMAGE_NAME: "cauldron2/database:latest"
-WEB_IMAGE_NAME: "cauldron2/webserver:latest"
-WORKER_IMAGE_NAME: "cauldron2/worker:latest"
-PANELS_IMAGE_NAME: "cauldron2/panels:latest"
+DB_IMAGE_NAME: "cauldronio/database:latest"
+WEB_IMAGE_NAME: "cauldronio/webserver:latest"
+WORKER_IMAGE_NAME: "cauldronio/worker:latest"
+PANELS_IMAGE_NAME: "cauldronio/panels:latest"
 HATSTALL_IMAGE_NAME: "grimoirelab/hatstall:latest"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.2.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.2.0"

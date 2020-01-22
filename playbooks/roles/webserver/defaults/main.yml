@@ -5,10 +5,10 @@ WEB_CONTAINER_NAME: "cauldron_service"
 DJANGO_DEBUG: 'True'
 
 CAULDRON_CONFIG_DIR: "/tmp/webserver"
-WEB_IMAGE_NAME: "cauldron2-webserver:test"
+WEB_IMAGE_NAME: "cauldronio-webserver:test"
 WEB_IMAGE_DOCKERFILE_PATH: "../docker/webserver/"
 WEB_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/webserver-build"
-WEB_IMAGE_GIT_CODE: "https://gitlab.com/cauldron2/cauldron-web"
+WEB_IMAGE_GIT_CODE: "https://gitlab.com/cauldronio/cauldron-web"
 WEB_IMAGE_GIT_VERSION: "master"
 
 

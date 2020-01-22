@@ -6,7 +6,7 @@
 ## You can modify the variables in inventories/<name>/group_vars/webserver.yml
 ##
 ## You need to define at least:
-## - WEB_IMAGE_NAME (name for the image. Default is cauldron2-webserver:test)
+## - WEB_IMAGE_NAME (name for the image. Default is cauldronio-webserver:test)
 ## - WEB_IMAGE_BUILD_DIR (It should be an absolute path, default for this playbook is /tmp/webserver-build-context)
 ## - WEB_IMAGE_LOCAL_CODE (Optional for using your local code)
 ##

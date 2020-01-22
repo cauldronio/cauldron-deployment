@@ -52,7 +52,7 @@ This repository contains relevant information for running Cauldron in your own c
 
 1. Download the latest version of this repository with `git clone` and navigate to that directory:
      ```bash
-    $ git clone https://gitlab.com/cauldron2/cauldron-deployment.git
+    $ git clone https://gitlab.com/cauldronio/cauldron-deployment.git
     $ cd cauldron-deployment
     ```
 
@@ -75,7 +75,7 @@ This repository contains relevant information for running Cauldron in your own c
 
     - ~~Create a **Meetup Oauth App** and get the keys. For creating a new Application [follow this link](https://secure.meetup.com/meetup_api/oauth_consumers/create/).~~ **Meetup API has changed and you cannot create free applications anymore. We keep this section if you have already one for testing the site**. Some information for the application:
         - **Consumer Name**: A name for the application, for example `Bitergia Cauldron`
-        - **Application website**: A website for the application, for example `https://cauldron2.gitlab.io/`
+        - **Application website**: A website for the application, for example `https://cauldronio.gitlab.io/`
         - Request access for personal use if you are going to deploy locally, request for organization if you are going to deploy it publicly (The second may take some days to be accepted).
         - **Redirect URI **: This is important. It should be the Homepage URL and `/meetup-login`. For example, for your local computer: `https://localhost:9000/meetup-login`. (You can change it later)
         - **Phone number and Description**: this is for accepting the application, provide some description.
@@ -135,7 +135,7 @@ There you will find some useful Ansible playbooks for running Cauldron. If you j
   ``` bash
   $ ansible-playbook -i inventories/local cauldron.yml
   ```
-  It will deploy Cauldron in the specified host in the inventory file. All the images will be pulled from [DockerHub](https://hub.docker.com/u/cauldron2):
+  It will deploy Cauldron in the specified host in the inventory file. All the images will be pulled from [DockerHub](https://hub.docker.com/u/cauldronio):
   - Create Docker network
   - Run Cauldron web interface in Docker
   - Run ElasticSearch (OpenDistro) in Docker
@@ -168,10 +168,10 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
   ```bash
   $ docker images
   REPOSITORY               TAG        IMAGE ID           CREATED           SIZE
-  cauldron2/panels         X          aaabbbccc11        1 hour ago        925MB
-  cauldron2/worker         X          aaabbbccc22        1 hour ago        1.03GB
-  cauldron2/webserver      X          aaabbbccc33        1 hour ago        1.05GB
-  cauldron2/database       X          aaabbbccc44        1 hour ago        553MB
+  cauldronio/panels         X          aaabbbccc11        1 hour ago        925MB
+  cauldronio/worker         X          aaabbbccc22        1 hour ago        1.03GB
+  cauldronio/webserver      X          aaabbbccc33        1 hour ago        1.05GB
+  cauldronio/database       X          aaabbbccc44        1 hour ago        553MB
   ...                      ...        ...                ...                ...
   ```
   You can push the images created to DockerHub with [docker push](https://docs.docker.com/engine/reference/commandline/push/)
@@ -256,16 +256,16 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
     ```bash
     $ docker ps
     CONTAINER ID        IMAGE                              COMMAND                  ...   PORTS                            NAMES
-    abcdefghij01        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_4
-    abcdefghij02        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_3
-    abcdefghij03        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_2
-    abcdefghij04        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_1
-    abcdefghij05        cauldron2/worker:X                 "python3 manager.py"     ...                                    worker_service_0
-    abcdefghij06        cauldron2/webserver:X              "/entrypoint.sh"         ...   8000/tcp                         cauldron_service
+    abcdefghij01        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_4
+    abcdefghij02        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_3
+    abcdefghij03        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_2
+    abcdefghij04        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_1
+    abcdefghij05        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_0
+    abcdefghij06        cauldronio/webserver:X              "/entrypoint.sh"         ...   8000/tcp                         cauldron_service
     abcdefghij07        nginx:latest                       "nginx -g 'daemon of…"   ...   80/tcp, 0.0.0.0:9000->9000/tcp   nginx_service
     abcdefghij08        amazon/opendi...arch-kibana:0.9.0  "/usr/local/bin/kiba…"   ...                                    kibana_service
     abcdefghij09        amazon/opendi..arch:0.9.0          "/usr/local/bin/dock…"   ...   9200/tcp, 9300/tcp, 9600/tcp     elastic_service
-    abcdefghij10        cauldron2/database:X               "/entrypoint.sh"         ...   3306/tcp                         db_cauldron_service
+    abcdefghij10        cauldronio/database:X               "/entrypoint.sh"         ...   3306/tcp                         db_cauldron_service
     ```
 
     If everything works correctly, you can **Analyze** some repositories at https://localhost:9000
@@ -397,4 +397,4 @@ Feel free to participate in the creation of the Cauldron's Ansible documentation
 
 - We are using the tool [ansible-autodoc](https://pypi.org/project/ansible-autodoc/) to generate documents in a semi-automatic way. Please, refer to its documentation to learn how to use it.
 
-  **NOTE**: Currently, [ansible-autodoc](https://pypi.org/project/ansible-autodoc/) is not totally adapted to our document specifications. It is planned for the future to make a fork and modify it ([Issue related](https://gitlab.com/cauldron2/cauldron-deployment/issues/8)). For now, every `README.md` generated by the tool will be modified by us to adapt it. You cant take a look to this Issue.
+  **NOTE**: Currently, [ansible-autodoc](https://pypi.org/project/ansible-autodoc/) is not totally adapted to our document specifications. It is planned for the future to make a fork and modify it ([Issue related](https://gitlab.com/cauldronio/cauldron-deployment/issues/8)). For now, every `README.md` generated by the tool will be modified by us to adapt it. You cant take a look to this Issue.

@@ -9,19 +9,19 @@ Migrate from Opendistro 0.9.0 to 1.2.0
 
 #### Images
 ```
-DB_IMAGE_NAME: "cauldron2/database:0.1.1"
-WEB_IMAGE_NAME: "cauldron2/webserver:0.1.5"
-WORKER_IMAGE_NAME: "cauldron2/worker:0.1.3"
+DB_IMAGE_NAME: "cauldronio/database:0.1.1"
+WEB_IMAGE_NAME: "cauldronio/webserver:0.1.5"
+WORKER_IMAGE_NAME: "cauldronio/worker:0.1.3"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.2.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.2.0"
-PANELS_IMAGE_NAME: "cauldron2/panels:0.1.4"
+PANELS_IMAGE_NAME: "cauldronio/panels:0.1.4"
 ```
 
 #### Commits
 ```
-cauldron2/cauldron-worker: "cee8b1fa0432ed9ab89e9538e8bb6ec8adeed421"
-cauldron2/cauldron-deployment: "baa856fdb3cdcf4821e8d496733edad1ec282906"
-cauldron2/cauldron-web: "091a15b7bbcd6d9a659b4724825912978535dfbf"
+cauldronio/cauldron-worker: "cee8b1fa0432ed9ab89e9538e8bb6ec8adeed421"
+cauldronio/cauldron-deployment: "baa856fdb3cdcf4821e8d496733edad1ec282906"
+cauldronio/cauldron-web: "091a15b7bbcd6d9a659b4724825912978535dfbf"
 ```
 
 
@@ -43,9 +43,9 @@ ansible-playbook -i inventories/<name> cauldron.yml --skip-tags worker,panels,we
 
 Wait for the containers ready
 ```
-docker logs -f elastic_service 
+docker logs -f elastic_service
 # Wait until is stable. If "Not yet initialized (you may need to run securityadmin)" appears, wait.
-docker logs -f kibana_service 
+docker logs -f kibana_service
 # Wait until "Server running at http://0:5601/kibana"
 ```
 

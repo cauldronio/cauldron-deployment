@@ -3,10 +3,10 @@
 WORKER_CONTAINER_NAME: "worker_service" # A number will be appended eg. worker_service_1
 
 CAULDRON_CONFIG_DIR: "/tmp/workers"
-WORKER_IMAGE_NAME: "cauldron2-worker:test"
+WORKER_IMAGE_NAME: "cauldronio-worker:test"
 WORKER_IMAGE_DOCKERFILE_PATH: "../docker/worker/"
 WORKER_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/worker-build"
-WORKER_IMAGE_GIT_CODE: "https://gitlab.com/cauldron2/cauldron-worker"
+WORKER_IMAGE_GIT_CODE: "https://gitlab.com/cauldronio/cauldron-worker"
 WORKER_IMAGE_GIT_VERSION: "master"
 
 

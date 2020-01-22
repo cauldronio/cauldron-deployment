@@ -9,12 +9,12 @@ Public dashboards are included
 
 #### Images
 ```
-DB_IMAGE_NAME: "cauldron2/database:0.1.1"
-WEB_IMAGE_NAME: "cauldron2/webserver:0.1.3"
-WORKER_IMAGE_NAME: "cauldron2/worker:0.1.1"
+DB_IMAGE_NAME: "cauldronio/database:0.1.1"
+WEB_IMAGE_NAME: "cauldronio/webserver:0.1.3"
+WORKER_IMAGE_NAME: "cauldronio/worker:0.1.1"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:0.9.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:0.9.0"
-PANELS_IMAGE_NAME: "cauldron2/panels:0.1.2"
+PANELS_IMAGE_NAME: "cauldronio/panels:0.1.2"
 ```
 #### Variables added
 None
@@ -33,9 +33,9 @@ ansible-playbook -i inventories/<name> cauldron.yml --skip-tags worker
 
 Wait for all the containers ready
 ```
-docker logs -f elastic_service 
+docker logs -f elastic_service
 # Wait until is stable. If "Not yet initialized (you may need to run securityadmin)" appears, wait.
-docker logs -f cauldron_service 
+docker logs -f cauldron_service
 # Wait until "Start the Cauldron server"
 ```
 

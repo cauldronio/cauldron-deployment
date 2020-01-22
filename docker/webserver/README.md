@@ -2,8 +2,8 @@
 
 **IMPORTANT NOTE**
 > You can build and run this image, but you will end up doing a lot of work manually.
-> We recommend you to use the Ansible playbooks specially created for deploying Cauldron local or remotely 
- 
+> We recommend you to use the Ansible playbooks specially created for deploying Cauldron local or remotely
+
 
 
 ### Build image
@@ -15,7 +15,7 @@ You have to clone/copy the desired code you want to run inside `src`. For exampl
 
 ```bash
 $ cd docker/webserver
-$ git clone https://gitlab.com/cauldron2/cauldron-web src
+$ git clone https://gitlab.com/cauldronio/cauldron-web src
 ```
 
 Or you can copy the code from another location into `src`. Remember that the contents of the repository should be inside `src`:
@@ -42,9 +42,9 @@ The web server needs some services running:
 
 It also needs:
 - A custom `settings.py`
-- JSON Web Token private key. 
+- JSON Web Token private key.
 
-There is a example settings file inside the `example-files` directory and a script for creating the JSON Web Token. 
+There is a example settings file inside the `example-files` directory and a script for creating the JSON Web Token.
 
 For running the container you will need the following command:
 ```
@@ -53,4 +53,4 @@ docker run  --name cauldron_container \
                      -v "example/settings.py:/code/cauldron/Cauldron2/Cauldron2/settings.py" \
                      -v "logs_volume:/dashboard_logs" \
                      -v "example/jwtR256.key:/code/cauldron/Cauldron2/CauldronApp/jwtR256.key"
-``` 
+```

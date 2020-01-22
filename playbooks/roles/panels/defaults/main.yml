@@ -6,7 +6,7 @@ PANELS_USERNAME: "defaultpanels"
 
 
 CAULDRON_CONFIG_DIR: "/tmp/cauldron"
-PANELS_IMAGE_NAME: "cauldron2-panels:test"
+PANELS_IMAGE_NAME: "cauldronio-panels:test"
 PANELS_IMAGE_DOCKERFILE_PATH: "../docker/panels/"
 PANELS_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/panels-build"
 

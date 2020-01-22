@@ -7,7 +7,7 @@
         "title": "meetup_md_link_visualization",
         "uiStateJSON": "{}",
         "version": 1,
-        "visState": "{\"title\":\"meetup_md_link_visualization\",\"type\":\"markdown\",\"params\":{\"fontSize\":20,\"openLinksInNewTab\":false,\"markdown\":\"Open **[Meetup Data](/kibana/app/kibana#/dashboard/Meetup)**.\\n[![Timing](https://cauldron2.gitlab.io/img/cauldron-dashboards/meetup.png)](/kibana/app/kibana#/dashboard/Meetup)\"},\"aggs\":[]}"
+        "visState": "{\"title\":\"meetup_md_link_visualization\",\"type\":\"markdown\",\"params\":{\"fontSize\":20,\"openLinksInNewTab\":false,\"markdown\":\"Open **[Meetup Data](/kibana/app/kibana#/dashboard/Meetup)**.\\n[![Timing](https://cauldronio.gitlab.io/img/cauldron-dashboards/meetup.png)](/kibana/app/kibana#/dashboard/Meetup)\"},\"aggs\":[]}"
     },
     "id": "b464fd20-c810-11e9-b0eb-85688658d306",
     "type": "visualization",
