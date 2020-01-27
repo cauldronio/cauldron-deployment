@@ -156,3 +156,21 @@ req = requests.put('{}/_snapshot/cauldron_backup'.format(settings.ES_IN_URL),
                    headers=headers_snapshot,
                    json=data_snapshot)
 Logger.info(req.json())
+
+
+Logger.info('Updating number of max open scrolls')
+headers_scrolls = {'Content-Type': 'application/json'}
+data_scrolls = {
+                    "persistent": {
+                        "search.max_open_scroll_context": 5000
+                    },
+                    "transient": {
+                        "search.max_open_scroll_context": 5000
+                    }
+                }
+req = requests.put('{}/_cluster/settings'.format(settings.ES_IN_URL),
+                   auth=('admin', settings.ES_ADMIN_PSW),
+                   verify=False,
+                   headers=headers_scrolls,
+                   json=data_scrolls)
+Logger.info(req.json())
