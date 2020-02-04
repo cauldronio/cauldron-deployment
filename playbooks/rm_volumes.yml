@@ -1,11 +1,11 @@
 ---
 - hosts: all
   tasks:
-  - name: "Remove Logs volume: {{ LOGS_MOUNT_POINT }}"
+  - name: "Remove Projects logs volume: {{ PROJECT_LOGS_MOUNT_POINT }}"
     docker_volume:
-      name: "{{ LOGS_MOUNT_POINT }}"
+      name: "{{ PROJECT_LOGS_MOUNT_POINT }}"
       state: absent
-    tags: [logs]
+    tags: [project_logs]
 
   - name: "Remove Elasticsearch volume: {{ ELASTIC_MOUNT_POINT }}"
     docker_volume:
@@ -17,7 +17,7 @@
     docker_volume:
       name: "{{ ELASTIC_SNAPSHOT_MOUNT_POINT }}"
       state: absent
-    tags: [elastic]
+    tags: [elastic_snapshot]
 
   - name: "Remove Database volume: {{ DB_MOUNT_POINT }}"
     docker_volume:
@@ -25,11 +25,17 @@
       state: absent
     tags: [database]
 
+  - name: "Remove NGINX logs: {{ NGINX_LOGS_MOUNT_POINT }}"
+    docker_volume:
+      name: "{{ NGINX_LOGS_MOUNT_POINT }}"
+      state: absent
+    tags: [nginx]
+
   - name: "Remove Git Perceval Repositories volume: {{PERCEVAL_REPOS_MOUNT_POINT}}"
     docker_volume:
       name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"
       state: absent
-    tags: [worker]
+    tags: [repositories]
 
   - name: "Remove Hatstall volume: {{HATSTALL_DB_MOUNT_POINT}}"
     docker_volume:

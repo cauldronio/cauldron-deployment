@@ -275,7 +275,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 - **Stop and remove**.
 
   - Stop and remove all the containers running:
-  > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`
+  > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `hatstall`
 
     ```bash
     $ ansible-playbook -i inventories/local rm_containers.yml
@@ -287,7 +287,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
     ```
 
   - Remove volumes:
-  > Tags available for this playbook are: `logs`, `elastic`, `database`
+  > Tags available for this playbook are: `project_logs`, `elastic`, `elastic_snapshot`,  `database`, `nginx`, `repositories`, `hatstall`
 
     ```bash
     $ ansible-playbook -i inventories/local rm_volumes.yml

@@ -68,10 +68,11 @@ HATSTALL_PASSWORD: "test-password"
 ################## DOCKER MOUNT POINT #####################
 # Could be either a path or a Docker volume
 DB_MOUNT_POINT: "database_volume"
-LOGS_MOUNT_POINT: "cauldron_logs_volume"
+PROJECT_LOGS_MOUNT_POINT: "cauldron_logs_volume"
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
 ELASTIC_SNAPSHOT_MOUNT_POINT: "elastic_snapshots"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
+NGINX_LOGS_MOUNT_POINT: "nginx_log_volume"
 HATSTALL_DB_MOUNT_POINT: "hatstall_db"
 
 
