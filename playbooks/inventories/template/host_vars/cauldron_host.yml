@@ -5,8 +5,8 @@ WEB_IMAGE_NAME: "cauldronio/webserver:latest"
 WORKER_IMAGE_NAME: "cauldronio/worker:latest"
 PANELS_IMAGE_NAME: "cauldronio/panels:latest"
 HATSTALL_IMAGE_NAME: "grimoirelab/hatstall:latest"
-ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.2.0"
-KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.2.0"
+ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.3.0"
+KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.3.0"
 
 
 #################### APPLICATION KEYS ####################
