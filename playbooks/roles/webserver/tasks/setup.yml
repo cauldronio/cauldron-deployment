@@ -14,7 +14,7 @@
   tags: [webserver]
 
 
-- name: Crete Django setting.py
+- name: Create Django setting.py
   template:
     src: django_settings.py.j2
     dest: "{{ CAULDRON_CONFIG_DIR }}/django/django_settings.py"

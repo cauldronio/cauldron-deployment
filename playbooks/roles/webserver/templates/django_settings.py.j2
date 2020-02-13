@@ -26,7 +26,6 @@ KIB_PATH = '{{KIBANA_URL_PATH}}'
 KIB_OUT_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{CAULDRON_PORT}}{{KIBANA_URL_PATH}}'
 
 HATSTALL_ENABLED = {{ HATSTALL_ENABLED }}
-HATSTALL_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{HATSTALL_PORT}}'
 
 GOOGLE_ANALYTICS_ID = '{{ GOOGLE_ANALYTICS_ID }}'
 
@@ -49,6 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'CauldronApp',
+    {% if HATSTALL_ENABLED %}
+    'hatstall',
+    {% endif %}
 ]
 
 MIDDLEWARE = [
@@ -59,6 +61,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    {% if HATSTALL_ENABLED %}
+    'Cauldron2.middleware.HatstallAuthorizationMiddleware'
+    {% endif %}
 ]
 
 ROOT_URLCONF = 'Cauldron2.urls'

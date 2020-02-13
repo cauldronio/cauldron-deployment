@@ -1,19 +1,18 @@
 ---
 
-- name: Run Hatstall
-  docker_container:
-    name: "{{ HATSTALL_CONTAINER_NAME }}"
-    image: "{{ HATSTALL_IMAGE_NAME }}"
-    state: started
-    restart_policy: "always"
-    env:
-      DATABASE_DIR: "/db/"
-      ADMIN_USER: "{{ HATSTALL_USER }}"
-      ADMIN_PASS: "{{ HATSTALL_PASSWORD }}"
-    networks:
-      - name: "{{ NETWORK_NAME }}"
-    volumes:
-      - "{{CAULDRON_CONFIG_DIR}}/hatstall/shdb.cfg:/home/grimoirelab/shdb.cfg"
-      - "{{CAULDRON_CONFIG_DIR}}/hatstall/apache-hatstall.conf:/home/grimoirelab/apache-hatstall.conf"
-      - "{{HATSTALL_DB_MOUNT_POINT}}:/db"
+
+- name: "Copy Hatstall installation script in {{WEB_CONTAINER_NAME}}"
+  command: "docker cp {{CAULDRON_CONFIG_DIR}}/hatstall/hatstall_installation.sh {{WEB_CONTAINER_NAME}}:/hatstall_installation.sh"
+  tags: [hatstall]
+
+- name: "Copy shdb.cfg in {{WEB_CONTAINER_NAME}}"
+  command: "docker cp {{CAULDRON_CONFIG_DIR}}/hatstall/shdb.cfg {{WEB_CONTAINER_NAME}}:/code/Cauldron2/shdb.cfg"
+  tags: [hatstall]
+
+- name: "Hatstall: change permissions to the installation script"
+  command: "docker exec {{ WEB_CONTAINER_NAME }} chmod +x /hatstall_installation.sh"
+  tags: [hatstall]
+
+- name: "Install Hatstall in the {{WEB_CONTAINER_NAME}}"
+  command: "docker exec {{ WEB_CONTAINER_NAME }} bash -l -c /hatstall_installation.sh"
   tags: [hatstall]

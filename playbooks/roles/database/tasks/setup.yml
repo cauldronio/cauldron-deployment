@@ -8,7 +8,7 @@
   tags: [database]
 
 
-- name: Crete Database settings and copy to {{CAULDRON_CONFIG_DIR}}/database
+- name: Create Database settings and copy to {{CAULDRON_CONFIG_DIR}}/database
   template:
     src: database.sql.j2
     dest: "{{ CAULDRON_CONFIG_DIR }}/database/database.sql"

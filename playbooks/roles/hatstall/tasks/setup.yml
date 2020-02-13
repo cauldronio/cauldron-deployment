@@ -16,9 +16,9 @@
   tags: [hatstall]
 
 
-- name: Hatstall Apache configuration
+- name: Hatstall script installation
   copy:
-    src: apache-hatstall.conf
-    dest: "{{ CAULDRON_CONFIG_DIR }}/hatstall/apache-hatstall.conf"
+    src: hatstall_installation.sh
+    dest: "{{ CAULDRON_CONFIG_DIR }}/hatstall/hatstall_installation.sh"
     mode: 0644
   tags: [hatstall]
