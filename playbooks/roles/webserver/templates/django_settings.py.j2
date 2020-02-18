@@ -30,6 +30,12 @@ HATSTALL_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{HATSTALL_
 
 GOOGLE_ANALYTICS_ID = '{{ GOOGLE_ANALYTICS_ID }}'
 
+CAULDRON_ADMINS = {
+    'GITHUB': {{ GITHUB_ADMINS }},
+    'GITLAB': {{ GITLAB_ADMINS }},
+    'MEETUP': {{ MEETUP_ADMINS }},
+}
+
 DEBUG = '{{ DJANGO_DEBUG }}'
 
 ALLOWED_HOSTS = [ '{{ DJANGO_HOSTS }}' ]

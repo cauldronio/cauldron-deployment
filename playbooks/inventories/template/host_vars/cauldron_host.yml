@@ -90,6 +90,17 @@ HATSTALL_CONTAINER_NAME: "hatstall"
 NETWORK_NAME: "network_cauldron"
 
 
+#################### ADMINS ####################
+# GitHub Admins
+GITHUB_ADMINS: []
+
+# Gitlab Admins
+GITLAB_ADMINS: []
+
+# Meetup Admins
+MEETUP_ADMINS: []
+
+
 ####################  DEVELOPMENT ####################
 
 ### RUN YOUR LOCAL CODE ###
