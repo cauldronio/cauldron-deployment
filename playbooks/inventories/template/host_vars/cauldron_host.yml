@@ -4,8 +4,8 @@ DB_IMAGE_NAME: "cauldronio/database:latest"
 WEB_IMAGE_NAME: "cauldronio/webserver:latest"
 WORKER_IMAGE_NAME: "cauldronio/worker:latest"
 PANELS_IMAGE_NAME: "cauldronio/panels:latest"
-ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.3.0"
-KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.3.0"
+ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.4.0"
+KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.4.0"
 
 
 #################### APPLICATION KEYS ####################
