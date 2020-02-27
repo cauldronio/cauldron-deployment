@@ -9,15 +9,15 @@
 ## You can build a single image using tags.
 ## ansible-playbook build_images.yml -i inventories/<name> -t webserver
 ##
-## Available tags: worker, webserver, panels, database
+## Available tags: worker, webserver, odfe-config, database
 ##
 ## ::: VARIABLES USED :::
 ## --- Name for the image ---
-## WEB_IMAGE_NAME, WORKER_IMAGE_NAME, PANELS_IMAGE_NAME, DB_IMAGE_NAME
+## WEB_IMAGE_NAME, WORKER_IMAGE_NAME, ODFE_CONFIG_IMAGE_NAME, DB_IMAGE_NAME
 ## --- Path for the context build. It will include the Dockerfile and the files needed to that directory  ---
-## PANELS_IMAGE_BUILD_DIR, DB_IMAGE_BUILD_DIR, WEB_IMAGE_BUILD_DIR, WORKER_IMAGE_BUILD_DIR
+## ODFE_CONFIG_IMAGE_BUILD_DIR, DB_IMAGE_BUILD_DIR, WEB_IMAGE_BUILD_DIR, WORKER_IMAGE_BUILD_DIR
 ## --- Location of the Dockerfile in this repository ---
-## PANELS_IMAGE_DOCKERFILE_PATH, DB_IMAGE_DOCKERFILE_PATH, WEB_IMAGE_DOCKERFILE_PATH, WORKER_IMAGE_DOCKERFILE_PATH
+## ODFE_CONFIG_IMAGE_DOCKERFILE_PATH, DB_IMAGE_DOCKERFILE_PATH, WEB_IMAGE_DOCKERFILE_PATH, WORKER_IMAGE_DOCKERFILE_PATH
 ## --- Define this variable if you want to use local code for the image ---
 ## WEB_IMAGE_LOCAL_CODE, WORKER_IMAGE_LOCAL_CODE
 ## --- Git location of the code to be cloned ---
@@ -42,6 +42,6 @@
       tags: [database]
 
     - import_role:
-        name: panels
+        name: odfe-config
         tasks_from: build
-      tags: [panels]
+      tags: [odfe-config]

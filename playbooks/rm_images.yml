@@ -20,8 +20,8 @@
         name: "{{ DB_IMAGE_NAME }}"
       tags: [database]
 
-    - name: "Delete database image"
+    - name: "Delete odfe config image"
       docker_image:
         state: absent
-        name: "{{ PANELS_IMAGE_NAME }}"
-      tags: [panels]
+        name: "{{ ODFE_CONFIG_IMAGE_NAME }}"
+      tags: [odfe-config]

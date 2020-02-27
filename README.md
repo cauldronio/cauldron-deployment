@@ -124,6 +124,10 @@ This repository contains relevant information for running Cauldron in your own c
 
     For more information about each certificate, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
 
+5. Define your own set of dashboards for your project.
+
+    If you want to define some default visualizations for your deployment, you can include them in `files/cauldron_host/kibana_objects`. Only exported `*.ndjson` files from Kibana 7.X are supported. More information at [Kibana saved objects](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html).
+    
 ## Run for impatients
 
 Navigate to `playbooks` directory from the root of the repository.
@@ -141,13 +145,13 @@ There you will find some useful Ansible playbooks for running Cauldron. If you j
   - Run ElasticSearch (OpenDistro) in Docker
   - Run Kibana (OpenDistro) in Docker
   - Run MariaDB in Docker
-  - Import default panels for Kibana
+  - Create default configuration for Elasticsearch and Kibana, and import visualizations
 
 ## Run Step by step
 
 Now we will detail all the steps for running Cauldron and the variables that can be modified.
 
-All the playbooks are tagged, therefore you can run them with the flag `-t` and any of the following keyworks: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `panels`
+All the playbooks are tagged, therefore you can run them with the flag `-t` and any of the following keyworks: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `odfe-config`
 
 - **Build the images.**
 
@@ -158,7 +162,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
   A complete list of the variables used are described in `build_images.yml`.
 
   For running this playbook execute the following command:
-  > Tags available for this playbook are: `webserver`, `worker`, `database`, `panels`
+  > Tags available for this playbook are: `webserver`, `worker`, `database`, `odfe-config`
 
   ``` bash
   $ ansible-playbook -i inventories/local build_images.yml
@@ -168,7 +172,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
   ```bash
   $ docker images
   REPOSITORY               TAG        IMAGE ID           CREATED           SIZE
-  cauldronio/panels         X          aaabbbccc11        1 hour ago        925MB
+  cauldronio/odfe-config    X          aaabbbccc11        1 hour ago        925MB
   cauldronio/worker         X          aaabbbccc22        1 hour ago        1.03GB
   cauldronio/webserver      X          aaabbbccc33        1 hour ago        1.05GB
   cauldronio/database       X          aaabbbccc44        1 hour ago        553MB
@@ -198,7 +202,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 
     In this step we will create all the configuration files for Cauldron. This files will be stored in the directory defined by `CAULDRON_CONFIG_DIR`. That variable can be modified for each host. Run the following command:
 
-    > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `panels`
+    > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `odfe-config`
 
     ```bash
     $ ansible-playbook -i inventories/local create_setup_files.yml
@@ -228,6 +232,8 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
   │   ├── jwtR256.key
   │   ├── jwtR256.key.pub
   │   └── pub.jwtR256.key
+  ├── kibana_objects
+  │   └── all_objects.ndjson
   ├── kibana
   │   └── kibana.yml
   ├── mordred
@@ -238,7 +244,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
   │   │   ├── ssl_server.crt
   │   │   └── ssl_server.key
   │   └── nginx_cauldron.conf
-  └── panels
+  └── odfe-config
       └── settings.py
     ```
 
@@ -246,7 +252,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 
     In this last step we run the Cauldron containers.
 
-    > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `panels`
+    > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `odfe-config`
 
     ``` bash
     $ ansible-playbook -i inventories/local run_containers.yml
@@ -262,9 +268,9 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
     abcdefghij04        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_1
     abcdefghij05        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_0
     abcdefghij06        cauldronio/webserver:X              "/entrypoint.sh"         ...   8000/tcp                         cauldron_service
-    abcdefghij07        nginx:latest                       "nginx -g 'daemon of…"   ...   80/tcp, 0.0.0.0:9000->9000/tcp   nginx_service
-    abcdefghij08        amazon/opendi...arch-kibana:0.9.0  "/usr/local/bin/kiba…"   ...                                    kibana_service
-    abcdefghij09        amazon/opendi..arch:0.9.0          "/usr/local/bin/dock…"   ...   9200/tcp, 9300/tcp, 9600/tcp     elastic_service
+    abcdefghij07        nginx:latest                        "nginx -g 'daemon of…"   ...   80/tcp, 0.0.0.0:9000->9000/tcp   nginx_service
+    abcdefghij08        amazon/opendi...arch-kibana:1.4.0   "/usr/local/bin/kiba…"   ...                                    kibana_service
+    abcdefghij09        amazon/opendi..arch:1.4.0           "/usr/local/bin/dock…"   ...   9200/tcp, 9300/tcp, 9600/tcp     elastic_service
     abcdefghij10        cauldronio/database:X               "/entrypoint.sh"         ...   3306/tcp                         db_cauldron_service
     ```
 

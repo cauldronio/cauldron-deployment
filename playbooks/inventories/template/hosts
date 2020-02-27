@@ -1,5 +1,6 @@
 [server]
-# Name for the host, same file name in hosts_vars
+# Name for the host, if you want to change this name, you have to rename the file
+# inventories/<name>/hosts_vars/cauldron_host.yml and the directory files/cauldron_host
 cauldron_host
 
 

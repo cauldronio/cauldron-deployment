@@ -10,7 +10,7 @@
 ## You can run a single container using tags.
 ## ansible-playbook cauldron.yml -i inventories/<name> -t webserver
 ##
-## Available tags: worker, webserver, panels, database, nginx, elastic, kibana
+## Available tags: worker, webserver, odfe-config, database, nginx, elastic, kibana
 ##
 ## Variables are defined in the inventory file
 
@@ -25,7 +25,7 @@
     - elasticsearch
     - kibana
     - workers
-    - nginx
-    - panels
+    - odfe-config
     - role: hatstall
       when: HATSTALL_ENABLED
+    - nginx

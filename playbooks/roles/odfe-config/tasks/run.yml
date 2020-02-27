@@ -1,0 +1,16 @@
+---
+
+- name: "Post configuration: import Kibana objects and Opendistro config (may take some time): {{ODFE_CONFIG_CONTAINER_NAME}}"
+  docker_container:
+    name: "{{ ODFE_CONFIG_CONTAINER_NAME }}"
+    image: "{{ ODFE_CONFIG_IMAGE_NAME }}"
+    state: started
+    restart: true
+    detach: false
+    cleanup: yes
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+    volumes:
+      - "{{CAULDRON_CONFIG_DIR}}/odfe-config/settings.py:/settings.py"
+      - "{{CAULDRON_CONFIG_DIR}}/kibana_objects:/kibana_objects"
+  tags: [odfe-config]

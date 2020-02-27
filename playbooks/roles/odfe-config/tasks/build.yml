@@ -1,0 +1,34 @@
+---
+
+## Build ODFE config image
+##
+## For this playbook to work, ensure docker-py is installed
+##
+## You need to define at least:
+## - ODFE_CONFIG_IMAGE_NAME (name for the image. Default is cauldronio-odfe-config:test)
+## - ODFE_CONFIG_IMAGE_BUILD_DIR (It should be an absolute path, default for this playbook is /tmp/odfe-config-build-context)
+##
+
+- name: "Ensures {{ ODFE_CONFIG_IMAGE_BUILD_DIR }} exists"
+  file:
+    path: "{{ ODFE_CONFIG_IMAGE_BUILD_DIR }}"
+    state: directory
+  tags: [odfe-config]
+
+- name: "Copy Docker context to {{ ODFE_CONFIG_IMAGE_BUILD_DIR }}"
+  synchronize:
+    src: "{{ ODFE_CONFIG_IMAGE_DOCKERFILE_PATH }}"
+    dest: "{{ ODFE_CONFIG_IMAGE_BUILD_DIR }}"
+    recursive: yes
+    delete: yes
+  tags: [odfe-config]
+
+- name: "Build the image for Cauldron ODFE Config"
+  docker_image:
+    name: "{{ ODFE_CONFIG_IMAGE_NAME }}"
+    build:
+      path: "{{ ODFE_CONFIG_IMAGE_BUILD_DIR }}/"
+      pull: "no"
+    source: build
+    state: present
+  tags: [odfe-config]

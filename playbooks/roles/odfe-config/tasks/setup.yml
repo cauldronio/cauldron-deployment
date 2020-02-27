@@ -1,0 +1,22 @@
+---
+
+- name: "Ensures {{CAULDRON_CONFIG_DIR}}/odfe-config dir exists"
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/odfe-config/"
+    state: directory
+    recurse: yes
+  tags: [odfe-config]
+
+- name: "Copy Kibana objects"
+  synchronize:
+    src: "{{inventory_hostname}}/kibana_objects/"
+    dest: "{{ CAULDRON_CONFIG_DIR }}/kibana_objects"
+    recursive: yes
+    delete: yes
+  tags: [odfe-config]
+
+- name: "Create settings file for ODFE config and copy to {{ CAULDRON_CONFIG_DIR }}/odfe-config/"
+  template:
+    src: settings.py.j2
+    dest: "{{ CAULDRON_CONFIG_DIR }}/odfe-config/settings.py"
+  tags: [odfe-config]

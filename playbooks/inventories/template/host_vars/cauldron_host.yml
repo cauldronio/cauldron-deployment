@@ -3,7 +3,7 @@
 DB_IMAGE_NAME: "cauldronio/database:latest"
 WEB_IMAGE_NAME: "cauldronio/webserver:latest"
 WORKER_IMAGE_NAME: "cauldronio/worker:latest"
-PANELS_IMAGE_NAME: "cauldronio/panels:latest"
+ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.4.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.4.0"
 
@@ -76,7 +76,7 @@ WORKER_CONTAINER_NAME: "worker_service" # A number will be appended eg. worker_s
 ELASTIC_CONTAINER_NAME: "elastic_service" # NEVER change it
 KIBANA_CONTAINER_NAME: "kibana_service"
 NGINX_CONTAINER_NAME: 'nginx_service'
-PANELS_CONTAINER_NAME: "panels_cauldron"
+ODFE_CONFIG_CONTAINER_NAME: "odfe_config_cauldron"
 
 NETWORK_NAME: "network_cauldron"
 

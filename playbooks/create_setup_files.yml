@@ -38,9 +38,9 @@
     tags: [worker]
 
   - include_role:
-      name: panels
+      name: odfe-config
       tasks_from: setup
-    tags: [panels]
+    tags: [odfe-config]
 
   - include_role:
       name: hatstall
