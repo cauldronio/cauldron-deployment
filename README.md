@@ -312,13 +312,95 @@ For running your Django and Worker local code in the container for development p
 
 Cauldron comes with an admin page you can use to monitor the status of the server. To access this feature navigate to `/admin-page`, but you will need a user with superuser privileges.
 
-To make the creation of superusers easier, Cauldron provides a Django custom command to promote an existing user to a superuser. For example, if you want to convert the user `alice` into a superuser, you should execute the following command:
+To make the creation of superusers easier, Cauldron provides variables in the inventory file for defining them. Add to the corresponding list the id of the users you want as administrator. You can manage it later from the admin page. For example:
+
+```
+GITHUB_ADMINS: ['alice', 'bob']
+```
+
+Cauldron also provideds a Django custom command to promote an existing user to a superuser. For example, if you want to convert the user `alice` into a superuser, you should execute the following command:
 
 ```py
 python3 manage.py promote alice
 ```
 
 **NOTE**: The command `promote` will set to True the flags `is_staff` and `is_superuser`, so the user promoted will be able to access the Django admin site too.
+
+
+## Backups
+
+It is important to configure Cauldron to generate periodic snapshots and database backups. If you are not familiar with snapshots, we recommend to read [this article first](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/snapshot-restore.html).
+
+### Database backup
+You can create a backup of the Cauldron database with the following command:
+```
+docker exec db_cauldron mysqldump --all-databases > cauldron_sqldump_test.sql
+```
+
+You can restore the database with the following command:
+```
+cat cauldron_sqldump_test.sql | docker exec -i db_cauldron_service /usr/bin/mysql
+```
+
+### Elasticsearch snapshots
+
+In Cauldron, Elasticsearch is configured by default with a snapshot repository that is mounted in the location defined in the inventory's variable `ELASTIC_SNAPSHOT_MOUNT_POINT`.
+
+For creating a snapshot, run inside Elasticsearch container:
+```
+curl -k -u admin:PASSWORD -XPUT "https://localhost:9200/_snapshot/cauldron_backup/snapshot_test" -H 'Content-Type: application/json' -d'
+{
+    "indices": "*",
+    "ignore_unavailable": true,
+    "include_global_state": false
+}
+'
+```
+This will created a snapshot with all the indices named `snapshot_test`.
+
+You can see the snapshots created in a remote machine with the script `list_snapshots.py` located in `playbooks/scripts`:
+```
+python3 list_snapshots.py --ssh user@host --password ELASTIC_ADMIN_PASSWORD
+```
+
+You can recover from a snapshot deleting/closing the indices you want to restore and executing the following command inside the Elasticsearch container:
+```
+curl -k --cert config/admin.pem --key config/admin-key.pem -u admin:PASSWORD -XPOST "https://localhost:9200/_snapshot/cauldron_backup/cauldron_snapshot/_restore" -H 'Content-Type: application/json' -d'
+{
+  "indices": "INDICES_TO_RESTORE",
+  "ignore_unavailable": true,
+  "include_global_state": false
+}
+'
+```
+You can also move all the indices to a new cluster. Remember to use the same password and jwt certificates in order to work. You need to follow the next steps:
+- Run Cauldron in the new machine with:
+    ```
+    ansible-playbook -i inventories/newlocation cauldron.yml --skip-tags worker,nginx
+    ```
+- Remove all the indices created. From inside Elasticsearch container run:
+    ```
+    curl -k --cert config/admin.pem --key config/admin-key.pem -u admin:PASSWORD -XDELETE "https://localhost:9200/*"
+    ```
+- Restore all the data from a specific snapshot. From inside Elasticsearch container run:
+    ```
+    curl -k --cert config/admin.pem --key config/admin-key.pem -u admin:PASSWORD -XPOST "https://localhost:9200/_snapshot/cauldron_backup/SNAPSHOT_NAME/_restore" -H 'Content-Type: application/json' -d'
+	 {
+	    "ignore_unavailable": true,
+	    "include_global_state": false
+	 }
+	 '
+    ```
+- Wait all the indices green:
+    ```
+    curl -k -u admin:PASSWORD -XGET "https://localhost:9200/_cat/indices" 2>/dev/null | grep yellow
+    ```
+- Restart Cauldron from zero:
+    ```
+    ansible-playbook -i inventories/newlocation rm_containers.yml cauldron.yml
+    ```
+
+With both database backup and Elastic snapshot, you can recover the state of Cauldron.
 
 ## Help!
 
