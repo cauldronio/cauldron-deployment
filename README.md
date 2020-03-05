@@ -303,6 +303,12 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 
 For running your Django and Worker local code in the container for development purposes, you need to define the location of the code with the variables `WEB_MOUNT_CODE` and `WORKER_MOUNT_CODE`. If this variables are not defined the containers will use the code from the images.
 
+## Continuous Delivery and Rolling Upgrades
+
+Ansible Playbooks are designed to be idempotent, in this way, you can run the same playbook as many times as you wish and there will not be changes if you didn't modify anything.
+
+In case you modify any of the variables, the playbook will update the configuration variables and take the necessary actions. For example, if you modify the image tag for the web server, it will pull the new image (if it is not stored locally) and update the container with the new version.
+
 
 > TODO:
 > - Script for remove configuration
