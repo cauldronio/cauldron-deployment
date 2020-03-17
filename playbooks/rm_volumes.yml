@@ -36,3 +36,9 @@
       name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"
       state: absent
     tags: [repositories]
+
+  - name: "Remove syslog volume: {{SYSLOG_MOUNT_POINT}}"
+    docker_volume:
+      name: "{{ SYSLOG_MOUNT_POINT }}"
+      state: absent
+    tags: [syslog]

@@ -1,0 +1,13 @@
+---
+
+- name: Run syslog-ng container
+  docker_container:
+    name: "{{ SYSLOG_CONTAINER_NAME }}"
+    image: "{{ SYSLOG_IMAGE_NAME }}"
+    state: started
+    restart_policy: "always"
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+    volumes:
+      - "{{ SYSLOG_MOUNT_POINT }}:/var/log/syslog"
+  tags: [syslog]

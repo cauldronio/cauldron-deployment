@@ -6,6 +6,7 @@ WORKER_IMAGE_NAME: "cauldronio/worker:latest"
 ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.4.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.4.0"
+SYSLOG_IMAGE_NAME: "cauldronio/syslog-ng:latest"
 
 
 #################### APPLICATION KEYS ####################
@@ -66,6 +67,7 @@ ELASTIC_MOUNT_POINT: "elastic_data_volume"
 ELASTIC_SNAPSHOT_MOUNT_POINT: "elastic_snapshots"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
 NGINX_LOGS_MOUNT_POINT: "nginx_log_volume"
+SYSLOG_MOUNT_POINT: "syslog_volume"
 
 
 #################### DOCKER NAMES ####################
@@ -75,7 +77,8 @@ WEB_CONTAINER_NAME: "cauldron_service"
 WORKER_CONTAINER_NAME: "worker_service" # A number will be appended eg. worker_service_1
 ELASTIC_CONTAINER_NAME: "elastic_service" # NEVER change it
 KIBANA_CONTAINER_NAME: "kibana_service"
-NGINX_CONTAINER_NAME: 'nginx_service'
+NGINX_CONTAINER_NAME: "nginx_service"
+SYSLOG_CONTAINER_NAME: 'syslog_service'
 ODFE_CONFIG_CONTAINER_NAME: "odfe_config_cauldron"
 
 NETWORK_NAME: "network_cauldron"

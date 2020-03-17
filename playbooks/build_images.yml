@@ -42,6 +42,11 @@
       tags: [database]
 
     - import_role:
+        name: syslog
+        tasks_from: build
+      tags: [syslog]
+
+    - import_role:
         name: odfe-config
         tasks_from: build
       tags: [odfe-config]

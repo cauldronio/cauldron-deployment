@@ -1,0 +1,6 @@
+---
+
+SYSLOG_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/syslog-build"
+
+SYSLOG_IMAGE_DOCKERFILE_PATH: "../docker/syslog/"
+

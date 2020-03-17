@@ -28,4 +28,5 @@
     - odfe-config
     - role: hatstall
       when: HATSTALL_ENABLED
+    - syslog
     - nginx

@@ -1,0 +1,26 @@
+---
+
+- name: "Ensures {{SYSLOG_BUILD_DIR}} dir exists"
+  file:
+    path: "{{SYSLOG_BUILD_DIR}}"
+    state: directory
+    recurse: yes
+  tags: [syslog]
+
+- name: "Copy Docker context to {{ SYSLOG_BUILD_DIR }}"
+  synchronize:
+    src: "{{ SYSLOG_IMAGE_DOCKERFILE_PATH }}"
+    dest: "{{ SYSLOG_BUILD_DIR }}"
+    recursive: yes
+    delete: yes
+  tags: [syslog]
+
+- name: "Build the image for syslog-ng"
+  docker_image:
+    name: "{{ SYSLOG_IMAGE_NAME }}"
+    build:
+      path: "{{ SYSLOG_BUILD_DIR }}/"
+      pull: "no"
+    source: build
+    state: present
+  tags: [syslog]

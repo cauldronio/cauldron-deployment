@@ -28,6 +28,11 @@
     tags: [nginx]
 
   - include_role:
+      name: syslog
+      tasks_from: setup
+    tags: [syslog]
+
+  - include_role:
       name: webserver
       tasks_from: setup
     tags: [webserver]

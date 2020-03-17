@@ -25,3 +25,9 @@
         state: absent
         name: "{{ ODFE_CONFIG_IMAGE_NAME }}"
       tags: [odfe-config]
+
+    - name: "Delete syslog image"
+      docker_image:
+        state: absent
+        name: "{{ SYSLOG_IMAGE_NAME }}"
+      tags: [syslog]

@@ -13,8 +13,8 @@ server {
 
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
 
-    access_log /var/log/nginx/custom_access.log;
-    error_log /var/log/nginx/custom_error.log;
+    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
+    error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
 
     return 301 https://$host$request_uri;
 }
@@ -25,8 +25,8 @@ server {
     listen        {{CAULDRON_PORT}} ssl;
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
 
-    access_log /var/log/nginx/custom_access.log;
-    error_log /var/log/nginx/custom_error.log;
+    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
+    error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
 
     # If the user try to access the app port with http, redirect to https
     error_page 497 https://$host:{{CAULDRON_PORT}}$request_uri;

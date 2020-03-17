@@ -18,6 +18,11 @@
     tags: [kibana]
 
   - include_role:
+      name: syslog
+      tasks_from: run
+    tags: [syslog]
+
+  - include_role:
       name: nginx
       tasks_from: run
     tags: [nginx]
