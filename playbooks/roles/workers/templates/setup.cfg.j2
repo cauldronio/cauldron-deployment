@@ -36,6 +36,7 @@ latest-items = true
 category = commit
 studies = [enrich_areas_of_code:git]
 git-path = /git-perceval
+anonymize = true
 
 [enrich_demography:git]
 date_field = utc_commit
@@ -52,6 +53,7 @@ raw_index = github_raw
 enriched_index = github_enrich
 no-archive = true
 filter-classified = true
+anonymize = true
 
 [gitlab]
 raw_index = gitlab_raw
@@ -60,6 +62,7 @@ api-token = xxxx
 no-archive = true
 sleep-for-rate = false
 is-oauth-token = true
+anonymize = true
 
 [meetup]
 raw_index = meetup_raw_renamed_in_mordred
@@ -67,4 +70,5 @@ enriched_index = meetup_enriched_renamed_in_mordred
 api-token = xxxx
 no-archive = true
 sleep-for-rate = true
+anonymize = true
 

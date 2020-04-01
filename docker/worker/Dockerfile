@@ -1,7 +1,7 @@
 # The container produced with this file contains all GrimoireLab libraries and executables.
 # It is configured for getting tasks from a database and running them
 
-FROM cauldronio/grimoirelab:0.2.39.pre
+FROM cauldronio/grimoirelab:0.2.40.pre
 
 ENV CODE_WORKER /code
 
