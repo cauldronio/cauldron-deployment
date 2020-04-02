@@ -12,6 +12,8 @@ This repository contains relevant information for running Cauldron in your own c
    $ ansible --version
   ```
 
+- **Terraform** is an ***optional*** requirement in case you want to automate the provisioning of the machine used for the deployment. You have more information about how to carry out this provisioning [here](do/README.md).
+
 - **Docker** (~18.09) is also needed for running the containers. You can install it by following [this link](https://docs.docker.com/install/).
 
   **IMPORTANT**: You will also need to add your own user to the docker group created during the installation of Docker in order to execute Docker CLI without `sudo`:
@@ -127,7 +129,7 @@ This repository contains relevant information for running Cauldron in your own c
 5. Define your own set of dashboards for your project.
 
     If you want to define some default visualizations for your deployment, you can include them in `files/cauldron_host/kibana_objects`. Only exported `*.ndjson` files from Kibana 7.X are supported. More information at [Kibana saved objects](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html).
-    
+
 ## Run for impatients
 
 Navigate to `playbooks` directory from the root of the repository.
