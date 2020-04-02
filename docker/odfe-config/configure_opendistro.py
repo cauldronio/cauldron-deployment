@@ -86,7 +86,7 @@ def import_kibana_object(path):
     headers = {'kbn-xsrf': 'true',
                'securitytenant': 'global'}
     saved_objects_api = f"{settings.KIB_IN_PROTOCOL}://{settings.KIB_IN_HOST}:{settings.KIB_IN_PORT}{settings.KIB_PATH}" \
-                        f"/api/saved_objects/_import"
+                        f"/api/saved_objects/_import?overwrite=true"
     files = {'file': open(path, 'rb')}
 
     r = requests.post(saved_objects_api,
