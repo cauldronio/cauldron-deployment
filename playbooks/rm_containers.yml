@@ -28,6 +28,11 @@
     tags: [syslog]
 
   - include_role:
+      name: matomo
+      tasks_from: remove
+    tags: [matomo]
+
+  - include_role:
       name: webserver
       tasks_from: remove
     tags: [webserver]

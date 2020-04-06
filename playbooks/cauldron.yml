@@ -28,5 +28,6 @@
     - odfe-config
     - role: hatstall
       when: HATSTALL_ENABLED
+    - matomo
     - syslog
     - nginx

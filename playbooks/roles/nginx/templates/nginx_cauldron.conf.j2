@@ -1,4 +1,4 @@
-upstream cauldronio {
+upstream cauldron {
     server {{WEB_CONTAINER_NAME}}:8000;
 }
 
@@ -6,6 +6,9 @@ upstream kibana {
     server {{KIBANA_CONTAINER_NAME}}:5601;
 }
 
+upstream matomo {
+    server {{MATOMO_CONTAINER_NAME}};
+}
 
 {% if ENABLE_PORT_80 %}
 server {
@@ -25,9 +28,6 @@ server {
     listen        {{CAULDRON_PORT}} ssl;
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
 
-    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
-    error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
-
     # If the user try to access the app port with http, redirect to https
     error_page 497 https://$host:{{CAULDRON_PORT}}$request_uri;
 
@@ -39,21 +39,54 @@ server {
 
 
     location /kibana {
+        access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana;
+        error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana;
+
         proxy_pass http://kibana;
         break;
     }
 
     location / {
+        access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=cauldron;
+        error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=cauldron;
+
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
         proxy_set_header Host $http_host;
         proxy_redirect off;
 
         if (!-f $request_filename) {
-            proxy_pass http://cauldronio;
+            proxy_pass http://cauldron;
             break;
         }
     }
 
 }
 
+
+
+server {
+    listen        {{MATOMO_PORT}} ssl;
+    server_name   {{ ansible_ssh_host|default(ansible_host) }};
+
+    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=matomo;
+    error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=matomo;
+
+    # If the user try to access the app port with http, redirect to https
+    error_page 497 https://$host:{{MATOMO_PORT}}$request_uri;
+
+    client_max_body_size 100M;
+
+    ssl_certificate         /certificates/ssl_server.crt;
+    ssl_certificate_key     /certificates/ssl_server.key;
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Host $http_host;
+
+        proxy_redirect off;
+
+        proxy_pass http://matomo;
+    }
+
+}

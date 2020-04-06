@@ -6,6 +6,10 @@
     image: "{{ SYSLOG_IMAGE_NAME }}"
     state: started
     restart_policy: "always"
+    env:
+      MATOMO_USER: "{{MATOMO_USER}}"
+      MATOMO_PASSWORD: "{{MATOMO_PASSWORD}}"
+      MATOMO_URL: "http://{{MATOMO_CONTAINER_NAME}}"
     networks:
       - name: "{{ NETWORK_NAME }}"
     volumes:

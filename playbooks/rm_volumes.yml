@@ -25,12 +25,6 @@
       state: absent
     tags: [database]
 
-  - name: "Remove NGINX logs: {{ NGINX_LOGS_MOUNT_POINT }}"
-    docker_volume:
-      name: "{{ NGINX_LOGS_MOUNT_POINT }}"
-      state: absent
-    tags: [nginx]
-
   - name: "Remove Git Perceval Repositories volume: {{PERCEVAL_REPOS_MOUNT_POINT}}"
     docker_volume:
       name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"
@@ -42,3 +36,9 @@
       name: "{{ SYSLOG_MOUNT_POINT }}"
       state: absent
     tags: [syslog]
+
+  - name: "Remove matomo volume: {{MATOMO_MOUNT_POINT}}"
+    docker_volume:
+      name: "{{ MATOMO_MOUNT_POINT }}"
+      state: absent
+    tags: [matomo]

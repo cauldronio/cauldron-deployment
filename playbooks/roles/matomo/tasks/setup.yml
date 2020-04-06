@@ -1,0 +1,15 @@
+---
+
+- name: Ensures {{CAULDRON_CONFIG_DIR}}/matomo dir exists
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/matomo"
+    state: directory
+    recurse: yes
+  tags: [matomo]
+
+- name: Matomo Apache configuration file
+  copy:
+    src: apache.conf
+    dest: "{{ CAULDRON_CONFIG_DIR }}/matomo/apache.conf"
+    mode: 0644
+  tags: [matomo]

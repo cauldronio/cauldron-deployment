@@ -6,6 +6,9 @@
       - name: cauldron
         mapping: "{{ CAULDRON_PORT }}:{{ CAULDRON_PORT }}"
         enabled: true
+      - name: matomo
+        mapping: "{{ MATOMO_PORT }}:{{ MATOMO_PORT }}"
+        enabled: true
       - name: port80
         mapping: "80:80"
         enabled: "{{ ENABLE_PORT_80 }}"
@@ -20,5 +23,4 @@
     volumes:
       - "{{CAULDRON_CONFIG_DIR}}/nginx/nginx_cauldron.conf:/etc/nginx/conf.d/nginx_cauldron.conf"
       - "{{CAULDRON_CONFIG_DIR}}/nginx/certificates:/certificates"
-      - "{{ NGINX_LOGS_MOUNT_POINT }}:/var/log/nginx/"
   tags: [nginx]

@@ -7,6 +7,7 @@ ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.4.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.4.0"
 SYSLOG_IMAGE_NAME: "cauldronio/syslog-ng:latest"
+MATOMO_IMAGE_NAME: "matomo:3"
 
 
 #################### APPLICATION KEYS ####################
@@ -35,6 +36,9 @@ NUM_WORKERS: 5
 # Port where the APP will be available. Use 443 for production
 CAULDRON_PORT: 9000
 
+# Port where Matomo will be running
+MATOMO_PORT: 9001
+
 # Enable port 80 for redirecting to https. Use true for production
 ENABLE_PORT_80: false
 
@@ -50,6 +54,11 @@ GOOGLE_ANALYTICS_ID: ""
 
 #################### PASSWORDS #######################
 DB_USER_PASSWORD: "test-password"
+DB_MATOMO_PASSWORD: "test-password"
+
+# Use the same User and Password when you configure Matomo the first time
+MATOMO_USER: "cauldron"
+MATOMO_PASSWORD: "test-password"
 
 ELASTIC_ADMIN_PASSWORD: "test-password"
 ELASTIC_LOGSTASH_PASSWORD: "test-password"
@@ -66,8 +75,8 @@ PROJECT_LOGS_MOUNT_POINT: "cauldron_logs_volume"
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
 ELASTIC_SNAPSHOT_MOUNT_POINT: "elastic_snapshots"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
-NGINX_LOGS_MOUNT_POINT: "nginx_log_volume"
 SYSLOG_MOUNT_POINT: "syslog_volume"
+MATOMO_MOUNT_POINT: "matomo_volume"
 
 
 #################### DOCKER NAMES ####################
@@ -80,6 +89,7 @@ KIBANA_CONTAINER_NAME: "kibana_service"
 NGINX_CONTAINER_NAME: "nginx_service"
 SYSLOG_CONTAINER_NAME: 'syslog_service'
 ODFE_CONFIG_CONTAINER_NAME: "odfe_config_cauldron"
+MATOMO_CONTAINER_NAME: "matomo_service"
 
 NETWORK_NAME: "network_cauldron"
 

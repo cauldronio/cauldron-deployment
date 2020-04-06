@@ -2,6 +2,16 @@
 
 This repository contains relevant information for running Cauldron in your own computer or in a specific machine.
 
+- [Requirements](#requirements)
+- [Preconfiguration](#preconfiguration)
+- [Run and stop Cauldron](#run-and-stop-cauldron)
+- [Matomo analytics](#matomo-analytics)
+- [Advanced deployment for Cauldron](#advanced-deployment-for-cauldron)
+- [Development environment](#development-environment)
+- [Continuous Delivery and Rolling Upgrades](#continuous-delivery-and-rolling-upgrades)
+- [Admin page](#admin-page)
+- [Backups](#backups)
+- [Troubleshooting](#troubleshooting)
 
 ## Requirements
 
@@ -50,106 +60,273 @@ This repository contains relevant information for running Cauldron in your own c
   - **9000**: Cauldron web interface
 
 
-## Clone and configure
+## Preconfiguration
 
-1. Download the latest version of this repository with `git clone` and navigate to that directory:
-     ```bash
-    $ git clone https://gitlab.com/cauldronio/cauldron-deployment.git
-    $ cd cauldron-deployment
-    ```
+### Clone the latest version of this repository:
+```bash
+$ git clone https://gitlab.com/cauldronio/cauldron-deployment.git
+$ cd cauldron-deployment
+```
 
-2. Create Oauth application keys for each backend or the those that you want to use:
+### Create Oauth application keys for each backend or the those that you want to use:
 
-    - Create a **GitHub Oauth App** and get the keys. For creating a new Application [follow this link](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). Some information for the application:
-        - **Application name**: A name for the application, for example `Bitergia Cauldron`
-        - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `https://localhost:9000/`. (You can change it later)
-        - **Application description**: Not required
-        - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `https://localhost:9000/github-login`. (You can change it later)
+<details>
+<summary>GitHub</summary>
 
-        After the registration, you can obtain the `Client ID` and `Client Secret`.
+- Create a [GitHub Oauth App](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/). After the registration, you can obtain the `Client ID` and `Client Secret`:
+    - **Application name**: A name for the application, for example `Bitergia Cauldron`
+    - **Homepage URL**: This should be the full URL to your application homepage. If you will run it in your local computer, you can type `https://localhost:9000/`. (You can change it later)
+    - **Application description**: Not required
+    - **Authorization callback URL**: This is important. It should be the Homepage URL and `/github-login`. For example, for your local computer: `https://localhost:9000/github-login`. (You can change it later)
 
-    - Create a **Gitlab Oauth App** and get the keys. For creating a new Application [follow this link](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile). Some information for the application:
-        - **Name**: A name for the application, for example `Bitergia Cauldron`
-        - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `https://localhost:9000/gitlab-login`. (You can change it later)
-        - **Scopes**: Select only `api`
+</details>
 
-        After the registration, you can obtain the `Application ID` and `Secret`.
 
-    - ~~Create a **Meetup Oauth App** and get the keys. For creating a new Application [follow this link](https://secure.meetup.com/meetup_api/oauth_consumers/create/).~~ **Meetup API has changed and you cannot create free applications anymore. We keep this section if you have already one for testing the site**. Some information for the application:
-        - **Consumer Name**: A name for the application, for example `Bitergia Cauldron`
-        - **Application website**: A website for the application, for example `https://cauldronio.gitlab.io/`
-        - Request access for personal use if you are going to deploy locally, request for organization if you are going to deploy it publicly (The second may take some days to be accepted).
-        - **Redirect URI **: This is important. It should be the Homepage URL and `/meetup-login`. For example, for your local computer: `https://localhost:9000/meetup-login`. (You can change it later)
-        - **Phone number and Description**: this is for accepting the application, provide some description.
-        Finally read and accept the terms and conditions. After the registration, you can obtain the `Application ID` and `Secret`
+<details>
+<summary>GitLab</summary>
 
-3. Change **Cauldron variables** for your host:
+- Create a [Gitlab Oauth App](https://docs.gitlab.com/ee/integration/oauth_provider.html#adding-an-application-through-the-profile). After the registration, you can obtain the `Application ID` and `Secret`.:
+    - **Name**: A name for the application, for example `Bitergia Cauldron`
+    - **Redirect URI**: This is important. It should be the Homepage URL and `/gitlab-login`. For example, for your local computer: `https://localhost:9000/gitlab-login`. (You can change it later)
+    - **Scopes**: Select only `api`
 
-    - If you want to run Cauldron locally, rename (or duplicate) the directory `template` inside playbooks/inventories as `local`. This directory contains all the variables that could be different for each host.
-        ``` bash
-        $ cd playbooks/inventories
-        $ cp -r template local
-        ```
+</details>
 
-    - *Only if you want to change the host*: open the file `playbooks/inventories/local/hosts` and modify the variables included. [You can also add another variables defined in this link](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters).
 
-    - Finally change the variables related to Cauldron. Open the file `playbooks/inventories/local/host_vars/cauldron_host.yml` and fill the configuration:
-        ``` bash
-        $ <prefered_editor> local/host_vars/cauldron_host.yml
-        ```
-        - Fill the Oauth keys:
-          - Your GitHub Oauth keys (`gh_client_id` and `gh_client_secret`).
-          - Your Gitlab Oauth keys (`gl_client_id` and `gl_client_secret`).
-          - *Only if you have the Meetup keys*: Your Meetup Oauth keys (`meetup_client_id` and `meetup_client_secret`).
+<details>
+<summary>Meetup</summary>
 
-        - Define if you want Hatstall enabled and the use of Sortinghat with `HATSTALL_ENABLED`
+**Important**: Meetup API has changed and you cannot create free applications anymore. We keep this section if you have a Meetup Pro account.
 
-        - You can leave the other configuration as it is, but there are some variables that could be interesting:
+- Create a [Meetup Oauth App](https://secure.meetup.com/meetup_api/oauth_consumers/create/). After the registration, you can obtain the `Application ID` and `Secret`:
+    - **Consumer Name**: A name for the application, for example `Bitergia Cauldron`
+    - **Application website**: A website for the application, for example `https://cauldron.io/`
+    - **Redirect URI**: This is important. It should be the Homepage URL and `/meetup-login`. For example, for your local computer: `https://localhost:9000/meetup-login`. (You can change it later)
+    - Fill the other fields according with your situationa and read and accept the terms and conditions. 
 
-          - Some configuration files for containers will be stored in the target host. The default directory is `/tmp/cauldron-data` because of permissions. If you want another directory, you can modify it with the `CAULDRON_CONFIG_DIR` option.
-          - You can select how many workers for mordred will be running in the `NUM_WORKERS` option. By default is **5**, but you can change it.
-          - If you are using the port 9000, you can change it here. For production, use the port 443 and set `ENABLE_PORT_80` to true (only for nginx redirects).
-          - If you are going to run Cauldron in a public IP is important that you change some of the passwords. The default is: `test-password`.
-          - If you want Google Analytics for analyzing the traffic, you can activate it by providing an ID: `GOOGLE_ANALYTICS_ID`
+</details>
 
-4. Create/change the certificates for your deployment machine.
+### Configure the variables for your host:
+    
+Create a copy of the directory `playbooks/inventories/template`. This directory contains all the variables that could be different for each host.
+``` bash
+$ cd playbooks/inventories
+$ cp -r template local
+```
+Open the file `playbooks/inventories/local/host_vars/cauldron_host.yml` and fill the configuration. From the root of this repository:
+``` bash
+$ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
+```
 
-    All the certificates used are located inside `playbooks/files/cauldron_host`.
+- **Oauth application keys** (configure at least one backend):
 
-    You have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
+    <details>
+    <summary>More</summary>
+    
+    - `gh_client_id` and `gh_client_secret`: GitHub `Client ID` and `Client Secret`
+    - `gl_client_id` and `gl_client_secret`: GitLab `Application ID` and `Secret`
+    - `meetup_client_id` and `meetup_client_secret`: Meetup `Application ID` and `Secret`
+    
+    </details>
+    
+- **Base configuration:**
+    <details>
+    <summary>More</summary>
+    
+    - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location where the configuration files for the containers will be stored.
+    - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
+    - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that analyze repositories concurrently.
+    - `CAULDRON_PORT` (9000): port where Cauldron webserver will be running. Use 443 in production.
+    - `MATOMO_PORT` (9001): port where Matomo will be running.
+    - `ENABLE_PORT_80` (false): if true, petitions to port 80 will be redirected to `https://location:CAULDRON_PORT`
+    - `DJANGO_HOSTS` ('*'): location where cauldron is running to avoid HTTP Host header attacks.
+    - `ELASTIC_MEMORY` ('4gb'): [head size](https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html) used by Elasticsearch. It is recommended to be half of your RAM.
+    - `GOOGLE_ANALYTICS_ID` (''): set the correspoding ID to have analytics.
+    
+    </details>
 
-    ```bash
-    $ cd playbooks/files/cauldron_host
-    $ ./generate.sh  
-    ```
-    One of the most important certificates generated is `ssl_server`, it is used for the authentication of your public machine. If you use a self-signed certificate, the default case, users will be advised about the insecurity of your site. Please, try to obtain a trusted-signed certificate in order to make your site a safest place.
+- **Passwords:**
+    <details>
+    <summary>More</summary>
+    
+    - `DB_USER_PASSWORD`('test-password'): password for database
+    - `DB_MATOMO_PASSWORD`('test-password'): password for Matomo's table in the database
+    - `MATOMO_PASSWORD`('test-password'): password for accessing Matomo
+    - `ELASTIC_ADMIN_PASSWORD`('test-password'): password for Elasticsearch admin
+    - `ELASTIC_LOGSTASH_PASSWORD`('test-password'): password for Elasticsearch Logstash
+    - `ELASTIC_KIBANASERVER_PASSWORD`('test-password'): password for Elasticsearch Kibanaserver
+    - `ELASTIC_KIBANARO_PASSWORD`('test-password'): password for Elasticsearch Kibanaro
+    - `ELASTIC_READALL_PASSWORD`('test-password'): password for Elasticsearch readall
+    - `ELASTIC_SNAPSHOTRESTORE_PASSWORD`('test-password'): password for Elasticsearch snapshotrestore
+    
+    </details>
+    
+- **Docker volumes** (could be either a path or a Docker volume):
+    <details>
+    <summary>More</summary>
+    
+    - `DB_MOUNT_POINT`('database_volume'): database storage
+    - `PROJECT_LOGS_MOUNT_POINT`('cauldron_logs_volume'): logs of repository analysis
+    - `ELASTIC_MOUNT_POINT`('elastic_data_volume'): elastic data
+    - `ELASTIC_SNAPSHOT_MOUNT_POINT`('elastic_snapshots'): elastic snapshots
+    - `PERCEVAL_REPOS_MOUNT_POINT`('perceval_repos'): location for git clone of repositories
+    - `SYSLOG_MOUNT_POINT`('syslog_volume'): location for logs storage
+    - `MATOMO_MOUNT_POINT`('matomo_volume'): location for storing Matomo configuration
+    
+    </details>
 
-    For more information about each certificate, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
+- **Administrators for Cauldron**. 
+    <details>
+    <summary>More</summary>
 
-5. Define your own set of dashboards for your project.
+    If you create an account in Cauldron with the username of a data source defined here, you will automatically be an administrator of Cauldron:
+    - `GITHUB_ADMINS`([])
+    - `GITLAB_ADMINS`([])
+    - `MEETUP_ADMINS`([])
+    
+    </details>
+    
+- **Other variables**
+ 
+    <details>
+    <summary>Docker images</summary>
 
-    If you want to define some default visualizations for your deployment, you can include them in `files/cauldron_host/kibana_objects`. Only exported `*.ndjson` files from Kibana 7.X are supported. More information at [Kibana saved objects](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html).
+    - `DB_IMAGE_NAME`("cauldronio/database:latest")
+    - `WEB_IMAGE_NAME`("cauldronio/webserver:latest")
+    - `WORKER_IMAGE_NAME`("cauldronio/worker:latest")
+    - `ODFE_CONFIG_IMAGE_NAME`("cauldronio/odfe-config:latest")
+    - `ELASTIC_IMAGE_NAME`("amazon/opendistro-for-elasticsearch:1.4.0")
+    - `KIBANA_IMAGE_NAME`("amazon/opendistro-for-elasticsearch-kibana:1.4.0")
+    - `SYSLOG_IMAGE_NAME`("cauldronio/syslog-ng:latest")
 
-## Run for impatients
+    </details>
 
-Navigate to `playbooks` directory from the root of the repository.
+    <details>
+    <summary>Docker container names</summary>
+    
+    **IMPORTANT**: never change these variables unless you know what you are doing.
+    
+    - `DB_CONTAINER_NAME`('db_cauldron_service')
+    - `WEB_CONTAINER_NAME`('cauldron_service')
+    - `WORKER_CONTAINER_NAME`('worker_service')
+    - `ELASTIC_CONTAINER_NAME`('elastic_service')
+    - `KIBANA_CONTAINER_NAME`('kibana_service')
+    - `NGINX_CONTAINER_NAME`('nginx_service')
+    - `SYSLOG_CONTAINER_NAME`('syslog_service')
+    - `ODFE_CONFIG_CONTAINER_NAME`('odfe_config_cauldron')
+    - `MATOMO_CONTAINER_NAME` ('matomo_service')
+
+    </details>
+    
+    <details>
+    <summary>Development</summary>
+    
+    - `WEB_MOUNT_CODE`: define this variable when you want to test changes on the webserver container without the need to create a new image.
+    - `WORKER_MOUNT_CODE`: define this variable when you want to test changes on the worker container without the need to create a new image.
+    - `WEB_IMAGE_LOCAL_CODE`: define this variable when you want to build the webserver image with your local code.
+    - `WORKER_IMAGE_LOCAL_CODE`: define this variable when you want to build the worker image with your local code.
+    
+    </details>
+
+### Target machine for deployment
+
+Cauldron will run at localhost. If you want to define a diferent location for deploying Cauldron, modify the file `playbooks/inventories/local/hosts`
+``` bash
+$ <prefered_editor> playbooks/inventories/local/hosts
+```
+Some variables defined:
+- `ansible_connection`(local): ssh for remote host
+- `ansible_host`(localhost): define the IP or domain
+- `ansible_ssh_user`: user used to deploy cauldron in a remote machine
+- `ansible_python_interpreter`
+
+A complete list of the variables that can be defined can be found [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters)
+
+### Create the certificates for your deployment machine.
+
+All the certificates used are located inside `playbooks/files/cauldron_host`.
+
+You have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
+
+```bash
+$ cd playbooks/files/cauldron_host
+$ ./generate.sh  
+```
+One of the most important certificates generated is `ssl_server`, it is used for the authentication of your public machine. If you use a self-signed certificate, the default case, users will be advised about the insecurity of your site. Please, try to obtain a trusted-signed certificate in order to make your site a safest place.
+
+For more information about Opendistro certificates, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
+
+### Define your own set of dashboards for your project.
+
+If you want to define some default visualizations for your deployment, you can include them in `files/cauldron_host/kibana_objects`. Only exported `*.ndjson` files from Kibana 7.X are supported. More information at [Kibana saved objects](https://www.elastic.co/guide/en/kibana/current/managing-saved-objects.html).
+
+
+## Run and stop Cauldron
+
+Once you have defined the variables for Cauldron, navigate to `playbooks` directory from the root of the repository.
 
 ```bash
 $ cd playbooks
 ```
-There you will find some useful Ansible playbooks for running Cauldron. If you just want to **run Cauldron**, run the following command:
-  ``` bash
-  $ ansible-playbook -i inventories/local cauldron.yml
-  ```
-  It will deploy Cauldron in the specified host in the inventory file. All the images will be pulled from [DockerHub](https://hub.docker.com/u/cauldronio):
-  - Create Docker network
-  - Run Cauldron web interface in Docker
-  - Run ElasticSearch (OpenDistro) in Docker
-  - Run Kibana (OpenDistro) in Docker
-  - Run MariaDB in Docker
-  - Create default configuration for Elasticsearch and Kibana, and import visualizations
+There you will find some useful Ansible playbooks for running Cauldron.
 
-## Run Step by step
+### Run Cauldron
+``` bash
+$ ansible-playbook -i inventories/local cauldron.yml
+```
+It will deploy Cauldron in the specified host in the inventory file. All the images will be pulled from [DockerHub](https://hub.docker.com/u/cauldronio):
+- Create Docker network
+- Run Cauldron web interface in Docker
+- Run ElasticSearch (OpenDistro) in Docker
+- Run Kibana (OpenDistro) in Docker
+- Run MariaDB in Docker
+- Run syslog for centralized logs
+- Run Matomo for log analytics
+- Create default configuration for Elasticsearch and Kibana, and import visualizations
+- (optional) Run Hatstall for managing identities
+- Run nginx as a proxy for the containers
+
+### Stop Cauldron
+This command will stop and remove all the container created, but the state will be kept
+``` bash
+$ ansible-playbook -i inventories/local rm_containers.yml
+```
+
+### Cleanup Cauldron
+This command will remove all the content created in Cauldron:
+``` bash
+$ ansible-playbook -i inventories/local rm_volumes.yml
+```
+The configuration files are stored in the directory defined by `CAULDRON_CONFIG_DIR`. You can safely delete that directory when Cauldron is not running.
+
+## Matomo analytics
+
+Cauldron is using syslog-ng + Matomo for managing the logs. Some steps are necessary to have Matomo correctly configured.
+
+### Installation steps
+
+Go to the port you have Matomo deployed (9001 by default) and follow the installation steps:
+1. Welcome (next)
+2. System check (next)
+3. Database setup. The variables should be defined (next)
+4. Creating tables (next)
+5. Super User. Specify the user (`MATOMO_USER`) and password (`MATOMO_PASSWORD`) defined in Cauldron's configuration file and your email address. (next)
+6. Setup the website to track:
+    - Name: Cauldron
+    - Website url: your website location
+    - Time zone: location where you are
+    - Not an Ecommerce site
+7. JS Tracking code (next)
+8. Congratulations (next)  
+ 
+Now you can get logs in Matomo. We have configured Matomo with a buffer of 50 hits. You won't see anything until 50 requests are made to the server. 
+
+
+## Advanced deployment for Cauldron
+
+<details>
+
+<summary>More</summary>
 
 Now we will detail all the steps for running Cauldron and the variables that can be modified.
 
@@ -283,7 +460,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 - **Stop and remove**.
 
   - Stop and remove all the containers running:
-  > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `hatstall`
+    > Tags available for this playbook are: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `hatstall`
 
     ```bash
     $ ansible-playbook -i inventories/local rm_containers.yml
@@ -295,11 +472,14 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
     ```
 
   - Remove volumes:
-  > Tags available for this playbook are: `project_logs`, `elastic`, `elastic_snapshot`,  `database`, `nginx`, `repositories`, `hatstall`
+    > Tags available for this playbook are: `project_logs`, `elastic`, `elastic_snapshot`,  `database`, `nginx`, `repositories`, `hatstall`
 
     ```bash
     $ ansible-playbook -i inventories/local rm_volumes.yml
     ```
+
+</details>
+
 
 ## Development environment
 
@@ -313,7 +493,6 @@ In case you modify any of the variables, the playbook will update the configurat
 
 
 > TODO:
-> - Script for remove configuration
 > - Include documentation for certbot (git add playbook)
 
 ## Admin page
@@ -484,13 +663,3 @@ sudo sysctl -p /etc/sysctl.d/local.conf
 ```
 
 [More info in the Elasticsearch guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html#docker-cli-run-prod-mode).
-
-## Contributing
-
-### Ansible Documentation
-
-Feel free to participate in the creation of the Cauldron's Ansible documentation by sharing any modification that you consider relevant to the project! Please, follow these guidelines in order to homogenize the docs:
-
-- We are using the tool [ansible-autodoc](https://pypi.org/project/ansible-autodoc/) to generate documents in a semi-automatic way. Please, refer to its documentation to learn how to use it.
-
-  **NOTE**: Currently, [ansible-autodoc](https://pypi.org/project/ansible-autodoc/) is not totally adapted to our document specifications. It is planned for the future to make a fork and modify it ([Issue related](https://gitlab.com/cauldronio/cauldron-deployment/issues/8)). For now, every `README.md` generated by the tool will be modified by us to adapt it. You cant take a look to this Issue.
