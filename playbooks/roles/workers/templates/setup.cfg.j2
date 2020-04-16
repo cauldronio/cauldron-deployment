@@ -1,15 +1,10 @@
 [general]
 short_name = Grimoire
 update = false
-min_update_delay = 10
 debug = false
-# /var/log/mordred/
 logs_dir = logs
-# Number of items per bulk request to Elasticsearch
 bulk_size = 100
-# Number of items to get from Elasticsearch when scrolling
 scroll_size = 100
-menu_file = ./menu.yml
 aliases_file = mordred/aliases.json
 
 [projects]
@@ -22,19 +17,19 @@ url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELAS
 url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELASTIC_PORT}}
 autorefresh = False
 
-# This section is ignored in Cauldron mordred
+# This section is ignored in Cauldron
 [phases]
 collection = true
 identities = false
 enrichment = true
-panels = true
+panels = false
 
 [git]
-raw_index = git_raw
-enriched_index = git_enrich
+raw_index = git_raw_index
+enriched_index = git_enrich_index
 latest-items = true
 category = commit
-studies = [enrich_areas_of_code:git]
+studies = [enrich_demography:git]
 git-path = /git-perceval
 anonymize = true
 
@@ -42,33 +37,78 @@ anonymize = true
 date_field = utc_commit
 author_field = author_uuid
 
-[enrich_areas_of_code:git]
-#no_incremental = true
-in_index = git_raw
-out_index = git_aoc_enriched
-
-[github]
+[github:issue]
 api-token = xxxx
-raw_index = github_raw
-enriched_index = github_enrich
+raw_index = github_raw_index
+enriched_index = github_enrich_index
+category = issue
+sleep-for-rate = false
 no-archive = true
 filter-classified = true
 anonymize = true
 
-[gitlab]
-raw_index = gitlab_raw
-enriched_index = gitlab_enriched
+# [github:pull]
+# api-token = xxxx
+# raw_index = github_pull_raw_index
+# enriched_index = github_pull_enrich_index
+# category = pull_request
+# sleep-for-rate = false
+# no-archive = true
+# filter-classified = true
+# anonymize = true
+
+[github:repo]
 api-token = xxxx
-no-archive = true
+raw_index = github_repo_raw_index
+enriched_index = github_repo_enrich_index
+category = repository
 sleep-for-rate = false
+no-archive = true
+
+[github2:issue]
+api-token = xxxx
+raw_index = github_raw_index
+enriched_index = github2_enrich_index
+category = issue
+sleep-for-rate = false
+no-archive = true
+filter-classified = true
+anonymize = true
+
+# [github2:pull]
+# api-token = xxxx
+# raw_index = github_pull_raw_index
+# enriched_index = github2_pull_enriched_index
+# category = pull_request
+# sleep-for-rate = false
+# no-archive = true
+# filter-classified = true
+# anonymize = true
+
+[gitlab:issue]
+api-token = xxxx
+raw_index = gitlab_raw_index
+enriched_index = gitlab_enriched_index
+category = issue
+sleep-for-rate = false
+no-archive = true
+is-oauth-token = true
+anonymize = true
+
+[gitlab:merge]
+api-token = xxxx
+raw_index = gitlab_mrs_raw_index
+enriched_index = gitlab_mrs_enriched_index
+category = merge_request
+sleep-for-rate = false
+no-archive = true
 is-oauth-token = true
 anonymize = true
 
 [meetup]
-raw_index = meetup_raw_renamed_in_mordred
-enriched_index = meetup_enriched_renamed_in_mordred
+raw_index = meetup_raw_index
+enriched_index = meetup_enriched_index
 api-token = xxxx
 no-archive = true
 sleep-for-rate = true
 anonymize = true
-
