@@ -108,7 +108,7 @@ $ cd cauldron-deployment
 
 ### Configure the variables for your host:
     
-Create a copy of the directory `playbooks/inventories/template`. This directory contains all the variables that could be different for each host.
+Create a copy of the directory `playbooks/inventories/template`. This directory contains all the variables that could be different for each host. From the root of this repository:
 ``` bash
 $ cd playbooks/inventories
 $ cp -r template local
@@ -230,7 +230,7 @@ $ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
 
 ### Target machine for deployment
 
-Cauldron will run at localhost. If you want to define a diferent location for deploying Cauldron, modify the file `playbooks/inventories/local/hosts`
+Cauldron will run at localhost. If you want to define a diferent location for deploying Cauldron, modify the file `playbooks/inventories/local/hosts`. From the root of this repository:
 ``` bash
 $ <prefered_editor> playbooks/inventories/local/hosts
 ```
@@ -246,7 +246,7 @@ A complete list of the variables that can be defined can be found [here](https:/
 
 All the certificates used are located inside `playbooks/files/cauldron_host`.
 
-You have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`:
+You have to generate at least self-signed certificates. To do that, browse to the mentioned directory and run `generate.sh`. From the root of this repository:
 
 ```bash
 $ cd playbooks/files/cauldron_host
