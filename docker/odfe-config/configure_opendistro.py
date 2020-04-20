@@ -173,8 +173,6 @@ def create_aliases(es):
     es.indices.put_alias(index='meetup_enriched_*', name='ocean')
     es.indices.put_alias(index='github_enrich_*', name='ocean_tickets')
     es.indices.put_alias(index='gitlab_enriched_*', name='ocean_tickets')
-    es.indices.put_alias(index='gitlab_mrs_enriched_*', name='ocean_tickets')
-    es.indices.put_alias(index='meetup_enriched_*', name='ocean_tickets')
     Logger.info('Aliases created')
 
 
