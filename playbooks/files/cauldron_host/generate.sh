@@ -14,6 +14,7 @@
 INITDIR=`pwd`
 ES_KEYS_PATH=es_keys
 NGINX_KEYS_PATH=nginx_keys
+JWT_KEY_PATH=jwt_key
 
 cd $ES_KEYS_PATH
 
@@ -22,7 +23,7 @@ if [ ! -f root-ca-key.pem ] || [ ! -f root-ca.pem ]; then
     openssl genrsa -out root-ca-key.pem 2048
     openssl req -new -x509 -sha256 -days 3650 -key root-ca-key.pem -out root-ca.pem -subj "/C=EU/ST=Any/L=All/O=Dis/CN=elastic_service"
 else
-    echo "==> Root certificate for ElasticSearch exists (roles/elasticsearch/files/keys/root-ca*.pem)"
+    echo "==> Root certificate for ElasticSearch exists ($ES_KEYS_PATH/root-ca*.pem)"
 fi
 echo
 
@@ -35,7 +36,7 @@ if [ ! -f admin-key.pem ] || [ ! -f admin.pem ]; then
     rm admin-key-temp.pem
     rm admin-temp.csr
 else
-    echo "==> Admin certificate for ElasticSearch exists (roles/elasticsearch/files/keys/admin*.pem)"
+    echo "==> Admin certificate for ElasticSearch exists ($ES_KEYS_PATH/admin*.pem)"
 fi
 echo
 
@@ -48,7 +49,7 @@ if [ ! -f node-1-key.pem ] || [ ! -f node-1.pem ]; then
     rm node-1-key-temp.pem
     rm node-1-temp.csr
 else
-    echo "==> Node-1 certificate for ElasticSearch exists (roles/elasticsearch/files/keys/node-1*.pem)"
+    echo "==> Node-1 certificate for ElasticSearch exists ($ES_KEYS_PATH/node-1*.pem)"
 fi
 echo
 
@@ -61,7 +62,28 @@ if [ ! -f ssl_server.key ] || [ ! -f ssl_server.crt ]; then
     echo "==> Generating SSL keys for NGINX"
     openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout ssl_server.key -out ssl_server.crt -subj "/C=EU/ST=Any/L=All/O=Dis/CN=selfsigned"
 else
-    echo "==> SSL keys for NGINX exists (roles/nginx/files/ssl_server.*)"
+    echo "==> SSL keys for NGINX exists ($NGINX_KEYS_PATH/ssl_server.*)"
+fi
+echo
+
+cd $INITDIR
+
+
+cd $JWT_KEY_PATH
+
+if [ ! -f jwtR256.key ] || [ ! -f jwtR256.key.pub ]; then
+    echo "==> Generating JWT key pair for Django"
+    ssh-keygen -q -t rsa -b 4096 -f jwtR256.key -N '' -C '' -m pem
+else
+    echo "==> JWT key pair for Django exists ($JWT_KEY_PATH/jwtR256.*)"
+fi
+echo
+
+if [ ! -f pub.jwtR256.key ]; then
+    echo "==> Generating JWT public key for Elastic"
+    openssl rsa -in jwtR256.key -pubout -out pub.jwtR256.key
+else
+    echo "==> JWT public key for Elastic exists ($JWT_KEY_PATH/pub.jwtR256.key)"
 fi
 echo
 

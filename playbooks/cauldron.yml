@@ -17,12 +17,17 @@
 
 - import_playbook: create_network.yml
 
-- hosts: all
+- hosts: webserver
   roles:
-    - common
     - database
     - webserver
+
+- hosts: elasticsearch
+  roles:
     - elasticsearch
+
+- hosts: webserver
+  roles:
     - kibana
     - workers
     - odfe-config

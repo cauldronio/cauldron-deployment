@@ -8,6 +8,13 @@
   tags: [webserver]
 
 
+- name: "Copy JWT private key for Cauldron"
+  synchronize:
+    src: "{{ inventory_hostname }}/jwt_key/jwtR256.key"
+    dest: "{{ CAULDRON_CONFIG_DIR }}/django/jwtR256.key"
+  tags: [webserver]
+
+
 - name: Django Secret Key for settings.py
   command: openssl rand -base64 32
   register: django_secret_key

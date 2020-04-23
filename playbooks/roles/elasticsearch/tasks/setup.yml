@@ -13,6 +13,18 @@
   tags: [elastic]
 
 
+- name: "Copy JWT public key for Elasticsearch"
+  synchronize:
+    src: "{{ inventory_hostname }}/jwt_key/pub.jwtR256.key"
+    dest: "{{ CAULDRON_CONFIG_DIR }}/es/pub.jwtR256.key"
+  tags: [elastic]
+
+- name: "Format the JSON Web Token public key for Elasticsearch"
+  shell: "sed '1d' {{ CAULDRON_CONFIG_DIR }}/es/pub.jwtR256.key | sed '$d' | tr -d '\n'"
+  register: "es_jwt_signing_key"
+  tags: [elastic]
+
+
 - name: ES global files
   template:
     src: elasticsearch-secured.yml.j2

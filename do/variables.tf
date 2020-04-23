@@ -16,16 +16,10 @@ variable "pvt_key" {
   default     = "~/.ssh/id_rsa"
 }
 
-variable "default_ssh" {
-  type        = string
-  description = "The name of the SSH key stored in your DO account"
-  default     = "default"
-}
-
-variable "ssh_fingerprint" {
-  type        = string
-  description = "Your SSH key fingerprint"
-  default     = "ssh_fingerprint"
+variable "ssh_fingerprints" {
+  type        = list(string)
+  description = "Your SSH key fingerprints"
+  default     = []
 }
 
 variable "do_size" {

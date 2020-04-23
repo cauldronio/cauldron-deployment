@@ -1,17 +1,21 @@
 ---
 
-- hosts: all
+- hosts: webserver
   tasks:
   - include_role:
       name: database
       tasks_from: run
     tags: [database]
 
+- hosts: elasticsearch
+  tasks:
   - include_role:
       name: elasticsearch
       tasks_from: run
     tags: [elastic]
 
+- hosts: webserver
+  tasks:
   - include_role:
       name: kibana
       tasks_from: run
@@ -52,4 +56,3 @@
       tasks_from: run
     when: HATSTALL_ENABLED
     tags: [hatstall]
-

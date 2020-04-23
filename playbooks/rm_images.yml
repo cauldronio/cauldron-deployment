@@ -1,6 +1,6 @@
 ---
 
-- hosts: all
+- hosts: webserver
   tasks:
     - name: "Delete webserver image"
       docker_image:
@@ -20,6 +20,12 @@
         name: "{{ DB_IMAGE_NAME }}"
       tags: [database]
 
+    - name: "Delete kibana image"
+      docker_image:
+        state: absent
+        name: "{{ KIBANA_IMAGE_NAME }}"
+      tags: [kibana]
+
     - name: "Delete odfe config image"
       docker_image:
         state: absent
@@ -31,3 +37,17 @@
         state: absent
         name: "{{ SYSLOG_IMAGE_NAME }}"
       tags: [syslog]
+
+    - name: "Delete matomo image"
+      docker_image:
+        state: absent
+        name: "{{ MATOMO_IMAGE_NAME }}"
+      tags: [matomo]
+
+- hosts: elasticsearch
+  tasks:
+    - name: "Delete elasticsearch image"
+      docker_image:
+        state: absent
+        name: "{{ ELASTIC_IMAGE_NAME }}"
+      tags: [elastic]

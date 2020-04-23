@@ -1,6 +1,12 @@
 ---
 
-- hosts: all
+- hosts: webserver
+  tasks:
+    - import_role:
+        name: docker
+        tasks_from: create_network
+
+- hosts: elasticsearch
   tasks:
     - import_role:
         name: docker

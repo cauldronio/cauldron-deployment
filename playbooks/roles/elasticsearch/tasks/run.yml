@@ -13,6 +13,7 @@
     env:
       ES_JAVA_OPTS: "-Xms{{ELASTIC_MEMORY}} -Xmx{{ELASTIC_MEMORY}}"
       node.name: "{{ ELASTIC_CONTAINER_NAME }}"
+    ports: "{{ [] if ELASTIC_HOST == ELASTIC_CONTAINER_NAME else [ELASTIC_EXPORTED_PORTS] }}"
     volumes:
       - "{{ELASTIC_MOUNT_POINT}}:/usr/share/elasticsearch/data"
       - "{{ELASTIC_SNAPSHOT_MOUNT_POINT}}:/mnt/snapshots"

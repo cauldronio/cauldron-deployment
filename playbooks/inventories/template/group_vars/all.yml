@@ -33,6 +33,9 @@ HATSTALL_ENABLED: false
 # Number of mordred worker. Use ~15/20 for production.
 NUM_WORKERS: 5
 
+# Elasticsearch host IP address (or container name for single-machine deployments)
+ELASTIC_HOST: "elastic_service"
+
 # Port where the APP will be available. Use 443 for production
 CAULDRON_PORT: 9000
 

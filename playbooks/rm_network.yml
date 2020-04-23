@@ -1,6 +1,13 @@
 ---
 
-- hosts: all
+- hosts: webserver
+  tasks:
+    - name: "Delete Docker network: {{ NETWORK_NAME }}"
+      docker_network:
+        name: "{{ NETWORK_NAME }}"
+        state: absent
+
+- hosts: elasticsearch
   tasks:
     - name: "Delete Docker network: {{ NETWORK_NAME }}"
       docker_network:

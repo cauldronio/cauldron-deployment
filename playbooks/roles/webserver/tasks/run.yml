@@ -5,7 +5,7 @@
     webserver_volumes:
       - "{{CAULDRON_CONFIG_DIR}}/django/django_settings.py:/code/Cauldron2/Cauldron2/settings.py"
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/dashboard_logs"
-      - "{{CAULDRON_CONFIG_DIR}}/jwt_key/jwtR256.key:/code/Cauldron2/CauldronApp/jwtR256.key"
+      - "{{CAULDRON_CONFIG_DIR}}/django/jwtR256.key:/code/Cauldron2/CauldronApp/jwtR256.key"
   docker_container:
     name: "{{ WEB_CONTAINER_NAME }}"
     image: "{{ WEB_IMAGE_NAME }}"

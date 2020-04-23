@@ -1,5 +1,5 @@
-resource "digitalocean_droplet" "cauldron" {
-  name               = "cauldron"
+resource "digitalocean_droplet" "elasticsearch" {
+  name               = "elasticsearch"
   image              = var.do_image
   region             = var.do_region
   size               = var.do_size
@@ -7,6 +7,7 @@ resource "digitalocean_droplet" "cauldron" {
   tags = [
     "terraform",
     "cauldron",
+    "elasticsearch",
     var.do_usertag
   ]
   ssh_keys = var.ssh_fingerprints
@@ -14,7 +15,7 @@ resource "digitalocean_droplet" "cauldron" {
   connection {
     type    = "ssh"
     user    = "root"
-    host    = digitalocean_droplet.cauldron.ipv4_address
+    host    = digitalocean_droplet.elasticsearch.ipv4_address
     timeout = "2m"
     agent   = true
   }

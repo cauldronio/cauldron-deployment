@@ -11,10 +11,10 @@ aliases_file = mordred/aliases.json
 projects_file = ./projects.json
 
 [es_collection]
-url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELASTIC_PORT}}
+url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_HOST}}:{{ELASTIC_PORT}}
 
 [es_enrichment]
-url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_CONTAINER_NAME}}:{{ELASTIC_PORT}}
+url = https://admin:{{ELASTIC_ADMIN_PASSWORD}}@{{ELASTIC_HOST}}:{{ELASTIC_PORT}}
 autorefresh = True
 
 [sortinghat]

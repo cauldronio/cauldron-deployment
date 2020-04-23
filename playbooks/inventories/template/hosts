@@ -1,17 +1,26 @@
-[server]
-# Name for the host, if you want to change this name, you have to rename the file
-# inventories/<name>/hosts_vars/cauldron_host.yml and the directory files/cauldron_host
+[webserver]
+# Name for the webserver host, if you want to change this name, you have to
+# rename the directory files/cauldron_host
 cauldron_host
 
+[elasticsearch]
+# Name for the elasticsearch host, if you want to change this name, you have
+# to rename the directory files/cauldron_host
+cauldron_host
 
-[server:vars]
+[webserver:vars]
+# Location of the host: localhost, IP or domain
+ansible_host=localhost
+
+[elasticsearch:vars]
+# Location of the host: localhost, IP or domain
+ansible_host=localhost
+
+[all:vars]
 # Type of connection: ssh or local
 ansible_connection=local
-
-# Location of the host: localhost, IP or domain:
-ansible_host=localhost
 
 # User used for the remote location
 # ansible_ssh_user=
 
-# ansible_python_interpreter="{{ansible_playbook_python}}"
+ansible_python_interpreter=/usr/bin/python3

@@ -1,21 +1,11 @@
 ---
 
-- hosts: all
+- hosts: webserver
   tasks:
-  - include_role:
-      name: common
-      tasks_from: create_JWT_key.yml
-    tags: [elastic, webserver]
-
   - include_role:
       name: database
       tasks_from: setup
     tags: [database]
-
-  - include_role:
-      name: elasticsearch
-      tasks_from: setup
-    tags: [elastic]
 
   - include_role:
       name: kibana
@@ -36,7 +26,6 @@
       name: matomo
       tasks_from: setup
     tags: [matomo]
-
 
   - include_role:
       name: webserver
@@ -59,3 +48,9 @@
     when: HATSTALL_ENABLED
     tags: [hatstall]
 
+- hosts: elasticsearch
+  tasks:
+  - include_role:
+      name: elasticsearch
+      tasks_from: setup
+    tags: [elastic]

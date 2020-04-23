@@ -1,6 +1,6 @@
 # Cauldron deployment
 
-This repository contains relevant information for running Cauldron in your own computer or in a specific machine.
+This repository contains relevant information for running Cauldron in your own computer or in a remote system.
 
 - [Requirements](#requirements)
 - [Preconfiguration](#preconfiguration)
@@ -17,7 +17,7 @@ This repository contains relevant information for running Cauldron in your own c
 
 - It's necessary that you have **Ansible** (~2.8) installed in your computer in order to run the playbooks. You can follow [this link](https://docs.ansible.com/ansible/latest/installation_guide/) to find the installation docs.
 
-  **NOTE**: Ansible works by default with your system's default Python version, but it is possible to change it. Anyway, please check your Ansible configuration to be sure about which Python version is being used by executing:
+  **NOTE**: Ansible works by default with your system's default Python version, but the playbooks for Cauldron are prepared for Python 3. Anyway, please check your Ansible configuration to be sure about which Python version is being used by executing:
   ```bash
    $ ansible --version
   ```
@@ -31,28 +31,19 @@ This repository contains relevant information for running Cauldron in your own c
    $ sudo usermod -aG docker $USER
   ```
 
-- **Docker SDK for Python** is required by Ansible to execute Docker commands in Python scripts. Depending on your Ansible's Python version you will need to execute the following:
-
-  - **Python <= 2.6**
+- **Docker SDK for Python** is required by Ansible to execute Docker commands in Python scripts. For Python 3 you will need to execute the following:
   ```bash
-     $ pip install docker-py
-  ```
-
-  - **Python 2.7 and > 3**
-  ```bash
-     $ pip install docker
-     # or
-     $ pip3 install docker
+    $ pip3 install docker
   ```
 
 - **virtualenv** is necessary for creating a Python environment for generating the hashed keys for OpenDistro for ElasticSearch:
   ``` bash
-    virtualenv --version
+    $ virtualenv --version
   ```
 
 - **rsync** is necessary for copying the files to a remote machine. To check if you have it installed:
   ``` bash
-    rsync --version
+    $ rsync --version
   ```
 
 - The following ports will be used in the target machine. You can change this later in the configuration file.
@@ -102,53 +93,56 @@ $ cd cauldron-deployment
     - **Consumer Name**: A name for the application, for example `Bitergia Cauldron`
     - **Application website**: A website for the application, for example `https://cauldron.io/`
     - **Redirect URI**: This is important. It should be the Homepage URL and `/meetup-login`. For example, for your local computer: `https://localhost:9000/meetup-login`. (You can change it later)
-    - Fill the other fields according with your situationa and read and accept the terms and conditions. 
+    - Fill the other fields according with your situation and read and accept the terms and conditions.
 
 </details>
 
-### Configure the variables for your host:
-    
+### Configure the variables for your hosts:
+
+**NOTE**: This repository allows you to deploy Cauldron on a single machine or on two machines, the latter being the Elasticsearch service with a dedicated host. Depending on the deployment you choose, you will need to make some extra adjustments to the configuration.
+
 Create a copy of the directory `playbooks/inventories/template`. This directory contains all the variables that could be different for each host. From the root of this repository:
 ``` bash
 $ cd playbooks/inventories
 $ cp -r template local
 ```
-Open the file `playbooks/inventories/local/host_vars/cauldron_host.yml` and fill the configuration. From the root of this repository:
+Open the file `playbooks/inventories/local/group_vars/all.yml` and fill the configuration. From the root of this repository:
 ``` bash
-$ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
+$ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
 ```
 
 - **Oauth application keys** (configure at least one backend):
 
     <details>
     <summary>More</summary>
-    
+
     - `gh_client_id` and `gh_client_secret`: GitHub `Client ID` and `Client Secret`
     - `gl_client_id` and `gl_client_secret`: GitLab `Application ID` and `Secret`
     - `meetup_client_id` and `meetup_client_secret`: Meetup `Application ID` and `Secret`
-    
+
     </details>
-    
+
 - **Base configuration:**
     <details>
     <summary>More</summary>
-    
+
     - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location where the configuration files for the containers will be stored.
     - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
     - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that analyze repositories concurrently.
+    - `ELASTIC_HOST` (`elastic_service`): IP address where the Elasticsearch service is hosted or, for single machine deployments, the name of the Elasticsearch Docker container.
     - `CAULDRON_PORT` (9000): port where Cauldron webserver will be running. Use 443 in production.
     - `MATOMO_PORT` (9001): port where Matomo will be running.
     - `ENABLE_PORT_80` (false): if true, petitions to port 80 will be redirected to `https://location:CAULDRON_PORT`
     - `DJANGO_HOSTS` ('*'): location where cauldron is running to avoid HTTP Host header attacks.
     - `ELASTIC_MEMORY` ('4gb'): [head size](https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html) used by Elasticsearch. It is recommended to be half of your RAM.
     - `GOOGLE_ANALYTICS_ID` (''): set the correspoding ID to have analytics.
-    
+
     </details>
 
 - **Passwords:**
     <details>
     <summary>More</summary>
-    
+
     - `DB_USER_PASSWORD`('test-password'): password for database
     - `DB_MATOMO_PASSWORD`('test-password'): password for Matomo's table in the database
     - `MATOMO_PASSWORD`('test-password'): password for accessing Matomo
@@ -158,13 +152,13 @@ $ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
     - `ELASTIC_KIBANARO_PASSWORD`('test-password'): password for Elasticsearch Kibanaro
     - `ELASTIC_READALL_PASSWORD`('test-password'): password for Elasticsearch readall
     - `ELASTIC_SNAPSHOTRESTORE_PASSWORD`('test-password'): password for Elasticsearch snapshotrestore
-    
+
     </details>
-    
+
 - **Docker volumes** (could be either a path or a Docker volume):
     <details>
     <summary>More</summary>
-    
+
     - `DB_MOUNT_POINT`('database_volume'): database storage
     - `PROJECT_LOGS_MOUNT_POINT`('cauldron_logs_volume'): logs of repository analysis
     - `ELASTIC_MOUNT_POINT`('elastic_data_volume'): elastic data
@@ -172,10 +166,10 @@ $ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
     - `PERCEVAL_REPOS_MOUNT_POINT`('perceval_repos'): location for git clone of repositories
     - `SYSLOG_MOUNT_POINT`('syslog_volume'): location for logs storage
     - `MATOMO_MOUNT_POINT`('matomo_volume'): location for storing Matomo configuration
-    
+
     </details>
 
-- **Administrators for Cauldron**. 
+- **Administrators for Cauldron**.
     <details>
     <summary>More</summary>
 
@@ -183,11 +177,11 @@ $ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
     - `GITHUB_ADMINS`([])
     - `GITLAB_ADMINS`([])
     - `MEETUP_ADMINS`([])
-    
+
     </details>
-    
+
 - **Other variables**
- 
+
     <details>
     <summary>Docker images</summary>
 
@@ -203,9 +197,9 @@ $ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
 
     <details>
     <summary>Docker container names</summary>
-    
+
     **IMPORTANT**: never change these variables unless you know what you are doing.
-    
+
     - `DB_CONTAINER_NAME`('db_cauldron_service')
     - `WEB_CONTAINER_NAME`('cauldron_service')
     - `WORKER_CONTAINER_NAME`('worker_service')
@@ -217,20 +211,20 @@ $ <prefered_editor> playbooks/inventories/local/host_vars/cauldron_host.yml
     - `MATOMO_CONTAINER_NAME` ('matomo_service')
 
     </details>
-    
+
     <details>
     <summary>Development</summary>
-    
+
     - `WEB_MOUNT_CODE`: define this variable when you want to test changes on the webserver container without the need to create a new image.
     - `WORKER_MOUNT_CODE`: define this variable when you want to test changes on the worker container without the need to create a new image.
     - `WEB_IMAGE_LOCAL_CODE`: define this variable when you want to build the webserver image with your local code.
     - `WORKER_IMAGE_LOCAL_CODE`: define this variable when you want to build the worker image with your local code.
-    
+
     </details>
 
 ### Target machine for deployment
 
-Cauldron will run at localhost. If you want to define a diferent location for deploying Cauldron, modify the file `playbooks/inventories/local/hosts`. From the root of this repository:
+With the default configuration, Cauldron will run at localhost. If you want to define a diferent location for deploying Cauldron, modify the file `playbooks/inventories/local/hosts`. From the root of this repository:
 ``` bash
 $ <prefered_editor> playbooks/inventories/local/hosts
 ```
@@ -254,6 +248,15 @@ $ ./generate.sh
 ```
 One of the most important certificates generated is `ssl_server`, it is used for the authentication of your public machine. If you use a self-signed certificate, the default case, users will be advised about the insecurity of your site. Please, try to obtain a trusted-signed certificate in order to make your site a safest place.
 
+**IMPORTANT**: If you are going to deploy Cauldron on two different hosts, you must duplicate the `playbooks/files/cauldron_host` directory, and name the copy as `playbooks/files/elasticsearch_host`. From the root of this repository:
+
+```bash
+$ cd playbooks/files
+$ cp -r cauldron_host elasticsearch_host
+```
+
+Also, you will need to modify the file `hosts` from your inventory in order to rename the new host as `elasticsearch_host`.
+
 For more information about Opendistro certificates, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
 
 ### Define your own set of dashboards for your project.
@@ -274,7 +277,7 @@ There you will find some useful Ansible playbooks for running Cauldron.
 ``` bash
 $ ansible-playbook -i inventories/local cauldron.yml
 ```
-It will deploy Cauldron in the specified host in the inventory file. All the images will be pulled from [DockerHub](https://hub.docker.com/u/cauldronio):
+It will deploy Cauldron in the specified hosts in the inventory file. All the images will be pulled from [DockerHub](https://hub.docker.com/u/cauldronio):
 - Create Docker network
 - Run Cauldron web interface in Docker
 - Run ElasticSearch (OpenDistro) in Docker
@@ -287,7 +290,7 @@ It will deploy Cauldron in the specified host in the inventory file. All the ima
 - Run nginx as a proxy for the containers
 
 ### Stop Cauldron
-This command will stop and remove all the container created, but the state will be kept
+This command will stop and remove all the containers created, but the state will be kept
 ``` bash
 $ ansible-playbook -i inventories/local rm_containers.yml
 ```
@@ -318,8 +321,8 @@ Go to the port you have Matomo deployed (9001 by default) and follow the install
     - Not an Ecommerce site
 7. JS Tracking code (next)
 8. Congratulations (next)  
- 
-Now you can get logs in Matomo. We have configured Matomo with a buffer of 50 hits. You won't see anything until 50 requests are made to the server. 
+
+Now you can get logs in Matomo. We have configured Matomo with a buffer of 50 hits. You won't see anything until 50 requests are made to the server.
 
 
 ## Advanced deployment for Cauldron
@@ -334,7 +337,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 
 - **Build the images.**
 
-  All the images are available in DockerHub with the latest stable version, but you can build them locally with `build_images.yml`. It builds all the images necessary for Cauldron. The Dockerfiles and inside the `docker` directory in the root of this repository. You can modify or overwrite the variables for a specific host in `inventories/<name>/host_vars`. The most important variables are:
+  All the images are available in DockerHub with the latest stable version, but you can build them locally with `build_images.yml`. It builds all the images necessary for Cauldron. The Dockerfiles are inside the `docker` directory in the root of this repository. You can modify or overwrite the variables for a specific host in `inventories/<name>/group_vars`. The most important variables are:
     - `XYZ_IMAGE_NAME`: Name for the image
     - `WEB_LOCAL_CODE`/`WORKER_LOCAL_CODE`: Define this variable for including your local code in  the image that you want to create. By default the code is cloned from the repository and included in the image.
 
@@ -362,7 +365,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 
 - **Create the Cauldron internal network.**
 
-  You can change the name of the network in `inventories/<xxx>/host_vars/<yyy>`: `NETWORK_NAME`
+  You can change the name of the network in `inventories/<xxx>/group_vars/all.yml`: `NETWORK_NAME`
 
   ``` bash
   $ ansible-playbook -i inventories/local create_network.yml
