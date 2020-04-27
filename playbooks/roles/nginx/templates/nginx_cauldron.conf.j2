@@ -10,13 +10,23 @@ upstream matomo {
     server {{MATOMO_CONTAINER_NAME}};
 }
 
+log_format  matomo              '{"ip": "$remote_addr",'
+                                '"host": "$host",'
+                                '"path": "$request_uri",'
+                                '"status": "$status",'
+                                '"referrer": "$http_referer",'
+                                '"user_agent": "$http_user_agent",'
+                                '"length": $bytes_sent,'
+                                '"generation_time_milli": $request_time,'
+                                '"date": "$time_iso8601"}';
+
 {% if ENABLE_PORT_80 %}
 server {
     listen 80;
 
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
 
-    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
+    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514 matomo;
     error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514;
 
     return 301 https://$host$request_uri;
@@ -39,7 +49,7 @@ server {
 
 
     location /kibana {
-        access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana;
+        access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana matomo;
         error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana;
 
         proxy_pass http://kibana;
@@ -47,7 +57,7 @@ server {
     }
 
     location / {
-        access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=cauldron;
+        access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=cauldron matomo;
         error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=cauldron;
 
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -69,7 +79,7 @@ server {
     listen        {{MATOMO_PORT}} ssl;
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
 
-    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=matomo;
+    access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=matomo matomo;
     error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=matomo;
 
     # If the user try to access the app port with http, redirect to https
