@@ -10,6 +10,8 @@
       MATOMO_USER: "{{MATOMO_USER}}"
       MATOMO_PASSWORD: "{{MATOMO_PASSWORD}}"
       MATOMO_URL: "http://{{MATOMO_CONTAINER_NAME}}"
+      ELASTIC_HOST: "{{ ELASTIC_HOST }}"
+      ELASTIC_PASSWORD: "{{ ELASTIC_ADMIN_PASSWORD }}"
     networks:
       - name: "{{ NETWORK_NAME }}"
     volumes:
