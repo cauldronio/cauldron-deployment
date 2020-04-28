@@ -1,0 +1,47 @@
+[
+  {
+    "index": "git_enrich_index",
+    "alias": "git"
+  },
+  {
+    "index": "github_enrich_index",
+    "alias": "github"
+  },
+  {
+    "index": "github_repo_enrich_index",
+    "alias": "github_repo"
+  },
+  {
+    "index": "github2_enrich_index",
+    "alias": "github_comments"
+  },
+  {
+    "index": "gitlab_enriched_index",
+    "alias": "gitlab_issues"
+  },
+  {
+    "index": "gitlab_mrs_enriched_index",
+    "alias": "gitlab_mrs"
+  },
+  {
+    "index": "meetup_enriched_index",
+    "alias": "meetup"
+  },
+  {
+    "indices": [
+      "git_enrich_index",
+      "github_enrich_index",
+      "gitlab_enriched_index",
+      "gitlab_mrs_enriched_index",
+      "meetup_enriched_index"
+    ],
+    "alias": "all"
+  },
+  {
+    "indices": [
+      "github_enrich_index",
+      "gitlab_enriched_index"
+    ],
+    "alias": "all_tickets"
+  }
+]

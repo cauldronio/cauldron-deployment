@@ -8,6 +8,7 @@ ADD requirements.txt /requirements.txt
 ADD mappings /mappings
 ADD configure_opendistro.py /configure_opendistro.py
 ADD settings.py /settings.py
+ADD aliases.json /aliases.json
 
 RUN pip install -r requirements.txt
 

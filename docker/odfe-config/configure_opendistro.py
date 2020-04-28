@@ -18,20 +18,20 @@ LOG_FORMAT = "[%(asctime)s - %(levelname)s] %(message)s"
 ELASTIC_URL = f"{settings.ES_IN_PROTOCOL}://{settings.ES_IN_HOST}:{settings.ES_IN_PORT}"
 KIBANA_URL = f"{settings.KIB_IN_PROTOCOL}://{settings.KIB_IN_HOST}:{settings.KIB_IN_PORT}{settings.KIB_PATH}"
 
+HEADER_JSON = {'Content-Type': 'application/json'}
+
 logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 Logger = logging.getLogger("configuration")
 
 
 def wait_for_elastic():
-    headers = {'Content-Type': 'application/json'}
-
     while True:
         Logger.info("Waiting for Elastic...")
         try:
             r = requests.get(ELASTIC_URL,
                              auth=('admin', settings.ES_ADMIN_PASSWORD),
                              verify=False,
-                             headers=headers)
+                             headers=HEADER_JSON)
         except requests.exceptions.ConnectionError:
             Logger.warning("Connection error. Retry in 5 seconds")
             time.sleep(5)
@@ -43,13 +43,11 @@ def wait_for_elastic():
 
 
 def wait_for_kibana():
-    headers = {'Content-Type': 'application/json'}
-
     while True:
         Logger.info("Waiting for Kibana...")
         try:
             r = requests.get(f'{KIBANA_URL}/api/status',
-                             headers=headers)
+                             headers=HEADER_JSON)
         except requests.exceptions.ConnectionError:
             Logger.warning("Connection error. Retry in 5 seconds")
             time.sleep(5)
@@ -112,7 +110,7 @@ def import_kibana_objects(location):
 
 
 def default_index_pattern(index_pattern):
-    Logger.info("Creating index pattern")
+    Logger.info(f"Set {index_pattern} as default index pattern")
 
     headers = {'Content-Type': 'application/json', 'kbn-xsrf': 'true'}
     r = requests.post(f'{KIBANA_URL}/api/kibana/settings/defaultIndex',
@@ -120,32 +118,28 @@ def default_index_pattern(index_pattern):
                       json={"value": index_pattern},
                       verify=False,
                       headers=headers)
-    if r.ok:
-        Logger.info("Index pattern created")
-    else:
-        Logger.info(f"Index pattern creation failed: {r.status_code}: {r.text}")
+
+    if not r.ok:
+        Logger.error(f"Set default index pattern failed: {r.status_code}: {r.text}")
 
 
 def create_indices(es):
     Logger.info('Creating default indices')
 
-    with open('mappings/git_aoc.json') as json_file:
-        git_aoc_mapping = json.load(json_file)
+    # with open('mappings/git_aoc.json') as json_file:
+    #     git_aoc_mapping = json.load(json_file)
 
     with open('mappings/gitlab.json') as json_file:
         gitlab_mapping = json.load(json_file)
 
     es.indices.create('git_raw_index', ignore=400)
     es.indices.create('git_enrich_index', ignore=400)
-    es.indices.create('git_aoc_enriched_index', body=git_aoc_mapping, ignore=400)
+    # es.indices.create('git_aoc_enriched_index', body=git_aoc_mapping, ignore=400)
     es.indices.create('github_raw_index', ignore=400)
     es.indices.create('github_enrich_index', ignore=400)
-    # es.indices.create('github_pull_enrich_index', ignore=400)
-    # es.indices.create('github_pull_raw_index', ignore=400)
     es.indices.create('github_repo_enrich_index', ignore=400)
     es.indices.create('github_repo_raw_index', ignore=400)
     es.indices.create('github2_enrich_index', ignore=400)
-    # es.indices.create('github2_pull_enriched_index', ignore=400)
     es.indices.create('gitlab_raw_index', ignore=400)
     es.indices.create('gitlab_enriched_index', body=gitlab_mapping, ignore=400)
     es.indices.create('gitlab_mrs_raw_index', ignore=400)
@@ -156,25 +150,40 @@ def create_indices(es):
     Logger.info('Default indices created')
 
 
-def create_aliases(es):
+def load_aliases(aliases_file):
+    with open(aliases_file) as f_aliases:
+        try:
+            aliases = json.load(f_aliases)
+        except Exception as e:
+            logging.error(e)
+            raise
+    return aliases
+
+
+def create_aliases():
     Logger.info('Creating aliases...')
-    es.indices.put_alias(index='git_aoc_enriched_*', name='git_aoc_enriched')
-    es.indices.put_alias(index='git_enrich_*', name='git_enrich')
-    es.indices.put_alias(index='github_enrich_*', name='github_enrich')
-    # es.indices.put_alias(index='github_pull_enrich_*', name='github_pull_enrich')
-    es.indices.put_alias(index='github_repo_enrich_*', name='github_repo_enrich')
-    es.indices.put_alias(index='github2_enrich_*', name='github2')
-    es.indices.put_alias(index='gitlab_enriched_*', name='gitlab_enriched')
-    es.indices.put_alias(index='gitlab_mrs_enriched_*', name='gitlab_mrs_enriched')
-    es.indices.put_alias(index='gitlab_mrs_enriched_*', name='gitlab_merge_requests')
-    es.indices.put_alias(index='meetup_enriched_*', name='meetup_enriched')
-    es.indices.put_alias(index='git_enrich_*', name='ocean')
-    es.indices.put_alias(index='github_enrich_*', name='ocean')
-    es.indices.put_alias(index='gitlab_enriched_*', name='ocean')
-    es.indices.put_alias(index='gitlab_mrs_enriched_*', name='ocean')
-    es.indices.put_alias(index='meetup_enriched_*', name='ocean')
-    es.indices.put_alias(index='github_enrich_*', name='ocean_tickets')
-    es.indices.put_alias(index='gitlab_enriched_*', name='ocean_tickets')
+
+    aliases = load_aliases('aliases.json')
+
+    for alias_dict in aliases:
+        alias_action = {
+            "actions": [
+                {
+                    "add": alias_dict
+                }
+            ]
+        }
+        r = requests.post(f'{ELASTIC_URL}/_aliases',
+                          auth=('admin', settings.ES_ADMIN_PASSWORD),
+                          verify=False,
+                          headers=HEADER_JSON,
+                          data=json.dumps(alias_action))
+        try:
+            r.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            logging.warning(f"Error creating alias {alias_dict}. {r.status_code}, {r.text}")
+            raise
+
     Logger.info('Aliases created')
 
 
@@ -202,7 +211,6 @@ def set_snapshot_location(location):
 def update_max_scrolls(num_scrolls):
     Logger.info('Updating number of max open scrolls')
 
-    headers_scrolls = {'Content-Type': 'application/json'}
     data_scrolls = {
         "persistent": {
             "search.max_open_scroll_context": num_scrolls
@@ -214,7 +222,7 @@ def update_max_scrolls(num_scrolls):
     req = requests.put(f'{ELASTIC_URL}/_cluster/settings',
                        auth=('admin', settings.ES_ADMIN_PASSWORD),
                        verify=False,
-                       headers=headers_scrolls,
+                       headers=HEADER_JSON,
                        json=data_scrolls)
     Logger.info(f'{req.status_code} - {req.json()}')
 
@@ -222,7 +230,6 @@ def update_max_scrolls(num_scrolls):
 def update_max_shards(num_shards):
     Logger.info('Updating number of max shards per node')
 
-    headers_shards = {'Content-Type': 'application/json'}
     data_shards = {
         "persistent": {
             "cluster.max_shards_per_node": "3000"
@@ -231,7 +238,7 @@ def update_max_shards(num_shards):
     req = requests.put(f'{ELASTIC_URL}/_cluster/settings',
                        auth=('admin', settings.ES_ADMIN_PASSWORD),
                        verify=False,
-                       headers=headers_shards,
+                       headers=HEADER_JSON,
                        json=data_shards)
     Logger.info(f'{req.status_code} - {req.json()}')
 
@@ -242,9 +249,8 @@ if __name__ == "__main__":
     elastic = connect_elasticsearch()
     update_max_shards(2000)
     import_kibana_objects('./kibana_objects')
-    default_index_pattern('git_enrich')
+    default_index_pattern('all')
     create_indices(elastic)
-    create_aliases(elastic)
+    create_aliases()
     set_snapshot_location("/mnt/snapshots")
     update_max_scrolls(5000)
-
