@@ -10,6 +10,7 @@ This repository contains relevant information for running Cauldron in your own c
 - [Development environment](#development-environment)
 - [Continuous Delivery and Rolling Upgrades](#continuous-delivery-and-rolling-upgrades)
 - [Admin page](#admin-page)
+- [Metrics](#metrics)
 - [Backups](#backups)
 - [Troubleshooting](#troubleshooting)
 
@@ -569,6 +570,15 @@ python3 manage.py promote alice
 
 **NOTE**: The command `promote` will set to True the flags `is_staff` and `is_superuser`, so the user promoted will be able to access the Django admin site too.
 
+
+## Metrics
+
+Cauldron provides Django commands to generate metrics. These commands must be executed daily and monthly to store their value in the database and in this way be able to obtain a history. We recommend running them in `crontab` as follows:
+
+```
+55 23 * * * docker exec cauldron_service Cauldron2/manage.py dailymetrics
+0 0 1 * * docker exec cauldron_service Cauldron2/manage.py monthlymetrics --previous-month 
+```
 
 ## Backups
 

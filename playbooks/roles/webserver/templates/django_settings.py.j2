@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'CauldronApp',
+    'CauldronApp.apps.CauldronAppConfig',
+    'metrics.apps.MetricsConfig',
     {% if HATSTALL_ENABLED %}
     'hatstall',
     {% endif %}
@@ -96,6 +97,9 @@ DATABASES = {
         'PORT': '{{ DB_PORT }}',
         'OPTIONS': {
             'sql_mode': 'traditional'
+        },
+        'TEST': {
+            'CHARSET': 'utf8'
         }
     }
 }
