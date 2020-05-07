@@ -1,0 +1,5 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - { role: remote-setup, tags: ['setup'] }

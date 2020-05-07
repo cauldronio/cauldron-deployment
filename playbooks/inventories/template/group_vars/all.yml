@@ -33,8 +33,20 @@ HATSTALL_ENABLED: false
 # Number of mordred worker. Use ~15/20 for production.
 NUM_WORKERS: 5
 
-# Elasticsearch host IP address (or container name for single-machine deployments)
+# Public IP address to access Cauldron (or localhost for local deployments)
+CAULDRON_HOST: "localhost"
+
+# Django host IP address (or container name for single-host deployments)
+WEB_HOST: "cauldron_service"
+
+# Django database host IP address (or container name for single-host deployments)
+DB_HOST: "db_cauldron_service"
+
+# Elasticsearch host IP address (or container name for single-host deployments)
 ELASTIC_HOST: "elastic_service"
+
+# Kibana host IP address (or container name for single-host deployments)
+KIBANA_HOST: "kibana_service"
 
 # Port where the APP will be available. Use 443 for production
 CAULDRON_PORT: 9000

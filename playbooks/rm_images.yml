@@ -1,6 +1,6 @@
 ---
 
-- hosts: webserver
+- hosts: cauldron_group
   tasks:
     - name: "Delete webserver image"
       docker_image:
@@ -14,6 +14,16 @@
         name: "{{ WORKER_IMAGE_NAME }}"
       tags: [worker]
 
+- hosts: elastic_group
+  tasks:
+    - name: "Delete elasticsearch image"
+      docker_image:
+        state: absent
+        name: "{{ ELASTIC_IMAGE_NAME }}"
+      tags: [elastic]
+
+- hosts: database_group
+  tasks:
     - name: "Delete database image"
       docker_image:
         state: absent
@@ -43,11 +53,3 @@
         state: absent
         name: "{{ MATOMO_IMAGE_NAME }}"
       tags: [matomo]
-
-- hosts: elasticsearch
-  tasks:
-    - name: "Delete elasticsearch image"
-      docker_image:
-        state: absent
-        name: "{{ ELASTIC_IMAGE_NAME }}"
-      tags: [elastic]

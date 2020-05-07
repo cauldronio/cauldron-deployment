@@ -38,17 +38,12 @@ Things you need to do:
     ```
     At the end of the process, Terraform outputs the public and private IPs to access to the machines you have created. Something like:
     ```
-    digitalocean_droplet.cauldron: Creation complete after 2m2s [id=188426181]
-    digitalocean_droplet.elasticsearch: Creation complete after 1m50s [id=188426182]
-    Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
-    Outputs:
     cauldron_private_ip= 64.225.104.139
     cauldron_public_ip = 157.245.85.159
-    elastic_private_ip = 10.135.200.213
-    elastic_public_ip = 167.172.183.254
+    ...
     ```
 
-6. You are ready for [next steps](../README.md#clone-and-configure).
+6. You are ready for [next steps](../README.md#preconfiguration).
 
 # Import an existing state
 
@@ -62,7 +57,7 @@ If you use Terraform with already deployed resources, you must first load the st
 2. Import the droplets state:
     ```
     terraform import digitalocean_droplet.cauldron <DROPLET_ID>
-    terraform import digitalocean_droplet.elasticsearch <DROPLET_ID>
+    ...
     ```
     If everything goes well, the following message should appear on the terminal:
     ```
@@ -85,7 +80,7 @@ If you use Terraform with already deployed resources, you must first load the st
 
 3. If everything goes well, the following message should appear on the terminal:
     ```
-    Destroy complete! Resources: 2 destroyed.
+    Destroy complete! Resources: 1 destroyed.
     ```
 
 4. You can also check that the droplet has been deleted by logging into DigitalOcean or through the [API](https://developers.digitalocean.com/documentation/v2/#list-all-droplets):

@@ -1,6 +1,31 @@
 ---
 
-- hosts: webserver
+- hosts: cauldron_group
+  tasks:
+  - include_role:
+      name: webserver
+      tasks_from: setup
+    tags: [webserver]
+
+  - include_role:
+      name: hatstall
+      tasks_from: setup
+    when: HATSTALL_ENABLED
+    tags: [hatstall]
+
+  - include_role:
+      name: workers
+      tasks_from: setup
+    tags: [worker]
+
+- hosts: elastic_group
+  tasks:
+  - include_role:
+      name: elasticsearch
+      tasks_from: setup
+    tags: [elastic]
+
+- hosts: database_group
   tasks:
   - include_role:
       name: database
@@ -26,31 +51,3 @@
       name: matomo
       tasks_from: setup
     tags: [matomo]
-
-  - include_role:
-      name: webserver
-      tasks_from: setup
-    tags: [webserver]
-
-  - include_role:
-      name: workers
-      tasks_from: setup
-    tags: [worker]
-
-  - include_role:
-      name: odfe-config
-      tasks_from: setup
-    tags: [odfe-config]
-
-  - include_role:
-      name: hatstall
-      tasks_from: setup
-    when: HATSTALL_ENABLED
-    tags: [hatstall]
-
-- hosts: elasticsearch
-  tasks:
-  - include_role:
-      name: elasticsearch
-      tasks_from: setup
-    tags: [elastic]

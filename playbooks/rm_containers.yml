@@ -1,6 +1,25 @@
 ---
 
-- hosts: webserver
+- hosts: cauldron_group
+  tasks:
+  - include_role:
+      name: webserver
+      tasks_from: remove
+    tags: [webserver]
+
+  - include_role:
+      name: workers
+      tasks_from: remove
+    tags: [worker]
+
+- hosts: elastic_group
+  tasks:
+  - include_role:
+      name: elasticsearch
+      tasks_from: remove
+    tags: [elastic]
+
+- hosts: database_group
   tasks:
   - include_role:
       name: database
@@ -26,20 +45,3 @@
       name: matomo
       tasks_from: remove
     tags: [matomo]
-
-  - include_role:
-      name: webserver
-      tasks_from: remove
-    tags: [webserver]
-
-  - include_role:
-      name: workers
-      tasks_from: remove
-    tags: [worker]
-
-- hosts: elasticsearch
-  tasks:
-  - include_role:
-      name: elasticsearch
-      tasks_from: remove
-    tags: [elastic]

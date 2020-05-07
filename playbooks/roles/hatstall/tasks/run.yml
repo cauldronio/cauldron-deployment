@@ -1,6 +1,5 @@
 ---
 
-
 - name: "Copy Hatstall installation script in {{WEB_CONTAINER_NAME}}"
   command: "docker cp {{CAULDRON_CONFIG_DIR}}/hatstall/hatstall_installation.sh {{WEB_CONTAINER_NAME}}:/hatstall_installation.sh"
   tags: [hatstall]

@@ -19,11 +19,11 @@ ES_IN_PROTO = '{{ELASTIC_PROTOCOL}}'
 
 ES_ADMIN_PSW = '{{ ELASTIC_ADMIN_PASSWORD }}'
 
-KIB_IN_HOST = '{{KIBANA_CONTAINER_NAME}}'
+KIB_IN_HOST = '{{KIBANA_HOST}}'
 KIB_IN_PORT = '{{KIBANA_PORT}}'
 KIB_IN_PROTO = '{{KIBANA_PROTOCOL}}'
 KIB_PATH = '{{KIBANA_URL_PATH}}'
-KIB_OUT_URL = 'https://{{ ansible_ssh_host|default(ansible_host) }}:{{CAULDRON_PORT}}{{KIBANA_URL_PATH}}'
+KIB_OUT_URL = 'https://{{ CAULDRON_HOST }}:{{ CAULDRON_PORT }}{{ KIBANA_URL_PATH }}'
 
 HATSTALL_ENABLED = {{ HATSTALL_ENABLED }}
 
@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': '{{ DB_DJANGO_NAME }}',
         'USER': '{{ DB_USER }}',
         'PASSWORD': '{{ DB_USER_PASSWORD }}',
-        'HOST': '{{ DB_CONTAINER_NAME }}',
+        'HOST': '{{ DB_HOST }}',
         'PORT': '{{ DB_PORT }}',
         'OPTIONS': {
             'sql_mode': 'traditional'

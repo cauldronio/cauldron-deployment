@@ -1,4 +1,5 @@
 ---
+
 ## Build Cauldron images
 ##
 ## For this playbook to work, ensure docker-py is installed
@@ -22,7 +23,6 @@
 ## WEB_IMAGE_LOCAL_CODE, WORKER_IMAGE_LOCAL_CODE
 ## --- Git location of the code to be cloned ---
 ## WEB_IMAGE_GIT_CODE, WEB_IMAGE_GIT_VERSION, WORKER_IMAGE_GIT_CODE, WORKER_IMAGE_GIT_VERSION
-
 
 - hosts: all
   tasks:

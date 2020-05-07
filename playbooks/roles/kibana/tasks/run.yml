@@ -8,6 +8,7 @@
     restart_policy: "always"
     networks:
       - name: "{{ NETWORK_NAME }}"
+    ports: "{{ [] if KIBANA_HOST == KIBANA_CONTAINER_NAME else [KIBANA_EXPORTED_PORTS] }}"
     volumes:
       - "{{CAULDRON_CONFIG_DIR}}/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml"
       #- "{{CAULDRON_CONFIG_DIR}}/es/keys/root-ca.pem:/usr/share/kibana/config/root-ca.pem"

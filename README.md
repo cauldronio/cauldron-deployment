@@ -15,41 +15,55 @@ This repository contains relevant information for running Cauldron in your own c
 
 ## Requirements
 
-- It's necessary that you have **Ansible** (~2.8) installed in your computer in order to run the playbooks. You can follow [this link](https://docs.ansible.com/ansible/latest/installation_guide/) to find the installation docs.
+- It's necessary that you have **Ansible** (~2.8) installed on your computer (the control node, from now on) in order to run the playbooks. You can follow [this guide](https://docs.ansible.com/ansible/latest/installation_guide/) to find the installation docs.
 
   **NOTE**: Ansible works by default with your system's default Python version, but the playbooks for Cauldron are prepared for Python 3. Anyway, please check your Ansible configuration to be sure about which Python version is being used by executing:
   ```bash
    $ ansible --version
   ```
 
-- **Terraform** is an ***optional*** requirement in case you want to automate the provisioning of the machine used for the deployment. You have more information about how to carry out this provisioning [here](do/README.md).
+- **Terraform** is an ***optional*** requirement in case you want to automate the provisioning of the system used for the deployment. You have more information about how to carry out this provisioning [here](do/README.md).
 
-- **Docker** (~18.09) is also needed for running the containers. You can install it by following [this link](https://docs.docker.com/install/).
+- **Docker** (~18.09) is necessary on the machines where we are going to deploy Cauldron (the managed nodes, from now on) to run the containers. You can install it by following [this guide](https://docs.docker.com/install/).
 
-  **IMPORTANT**: You will also need to add your own user to the docker group created during the installation of Docker in order to execute Docker CLI without `sudo`:
+  **IMPORTANT**: You will also need to add your own user from the managed nodes to the docker group created during the installation of Docker in order to execute Docker CLI without `sudo`. On the managed nodes, execute:
   ```bash
    $ sudo usermod -aG docker $USER
   ```
 
-- **Docker SDK for Python** is required by Ansible to execute Docker commands in Python scripts. For Python 3 you will need to execute the following:
+- **Docker SDK for Python** is required on the managed nodes by Ansible to execute Docker commands in Python scripts. For Python 3, you will need to execute the following on the managed nodes:
   ```bash
     $ pip3 install docker
   ```
 
-- **virtualenv** is necessary for creating a Python environment for generating the hashed keys for OpenDistro for ElasticSearch:
+- **virtualenv** is necessary on the managed nodes for creating a Python environment to generate the hashed keys for OpenDistro for ElasticSearch. To check if you have it installed:
   ``` bash
     $ virtualenv --version
   ```
 
-- **rsync** is necessary for copying the files to a remote machine. To check if you have it installed:
+- **rsync** is necessary on both the control node and managed nodes to copy the files to a remote machine. To check if you have it installed:
   ``` bash
     $ rsync --version
   ```
 
-- The following ports will be used in the target machine. You can change this later in the configuration file.
+- The following ports will be used on the manage nodes. You can change this later in the configuration file.
 
   - **9000**: Cauldron web interface
 
+### Remote setup
+
+We provide an Ansible playbook called `remote-setup.yml` to make easier the installation of the different dependencies on a remote deployment of Cauldron. We strongly discourage its use for local deployments, as you may encounter discrepancies regarding the expected results.
+
+This playbook must be used with the `root` user or with a user with `sudo` permissions:
+```bash
+ansible-playbook -i hosts.yml -u root remote-setup.yml
+```
+
+The need to use the root user is because the playbook performs the following tasks:
+- Install all required system packages
+- Create a new user and set authorized keys
+- Modify some control system variables to avoid some Elasticsearch issues
+- Allow the SSH connectivity between the different hosts (in a multi-host deployment scenario)
 
 ## Preconfiguration
 
@@ -97,11 +111,9 @@ $ cd cauldron-deployment
 
 </details>
 
-### Configure the variables for your hosts:
+### Configure the variables for your deployment:
 
-**NOTE**: This repository allows you to deploy Cauldron on a single machine or on two machines, the latter being the Elasticsearch service with a dedicated host. Depending on the deployment you choose, you will need to make some extra adjustments to the configuration.
-
-Create a copy of the directory `playbooks/inventories/template`. This directory contains all the variables that could be different for each host. From the root of this repository:
+Create a copy of the directory `playbooks/inventories/template`. From the root of this repository:
 ``` bash
 $ cd playbooks/inventories
 $ cp -r template local
@@ -126,13 +138,17 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     <details>
     <summary>More</summary>
 
-    - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location where the configuration files for the containers will be stored.
+    - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location in the managed nodes where the configuration files for the containers will be stored.
     - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
-    - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that analyze repositories concurrently.
-    - `ELASTIC_HOST` (`elastic_service`): IP address where the Elasticsearch service is hosted or, for single machine deployments, the name of the Elasticsearch Docker container.
+    - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that will analyze repositories concurrently.
+    - `CAULDRON_HOST` (`localhost`): Public IP address to access Cauldron, or `localhost` for local deployments.
+    - `WEB_HOST` (`cauldron_service`): IP address where the Web Server is hosted or, for single-host deployments, the name of the Web Server Docker container.
+    - `DB_HOST` (`db_cauldron_service`): IP address where the Django database is hosted or, for single-host deployments, the name of the Django database Docker container.
+    - `ELASTIC_HOST` (`elastic_service`): IP address where the Elasticsearch service is hosted or, for single-host deployments, the name of the Elasticsearch Docker container.
+    - `KIBANA_HOST` (`kibana_service`): IP address where the Kibana service is hosted or, for single-host deployments, the name of the Kibana Docker container.
     - `CAULDRON_PORT` (9000): port where Cauldron webserver will be running. Use 443 in production.
     - `MATOMO_PORT` (9001): port where Matomo will be running.
-    - `ENABLE_PORT_80` (false): if true, petitions to port 80 will be redirected to `https://location:CAULDRON_PORT`
+    - `ENABLE_PORT_80` (false): if true, petitions to port 80 will be redirected to `https://location:CAULDRON_PORT`.
     - `DJANGO_HOSTS` ('*'): location where cauldron is running to avoid HTTP Host header attacks.
     - `ELASTIC_MEMORY` ('4gb'): [head size](https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html) used by Elasticsearch. It is recommended to be half of your RAM.
     - `GOOGLE_ANALYTICS_ID` (''): set the correspoding ID to have analytics.
@@ -222,19 +238,58 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
 
     </details>
 
-### Target machine for deployment
+### Configure the hosts for your deployment:
 
-With the default configuration, Cauldron will run at localhost. If you want to define a diferent location for deploying Cauldron, modify the file `playbooks/inventories/local/hosts`. From the root of this repository:
+With the default configuration, Cauldron will run at localhost, in a single-host deployment. If you want to define a different host for deploying Cauldron (or define a multi-host deployment), please modify the file `playbooks/inventories/local/hosts.yml`. From the root of this repository:
 ``` bash
-$ <prefered_editor> playbooks/inventories/local/hosts
+$ <prefered_editor> playbooks/inventories/local/hosts.yml
 ```
-Some variables defined:
-- `ansible_connection`(local): ssh for remote host
-- `ansible_host`(localhost): define the IP or domain
-- `ansible_ssh_user`: user used to deploy cauldron in a remote machine
-- `ansible_python_interpreter`
 
-A complete list of the variables that can be defined can be found [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters)
+Inside this file you will find a defined host (`cauldron_host`) and some groups:
+- `cauldron_group`: This group contains the host that hosts the web server and the workers.
+- `elastic_group`: This group contains the host dedicated to hosting the Elasticsearch service.
+- `database_group`: This group contains the host dedicated to hosting all the other services not presented in the other groups, such as the database of the Django web server or Kibana.
+
+**NOTE**: For a multi-host deployment, you will need to add more hosts to the file (similar to the schema for single-host), and correctly indicate which host belongs to which group. For example, for a three-host deployment, the `hosts.yml` file would look like this:
+```yaml
+---
+
+all:
+  hosts:
+    cauldron_host:
+      ansible_host: x.x.x.x
+      ansible_connection: ssh
+      ansible_ssh_user: user
+      ansible_python_interpreter: /usr/bin/python3
+    elastic_host:
+      ansible_host: x.x.x.x
+      ansible_connection: ssh
+      ansible_ssh_user: user
+      ansible_python_interpreter: /usr/bin/python3
+    database_host:
+      ansible_host: x.x.x.x
+      ansible_connection: ssh
+      ansible_ssh_user: user
+      ansible_python_interpreter: /usr/bin/python3
+  children:
+    cauldron_group:
+      hosts:
+        cauldron_host
+    elastic_group:
+      hosts:
+        elastic_host
+    database_group:
+      hosts:
+        database_host
+```
+
+The variables defined for each host are:
+- `ansible_host`(localhost): Location of the host (localhost, IP or domain).
+- `ansible_connection`(local): Type of connection (ssh or local).
+- `ansible_ssh_user`: User used for the remote host.
+- `ansible_python_interpreter`(/usr/bin/python3): Python interpreter on the host.
+
+A complete list of the variables that can be defined can be found [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#connecting-to-hosts-behavioral-inventory-parameters).
 
 ### Create the certificates for your deployment machine.
 
@@ -248,14 +303,12 @@ $ ./generate.sh
 ```
 One of the most important certificates generated is `ssl_server`, it is used for the authentication of your public machine. If you use a self-signed certificate, the default case, users will be advised about the insecurity of your site. Please, try to obtain a trusted-signed certificate in order to make your site a safest place.
 
-**IMPORTANT**: If you are going to deploy Cauldron on two different hosts, you must duplicate the `playbooks/files/cauldron_host` directory, and name the copy as `playbooks/files/elasticsearch_host`. From the root of this repository:
+**IMPORTANT**: If you are deploying Cauldron in a multi-host deployment, you must replicate the `playbooks/files/cauldron_host` directory as many times as hosts you have defined, and name each of these directories with the corresponding host name. For example, for a two-host deployment you have to execute the following from the root of this repository:
 
 ```bash
 $ cd playbooks/files
-$ cp -r cauldron_host elasticsearch_host
+$ cp -r cauldron_host elastic_host
 ```
-
-Also, you will need to modify the file `hosts` from your inventory in order to rename the new host as `elasticsearch_host`.
 
 For more information about Opendistro certificates, you can access the following link for more details: [OpenDistro Certificates](https://opendistro.github.io/for-elasticsearch-docs/docs/security-configuration/generate-certificates/)
 

@@ -1,0 +1,73 @@
+---
+- name: Install aptitude using apt
+  apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
+
+- name: Install required system packages
+  apt: name={{ item }} state=latest update_cache=yes
+  loop: "{{ sys_packages }}"
+
+- name: Add Docker GPG apt key
+  apt_key:
+    url: https://download.docker.com/linux/{{ ansible_distribution|lower }}/gpg
+    state: present
+
+- name: Add Docker repository
+  apt_repository:
+    repo: deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release|lower }} stable
+    filename: docker
+    state: present
+
+- name: Update apt and install docker-ce
+  apt: name=docker-ce state=latest update_cache=yes
+
+- name: Install Docker module for Python
+  pip:
+    name: docker
+    state: latest
+
+- name: Make sure we have a 'docker' group
+  group:
+    name: docker
+    state: present
+
+- name: Create cauldron user with sudo privileges
+  user:
+    name: cauldron
+    state: present
+    groups:
+      - docker
+      - sudo
+    append: true
+    create_home: true
+    shell: /bin/bash
+    generate_ssh_key: true
+    ssh_key_type: rsa
+    ssh_key_bits: 4096
+
+- name: Set authorized key for cauldron user
+  authorized_key:
+    user: cauldron
+    state: present
+    key: "{{ local_public_key }}"
+
+- name: Increase vm.max_map_count
+  sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    state: present
+
+- name: Fetch the keyfile from the node to master
+  become_user: cauldron
+  fetch:
+    src: "~/.ssh/id_rsa.pub"
+    dest: "/tmp/{{ inventory_hostname }}-id_rsa.pub"
+    flat: yes
+
+- name: Copy the key to authorized_keys
+  authorized_key:
+    user: cauldron
+    state: present
+    key: "{{ lookup('file','/tmp/{{ item }}-id_rsa.pub') }}"
+  when: item != inventory_hostname
+  with_items:
+    - "{{ groups['all'] }}"

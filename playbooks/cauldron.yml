@@ -14,25 +14,36 @@
 ##
 ## Variables are defined in the inventory file
 
-
 - import_playbook: create_network.yml
 
-- hosts: webserver
+- hosts: database_group
   roles:
     - database
+
+- hosts: cauldron_group
+  roles:
     - webserver
 
-- hosts: elasticsearch
+- hosts: elastic_group
   roles:
     - elasticsearch
 
-- hosts: webserver
+- hosts: cauldron_group
+  roles:
+    - workers
+
+- hosts: database_group
   roles:
     - kibana
-    - workers
     - odfe-config
+
+- hosts: cauldron_group
+  roles:
     - role: hatstall
       when: HATSTALL_ENABLED
+
+- hosts: database_group
+  roles:
     - matomo
     - syslog
     - nginx

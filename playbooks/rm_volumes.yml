@@ -1,6 +1,6 @@
 ---
 
-- hosts: webserver
+- hosts: cauldron_group
   tasks:
   - name: "Remove Projects logs volume: {{ PROJECT_LOGS_MOUNT_POINT }}"
     docker_volume:
@@ -8,31 +8,13 @@
       state: absent
     tags: [project_logs]
 
-  - name: "Remove Database volume: {{ DB_MOUNT_POINT }}"
-    docker_volume:
-      name: "{{ DB_MOUNT_POINT }}"
-      state: absent
-    tags: [database]
-
   - name: "Remove Git Perceval Repositories volume: {{PERCEVAL_REPOS_MOUNT_POINT}}"
     docker_volume:
       name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"
       state: absent
     tags: [repositories]
 
-  - name: "Remove syslog volume: {{SYSLOG_MOUNT_POINT}}"
-    docker_volume:
-      name: "{{ SYSLOG_MOUNT_POINT }}"
-      state: absent
-    tags: [syslog]
-
-  - name: "Remove matomo volume: {{MATOMO_MOUNT_POINT}}"
-    docker_volume:
-      name: "{{ MATOMO_MOUNT_POINT }}"
-      state: absent
-    tags: [matomo]
-
-- hosts: elasticsearch
+- hosts: elastic_group
   tasks:
   - name: "Remove Elasticsearch volume: {{ ELASTIC_MOUNT_POINT }}"
     docker_volume:
@@ -45,3 +27,23 @@
       name: "{{ ELASTIC_SNAPSHOT_MOUNT_POINT }}"
       state: absent
     tags: [elastic_snapshot]
+
+- hosts: database_group
+  tasks:
+  - name: "Remove Database volume: {{ DB_MOUNT_POINT }}"
+    docker_volume:
+      name: "{{ DB_MOUNT_POINT }}"
+      state: absent
+    tags: [database]
+
+  - name: "Remove syslog volume: {{SYSLOG_MOUNT_POINT}}"
+    docker_volume:
+      name: "{{ SYSLOG_MOUNT_POINT }}"
+      state: absent
+    tags: [syslog]
+
+  - name: "Remove matomo volume: {{MATOMO_MOUNT_POINT}}"
+    docker_volume:
+      name: "{{ MATOMO_MOUNT_POINT }}"
+      state: absent
+    tags: [matomo]

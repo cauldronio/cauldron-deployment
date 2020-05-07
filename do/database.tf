@@ -1,5 +1,5 @@
-resource "digitalocean_droplet" "elasticsearch" {
-  name               = "elasticsearch"
+resource "digitalocean_droplet" "database" {
+  name               = "database"
   image              = var.do_image
   region             = var.do_region
   size               = var.do_size
@@ -7,7 +7,7 @@ resource "digitalocean_droplet" "elasticsearch" {
   tags = [
     "terraform",
     "cauldron",
-    "elasticsearch",
+    "database",
     var.do_usertag
   ]
   ssh_keys = var.ssh_fingerprints

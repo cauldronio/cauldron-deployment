@@ -1,21 +1,37 @@
 ---
 
-- hosts: webserver
-  tasks:
-  - include_role:
-      name: database
-      tasks_from: run
-    tags: [database]
-
-- hosts: elasticsearch
+- hosts: elastic_group
   tasks:
   - include_role:
       name: elasticsearch
       tasks_from: run
     tags: [elastic]
 
-- hosts: webserver
+- hosts: cauldron_group
   tasks:
+  - include_role:
+      name: webserver
+      tasks_from: run
+    tags: [webserver]
+
+  - include_role:
+      name: workers
+      tasks_from: run
+    tags: [worker]
+
+  - include_role:
+      name: hatstall
+      tasks_from: run
+    when: HATSTALL_ENABLED
+    tags: [hatstall]
+
+- hosts: database_group
+  tasks:
+  - include_role:
+      name: database
+      tasks_from: run
+    tags: [database]
+
   - include_role:
       name: kibana
       tasks_from: run
@@ -37,22 +53,6 @@
     tags: [nginx]
 
   - include_role:
-      name: webserver
-      tasks_from: run
-    tags: [webserver]
-
-  - include_role:
-      name: workers
-      tasks_from: run
-    tags: [worker]
-
-  - include_role:
       name: odfe-config
       tasks_from: run
     tags: [odfe-config]
-
-  - include_role:
-      name: hatstall
-      tasks_from: run
-    when: HATSTALL_ENABLED
-    tags: [hatstall]

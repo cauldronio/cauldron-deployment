@@ -13,5 +13,6 @@
     restart_policy: "always"
     networks:
       - name: "{{ NETWORK_NAME }}"
+    ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + [WEB_MOUNT_CODE + ":/code"] if WEB_MOUNT_CODE is defined else webserver_volumes}}'
   tags: [webserver]
