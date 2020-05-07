@@ -17,7 +17,7 @@ Things you need to do:
     export DIGITALOCEAN_TOKEN=<DIGITAL_OCEAN_PERSONAL_TOKEN>
     ```
 
-3. Export the fingerprints of the SSH keys already uploaded to your DigitalOcean account to an environment variable called `TF_VAR_ssh_fingerprints` ***(Optional)***:
+3. Export the fingerprints of the SSH keys already uploaded to your DigitalOcean account to an environment variable called `TF_VAR_ssh_fingerprints`:
     ```
     export TF_VAR_ssh_fingerprints='["<SSH_FINGERPRINT_1>","<SSH_FINGERPRINT_2>",...]'
     ```
@@ -43,7 +43,7 @@ Things you need to do:
     ...
     ```
 
-6. You are ready for [next steps](../README.md#preconfiguration).
+6. You are ready for [next steps](../README.md#requirements).
 
 # Import an existing state
 
