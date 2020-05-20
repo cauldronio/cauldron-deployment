@@ -146,6 +146,8 @@ def create_indices(es):
     es.indices.create('gitlab_mrs_enriched_index', ignore=400)
     es.indices.create('meetup_raw_index', ignore=400)
     es.indices.create('meetup_enriched_index', ignore=400)
+    es.indices.create('cauldron_daily_metrics', ignore=400)
+    es.indices.create('cauldron_monthly_metrics', ignore=400)
 
     Logger.info('Default indices created')
 
