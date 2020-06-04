@@ -1,0 +1,26 @@
+---
+
+- name: "Ensures {{PA_TO_ES_BUILD_DIR}} dir exists"
+  file:
+    path: "{{PA_TO_ES_BUILD_DIR}}"
+    state: directory
+    recurse: yes
+  tags: [pa-to-es]
+
+- name: "Copy Docker context to {{ PA_TO_ES_BUILD_DIR }}"
+  synchronize:
+    src: "{{ PA_TO_ES_IMAGE_DOCKERFILE_PATH }}"
+    dest: "{{ PA_TO_ES_BUILD_DIR }}"
+    recursive: yes
+    delete: yes
+  tags: [pa-to-es]
+
+- name: "Build the image for pa-to-es"
+  docker_image:
+    name: "{{ PA_TO_ES_IMAGE_NAME }}"
+    build:
+      path: "{{ PA_TO_ES_BUILD_DIR }}/"
+      pull: "no"
+    source: build
+    state: present
+  tags: [pa-to-es]

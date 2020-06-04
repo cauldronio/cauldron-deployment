@@ -1,0 +1,8 @@
+---
+
+- name: "Remove {{PA_TO_ES_CONTAINER_NAME}} container"
+  docker_container:
+    name: "{{ PA_TO_ES_CONTAINER_NAME }}"
+    state: absent
+    force_kill: yes
+  tags: [pa-to-es]

@@ -5,6 +5,7 @@ This image is used for configuring Elasticsearch and Kibana for Cauldron. This i
 This image perform the following tasks:
 - Wait for Elasticsearch running
 - Wait for Kibana running
+- Import index templates
 - Import kibana objects (visualizations, dashboards, index patterns...)
 - Define a default index pattern
 - Create default indices and mappings for Sirmordred

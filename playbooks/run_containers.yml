@@ -56,3 +56,9 @@
       name: odfe-config
       tasks_from: run
     tags: [odfe-config]
+
+  - include_role:
+      name: pa-to-es
+      tasks_from: run
+    when: PA_TO_ES_ENABLED
+    tags: [pa-to-es]

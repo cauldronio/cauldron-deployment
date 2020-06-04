@@ -3,6 +3,7 @@ MAINTAINER Cauldron team <contact@cauldron.io>
 
 ENV PYTHONBUFFERED 1
 
+ADD index_templates /index_templates
 ADD kibana_objects /kibana_objects
 ADD requirements.txt /requirements.txt
 ADD mappings /mappings

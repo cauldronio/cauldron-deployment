@@ -1,0 +1,4 @@
+---
+
+PA_TO_ES_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/pa-to-es-build"
+PA_TO_ES_IMAGE_DOCKERFILE_PATH: "../docker/pa-to-es/"

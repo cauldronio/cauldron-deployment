@@ -4,6 +4,7 @@ DB_IMAGE_NAME: "cauldronio/database:latest"
 WEB_IMAGE_NAME: "cauldronio/webserver:latest"
 WORKER_IMAGE_NAME: "cauldronio/worker:latest"
 ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
+PA_TO_ES_IMAGE_NAME: "cauldronio/pa-to-es:latest"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.6.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.6.0"
 SYSLOG_IMAGE_NAME: "cauldronio/syslog-ng:latest"
@@ -29,6 +30,9 @@ CAULDRON_CONFIG_DIR: "/tmp/cauldron-data"
 
 # If enabled, Grimoirelab will use Sortinghat and fetch GitHub users information.
 HATSTALL_ENABLED: false
+
+# If enabled, some metrics will be collected from Performance Analyzer and stored in Elasticsearch.
+PA_TO_ES_ENABLED: false
 
 # Number of mordred worker. Use ~15/20 for production.
 NUM_WORKERS: 5
@@ -105,6 +109,7 @@ NGINX_CONTAINER_NAME: "nginx_service"
 SYSLOG_CONTAINER_NAME: 'syslog_service'
 ODFE_CONFIG_CONTAINER_NAME: "odfe_config_cauldron"
 MATOMO_CONTAINER_NAME: "matomo_service"
+PA_TO_ES_CONTAINER_NAME: "pa-to-es"
 
 NETWORK_NAME: "network_cauldron"
 

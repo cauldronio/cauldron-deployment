@@ -53,3 +53,10 @@
         state: absent
         name: "{{ MATOMO_IMAGE_NAME }}"
       tags: [matomo]
+
+    - name: "Delete pa-to-es image"
+      docker_image:
+        state: absent
+        name: "{{ PA_TO_ES_IMAGE_NAME }}"
+      when: PA_TO_ES_ENABLED
+      tags: [pa-to-es]

@@ -1,0 +1,14 @@
+---
+
+- name: Run pa-to-es container
+  docker_container:
+    name: "{{ PA_TO_ES_CONTAINER_NAME }}"
+    image: "{{ PA_TO_ES_IMAGE_NAME }}"
+    state: started
+    restart_policy: "always"
+    env:
+      ELASTIC_HOST: "{{ ELASTIC_HOST }}"
+      ELASTIC_PASSWORD: "{{ ELASTIC_ADMIN_PASSWORD }}"
+    networks:
+      - name: "{{ NETWORK_NAME }}"
+  tags: [pa-to-es]

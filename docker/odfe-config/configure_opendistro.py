@@ -73,40 +73,93 @@ def connect_elasticsearch():
     return es
 
 
-def import_kibana_object(path):
+def import_kibana_object(kibana_url, admin_password, filename, tenant):
     """
-    This method import the object defined in path in Kibana using saved_objects API
-    :param path: *.ndjson file path to be imported in Kibana
+    This method imports the object defined in filename in Kibana using saved_objects API
+    :param kibana_url: kibana endpoint
+    :param admin_password: admin password for Kibana
+    :param filename: *.ndjson file path to be imported in Kibana
+    :param tenant: tenant who is going to import the objects
     :return:
     """
-    Logger.info(f'Importing {path}')
+    Logger.info(f'Importing {filename}')
 
     headers = {'kbn-xsrf': 'true',
-               'securitytenant': 'global'}
-    saved_objects_api = f"{settings.KIB_IN_PROTOCOL}://{settings.KIB_IN_HOST}:{settings.KIB_IN_PORT}{settings.KIB_PATH}" \
-                        f"/api/saved_objects/_import?overwrite=true"
-    files = {'file': open(path, 'rb')}
+               'securitytenant': tenant}
+    saved_objects_api = f"{kibana_url}/api/saved_objects/_import?overwrite=true"
+    with open(filename, 'rb') as f:
+        files = {'file': f}
+        r = requests.post(saved_objects_api,
+                          auth=('admin', admin_password),
+                          verify=False,
+                          files=files,
+                          headers=headers)
 
-    r = requests.post(saved_objects_api,
-                      auth=('admin', settings.ES_ADMIN_PASSWORD),
-                      verify=False,
-                      files=files,
-                      headers=headers)
-    Logger.info(f'{r.status_code} - {r.json()}')
+        Logger.info(f'{r.status_code} - {r.json()}')
 
 
-def import_kibana_objects(location):
+def import_kibana_objects(location, tenant):
     """
     This method import all the objects inside location
+    to a specific tenant
     """
-    Logger.info('Import Kibana objects')
+    Logger.info(f"Import Kibana objects to {tenant} tenant")
 
     for root, _, files in os.walk(location):
         for name in files:
             if name.endswith('.ndjson'):
-                import_kibana_object(os.path.join(root, name))
+                import_kibana_object(KIBANA_URL, settings.ES_ADMIN_PASSWORD, os.path.join(root, name), tenant)
 
-    Logger.info("Kibana objects successfully created")
+    Logger.info(f"Kibana objects successfully created in {tenant} tenant")
+
+
+def load_template(template_file):
+    with open(template_file) as f_template:
+        try:
+            template = json.load(f_template)
+        except Exception as e:
+            logging.error(e)
+            raise
+    return template
+
+
+def import_index_template(path):
+    """
+    This method imports the index template defined in path in Elasticsearch using REST API
+    :param path: *.json file path to be imported in Elasticsearch
+    :return:
+    """
+    Logger.info(f'Importing {path}')
+
+    template = load_template(path)
+    template_name = os.path.splitext(os.path.basename(path))[0]
+
+    r = requests.post(f'{ELASTIC_URL}/_template/{template_name}',
+                      auth=('admin', settings.ES_ADMIN_PASSWORD),
+                      verify=False,
+                      headers=HEADER_JSON,
+                      data=json.dumps(template))
+    try:
+        r.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        logging.warning(f"Error creating {template_name}. {r.status_code}, {r.text}")
+        raise
+
+    Logger.info(f'{template_name} created')
+
+
+def import_index_templates(location):
+    """
+    This method imports all the index templates inside location
+    """
+    Logger.info('Import index templates')
+
+    for root, _, files in os.walk(location):
+        for name in files:
+            if name.endswith('.json'):
+                import_index_template(os.path.join(root, name))
+
+    Logger.info("Index templates successfully created")
 
 
 def default_index_pattern(index_pattern):
@@ -250,7 +303,9 @@ if __name__ == "__main__":
     wait_for_kibana()
     elastic = connect_elasticsearch()
     update_max_shards(2000)
-    import_kibana_objects('./kibana_objects')
+    import_index_templates('./index_templates')
+    import_kibana_objects('./kibana_objects/global_objects', 'global')
+    import_kibana_objects('./kibana_objects/admin_objects', 'admin_tenant')
     default_index_pattern('all')
     create_indices(elastic)
     create_aliases()

@@ -51,3 +51,9 @@
       name: matomo
       tasks_from: setup
     tags: [matomo]
+
+  - include_role:
+      name: pa-to-es
+      tasks_from: setup
+    when: PA_TO_ES_ENABLED
+    tags: [pa-to-es]

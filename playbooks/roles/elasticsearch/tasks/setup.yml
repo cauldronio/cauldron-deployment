@@ -4,7 +4,7 @@
   file: path={{CAULDRON_CONFIG_DIR}}/es state=directory
   tags: [elastic]
 
-- name: "Copy SSL keys for Elasticseach"
+- name: "Copy SSL keys for Elasticsearch"
   synchronize:
     src: "{{inventory_hostname}}/es_keys/"
     dest: "{{ CAULDRON_CONFIG_DIR }}/es/keys"

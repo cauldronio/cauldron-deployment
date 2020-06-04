@@ -141,6 +141,7 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
 
     - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location in the managed nodes where the configuration files for the containers will be stored.
     - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
+    - `PA_TO_ES_ENABLED`(`false`): by default the Performance Analyzer metrics are not stored in Elasticsearch. Set this variable to True if you want to save those metrics and visualize them in Kibana.
     - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that will analyze repositories concurrently.
     - `CAULDRON_HOST` (`localhost`): Public IP address to access Cauldron, or `localhost` for local deployments.
     - `WEB_HOST` (`cauldron_service`): IP address where the Web Server is hosted or, for single-host deployments, the name of the Web Server Docker container.
@@ -206,9 +207,11 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `WEB_IMAGE_NAME`("cauldronio/webserver:latest")
     - `WORKER_IMAGE_NAME`("cauldronio/worker:latest")
     - `ODFE_CONFIG_IMAGE_NAME`("cauldronio/odfe-config:latest")
-    - `ELASTIC_IMAGE_NAME`("amazon/opendistro-for-elasticsearch:1.4.0")
-    - `KIBANA_IMAGE_NAME`("amazon/opendistro-for-elasticsearch-kibana:1.4.0")
+    - `PA_TO_ES_IMAGE_NAME`("cauldronio/pa-to-es:latest")
+    - `ELASTIC_IMAGE_NAME`("amazon/opendistro-for-elasticsearch:1.6.0")
+    - `KIBANA_IMAGE_NAME`("amazon/opendistro-for-elasticsearch-kibana:1.6.0")
     - `SYSLOG_IMAGE_NAME`("cauldronio/syslog-ng:latest")
+    - `MATOMO_IMAGE_NAME`("matomo:3")
 
     </details>
 
@@ -226,6 +229,7 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `SYSLOG_CONTAINER_NAME`('syslog_service')
     - `ODFE_CONFIG_CONTAINER_NAME`('odfe_config_cauldron')
     - `MATOMO_CONTAINER_NAME` ('matomo_service')
+    - `PA_TO_ES_CONTAINER_NAME` ('pa-to-es')
 
     </details>
 
@@ -341,6 +345,7 @@ It will deploy Cauldron in the specified hosts in the inventory file. All the im
 - Run Matomo for log analytics
 - Create default configuration for Elasticsearch and Kibana, and import visualizations
 - (optional) Run Hatstall for managing identities
+- (optional) Run a container to store Performance Analyzer metrics in Elasticsearch
 - Run nginx as a proxy for the containers
 
 ### Stop Cauldron
@@ -387,7 +392,7 @@ Now you can get logs in Matomo. We have configured Matomo with a buffer of 50 hi
 
 Now we will detail all the steps for running Cauldron and the variables that can be modified.
 
-All the playbooks are tagged, therefore you can run them with the flag `-t` and any of the following keyworks: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `odfe-config`
+All the playbooks are tagged, therefore you can run them with the flag `-t` and any of the following keyworks: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `odfe-config`, `matomo`, `syslog`, `pa-to-es`
 
 - **Build the images.**
 
@@ -398,7 +403,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
   A complete list of the variables used are described in `build_images.yml`.
 
   For running this playbook execute the following command:
-  > Tags available for this playbook are: `webserver`, `worker`, `database`, `odfe-config`
+  > Tags available for this playbook are: `webserver`, `worker`, `database`, `odfe-config`, `syslog`, `pa-to-es`
 
   ``` bash
   $ ansible-playbook -i inventories/local build_images.yml
@@ -577,8 +582,20 @@ Cauldron provides Django commands to generate metrics. These commands must be ex
 
 ```
 55 23 * * * docker exec cauldron_service Cauldron2/manage.py dailymetrics
-0 0 1 * * docker exec cauldron_service Cauldron2/manage.py monthlymetrics --previous-month 
+0 0 1 * * docker exec cauldron_service Cauldron2/manage.py monthlymetrics --previous-month
 ```
+
+
+## Performance Analyzer
+
+Open Distro for Elasticsearch allows you to get metric about the performance of your Elasticsearch cluster. However, it only allows to collect instant measurements and does not bring any functionality to save a history of this data. [This post](https://aws.amazon.com/blogs/opensource/open-distro-for-elasticsearchs-performance-analyzer-kibana/) describes a technique to store this data in our cluster and thus be able to maintain a history and visualize this data in Kibana.
+
+Cauldron provides a container that performs the functions described in the post, with some modifications:
+* Not all the measures that the Performance Analyzer generates are collected (it is a large amount of data), only those that we have seen interesting.
+* Measurements are collected every 60 seconds.
+
+All these measures can be viewed in a Kibana dashboard that Cauldron provides, but only using the admin user (to avoid security problems).
+
 
 ## Backups
 

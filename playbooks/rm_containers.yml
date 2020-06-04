@@ -45,3 +45,9 @@
       name: matomo
       tasks_from: remove
     tags: [matomo]
+
+  - include_role:
+      name: pa-to-es
+      tasks_from: remove
+    when: PA_TO_ES_ENABLED
+    tags: [pa-to-es]
