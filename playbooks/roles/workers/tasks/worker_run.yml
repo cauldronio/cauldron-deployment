@@ -4,8 +4,7 @@
   vars:
     docker_worker_name: "{{WORKER_CONTAINER_NAME}}_{{worker_id}}"
     worker_volumes:
-      - "{{CAULDRON_CONFIG_DIR}}/mordred/worker_config.py:/code/MordredManager/config.py"
-      - "{{CAULDRON_CONFIG_DIR}}/mordred/setup-default.cfg:/code/MordredManager/mordred/setup-default.cfg"
+      - "{{CAULDRON_CONFIG_DIR}}/worker/setup.cfg:/code/worker/mordred/setup.cfg"
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/dashboard_logs"
       - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git-perceval"
   docker_container:
@@ -14,9 +13,14 @@
     restart_policy: "on-failure"
     restart_retries: 5
     state: started
+    command: '--repository-tasks'
     networks:
       - name: "{{ NETWORK_NAME }}"
     env:
       WORKER_NAME: "{{ docker_worker_name }}"
+      DB_HOST: "{{ DB_HOST }}"
+      DB_USER: "{{ DB_USER }}"
+      DB_PASSWORD: "{{ DB_USER_PASSWORD }}"
+      DB_NAME: "{{ DB_DJANGO_NAME }}"
     volumes: '{{worker_volumes + [WORKER_MOUNT_CODE + ":/code"] if WORKER_MOUNT_CODE is defined else worker_volumes}}'
   tags: [worker]

@@ -8,6 +8,12 @@
       state: absent
     tags: [project_logs]
 
+  - name: "Remove Sortinghat logs volume: {{ IDENTITIES_LOGS_MOUNT_POINT }}"
+    docker_volume:
+      name: "{{ IDENTITIES_LOGS_MOUNT_POINT }}"
+      state: absent
+    tags: [sortinghat_logs]
+
   - name: "Remove Git Perceval Repositories volume: {{PERCEVAL_REPOS_MOUNT_POINT}}"
     docker_volume:
       name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"

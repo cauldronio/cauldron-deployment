@@ -28,7 +28,7 @@
 - name: Remove Mordred files
   file:
     state: absent
-    path: "{{ CAULDRON_CONFIG_DIR }}/mordred"
+    path: "{{ CAULDRON_CONFIG_DIR }}/worker"
 
 - name: Remove Panels files
   file:
