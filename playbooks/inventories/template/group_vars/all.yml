@@ -36,6 +36,9 @@ MERGE_IDENTITIES_TIME: '00:00'
 # If enabled, some metrics will be collected from Performance Analyzer and stored in Elasticsearch.
 PA_TO_ES_ENABLED: false
 
+# If enabled, run a new container with Matomo for metrics. It should be manually configured
+MATOMO_ENABLED: false
+
 # Number of mordred worker. Use ~15/20 for production.
 NUM_WORKERS: 5
 

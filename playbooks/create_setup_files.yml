@@ -50,6 +50,7 @@
   - include_role:
       name: matomo
       tasks_from: setup
+    when: MATOMO_ENABLED
     tags: [matomo]
 
   - include_role:

@@ -46,6 +46,7 @@
   roles:
     - role: pa-to-es
       when: PA_TO_ES_ENABLED
-    - matomo
+    - role: matomo
+      when: MATOMO_ENABLED
     - syslog
     - nginx

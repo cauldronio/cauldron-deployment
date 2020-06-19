@@ -142,6 +142,7 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location in the managed nodes where the configuration files for the containers will be stored.
     - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
     - `PA_TO_ES_ENABLED`(`false`): by default the Performance Analyzer metrics are not stored in Elasticsearch. Set this variable to True if you want to save those metrics and visualize them in Kibana.
+    - `MATOMO_ENABLED`(`false`): by default Matomo analytics is disabled. 
     - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that will analyze repositories concurrently.
     - `CAULDRON_HOST` (`localhost`): Public IP address to access Cauldron, or `localhost` for local deployments.
     - `WEB_HOST` (`cauldron_service`): IP address where the Web Server is hosted or, for single-host deployments, the name of the Web Server Docker container.
@@ -366,6 +367,8 @@ The configuration files are stored in the directory defined by `CAULDRON_CONFIG_
 Cauldron is using syslog-ng + Matomo for managing the logs. Some steps are necessary to have Matomo correctly configured.
 
 ### Installation steps
+
+First of all you need to enable it before deploying Cauldron using `MATOMO_ENABLED` variable.
 
 Go to the port you have Matomo deployed (9001 by default) and follow the installation steps:
 1. Welcome (next)

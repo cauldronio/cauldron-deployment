@@ -6,9 +6,11 @@ upstream kibana {
     server {{KIBANA_CONTAINER_NAME}}:5601;
 }
 
+{% if MATOMO_ENABLED %}
 upstream matomo {
     server {{MATOMO_CONTAINER_NAME}};
 }
+{% endif %}
 
 log_format  matomo              '{"ip": "$remote_addr",'
                                 '"host": "$host",'
@@ -74,7 +76,7 @@ server {
 }
 
 
-
+{% if MATOMO_ENABLED %}
 server {
     listen        {{MATOMO_PORT}} ssl;
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
@@ -100,3 +102,4 @@ server {
     }
 
 }
+{% endif %}
