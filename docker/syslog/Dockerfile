@@ -1,4 +1,4 @@
-FROM balabit/syslog-ng:3.24.1
+FROM balabit/syslog-ng:3.28.1
 
 MAINTAINER Cauldron <contact@cauldron.io>
 
