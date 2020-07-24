@@ -17,5 +17,5 @@ $ docker build -t pa-to-es:test .
 
 - Run the image
 ```bash
-$ docker run --name pa-to-es -e "ELASTIC_HOST=elastic_service" -e "ELASTIC_PASSWORD=test-password" --network network_cauldron pa-to-es:test
+$ docker run --name pa-to-es -e "ELASTIC_HOST=odfe-cauldron" -e "ELASTIC_PASSWORD=test-password" --network network_cauldron pa-to-es:test
 ```

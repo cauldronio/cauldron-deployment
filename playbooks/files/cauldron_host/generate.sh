@@ -21,7 +21,7 @@ cd $ES_KEYS_PATH
 if [ ! -f root-ca-key.pem ] || [ ! -f root-ca.pem ]; then
     echo "==> Generating root certificate for ElasticSearch"
     openssl genrsa -out root-ca-key.pem 2048
-    openssl req -new -x509 -sha256 -days 3650 -key root-ca-key.pem -out root-ca.pem -subj "/C=EU/ST=Any/L=All/O=Dis/CN=elastic_service"
+    openssl req -new -x509 -sha256 -days 3650 -key root-ca-key.pem -out root-ca.pem -subj "/C=EU/ST=Any/L=All/O=Dis/CN=odfe-cauldron"
 else
     echo "==> Root certificate for ElasticSearch exists ($ES_KEYS_PATH/root-ca*.pem)"
 fi
@@ -44,7 +44,7 @@ if [ ! -f node-1-key.pem ] || [ ! -f node-1.pem ]; then
     echo "==> Generating one node certificate for ElasticSearch"
     openssl genrsa -out node-1-key-temp.pem 2048
     openssl pkcs8 -inform PEM -outform PEM -in node-1-key-temp.pem -topk8 -nocrypt -v1 PBE-SHA1-3DES -out node-1-key.pem
-    openssl req -new -key node-1-key.pem -out node-1-temp.csr -subj "/C=EU/ST=Any/L=All/O=Dis/CN=elastic_service"
+    openssl req -new -key node-1-key.pem -out node-1-temp.csr -subj "/C=EU/ST=Any/L=All/O=Dis/CN=odfe-cauldron"
     openssl x509 -req -days 3650 -in node-1-temp.csr -CA root-ca.pem -CAkey root-ca-key.pem -CAcreateserial -sha256 -out node-1.pem
     rm node-1-key-temp.pem
     rm node-1-temp.csr

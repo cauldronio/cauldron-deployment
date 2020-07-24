@@ -81,8 +81,8 @@ def setup_args():
     parser.add_argument('--password', dest='admin_password', action='store', required=True,
                         help='admin password for ElasticSearch.')
     parser.add_argument('--container', dest='elastic_container', action='store',
-                        default='elastic_service',
-                        help='ElasticSearch Docker container (default: elastic_service)')
+                        default='odfe-cauldron',
+                        help='ElasticSearch Docker container (default: odfe-cauldron)')
 
     return parser.parse_args()
 

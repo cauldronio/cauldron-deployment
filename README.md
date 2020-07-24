@@ -148,8 +148,8 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `CAULDRON_HOST` (`localhost`): Public IP address to access Cauldron, or `localhost` for local deployments.
     - `WEB_HOST` (`cauldron_service`): IP address where the Web Server is hosted or, for single-host deployments, the name of the Web Server Docker container.
     - `DB_HOST` (`db_cauldron_service`): IP address where the Django database is hosted or, for single-host deployments, the name of the Django database Docker container.
-    - `ELASTIC_HOST` (`elastic_service`): IP address where the Elasticsearch service is hosted or, for single-host deployments, the name of the Elasticsearch Docker container.
-    - `KIBANA_HOST` (`kibana_service`): IP address where the Kibana service is hosted or, for single-host deployments, the name of the Kibana Docker container.
+    - `ELASTIC_HOST` (`odfe-cauldron`): IP address where the Elasticsearch service is hosted or, for single-host deployments, the name of the Elasticsearch Docker container.
+    - `KIBANA_HOST` (`kibana-cauldron`): IP address where the Kibana service is hosted or, for single-host deployments, the name of the Kibana Docker container.
     - `CAULDRON_PORT` (9000): port where Cauldron webserver will be running. Use 443 in production.
     - `MATOMO_PORT` (9001): port where Matomo will be running.
     - `ENABLE_PORT_80` (false): if true, petitions to port 80 will be redirected to `https://location:CAULDRON_PORT`.
@@ -225,8 +225,8 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `DB_CONTAINER_NAME`('db_cauldron_service')
     - `WEB_CONTAINER_NAME`('cauldron_service')
     - `WORKER_CONTAINER_NAME`('worker_service')
-    - `ELASTIC_CONTAINER_NAME`('elastic_service')
-    - `KIBANA_CONTAINER_NAME`('kibana_service')
+    - `ELASTIC_CONTAINER_NAME`('odfe-cauldron')
+    - `KIBANA_CONTAINER_NAME`('kibana-cauldron')
     - `NGINX_CONTAINER_NAME`('nginx_service')
     - `SYSLOG_CONTAINER_NAME`('syslog_service')
     - `ODFE_CONFIG_CONTAINER_NAME`('odfe_config_cauldron')
@@ -515,8 +515,8 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
     abcdefghij05        cauldronio/worker:X                 "python3 manager.py"     ...                                    worker_service_0
     abcdefghij06        cauldronio/webserver:X              "/entrypoint.sh"         ...   8000/tcp                         cauldron_service
     abcdefghij07        nginx:latest                        "nginx -g 'daemon of…"   ...   80/tcp, 0.0.0.0:9000->9000/tcp   nginx_service
-    abcdefghij08        amazon/opendi...arch-kibana:1.4.0   "/usr/local/bin/kiba…"   ...                                    kibana_service
-    abcdefghij09        amazon/opendi..arch:1.4.0           "/usr/local/bin/dock…"   ...   9200/tcp, 9300/tcp, 9600/tcp     elastic_service
+    abcdefghij08        amazon/opendi...arch-kibana:1.4.0   "/usr/local/bin/kiba…"   ...                                    kibana-cauldron
+    abcdefghij09        amazon/opendi..arch:1.4.0           "/usr/local/bin/dock…"   ...   9200/tcp, 9300/tcp, 9600/tcp     odfe-cauldron
     abcdefghij10        cauldronio/database:X               "/entrypoint.sh"         ...   3306/tcp                         db_cauldron_service
     ```
 
@@ -727,7 +727,7 @@ In case you have any problem with the deployment or you think this guide is inco
 
 If it's the first time running Cauldron in your computer and ElasticSearch
 exits before finishing the playbook
-(check with `docker ps -a --filter "name=elastic_service"`),
+(check with `docker ps -a --filter "name=odfe-cauldron"`),
 it is likely that the `vm.max_map_count` kernel setting needs
 to be set to at least **262144**.
 
@@ -743,7 +743,7 @@ FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (9 retri
 FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (2 retries left).
 FAILED - RETRYING: Run securityadmin to initialize Open Distro Security (1 retries left).
 fatal: [localhost]: FAILED! => {"attempts": 10, "changed": true, "cmd":
-["docker", "exec", "elastic_service", "plugins/opendistro_security/tools/securityadmin.sh", "-cd", "plugins/opendistro_security/securityconfig/", "-cacert", "config/root-ca.pem", "-cert", "config/admin.pem", "-key", "config/admin-key.pem", "-icl", "-nhnv"],
+["docker", "exec", "odfe-cauldron", "plugins/opendistro_security/tools/securityadmin.sh", "-cd", "plugins/opendistro_security/securityconfig/", "-cacert", "config/root-ca.pem", "-cert", "config/admin.pem", "-key", "config/admin-key.pem", "-icl", "-nhnv"],
 "delta": "0:00:00.028153", "end": "2019-08-02 17:38:51.778859", "msg": "non-zero return code", "rc": 1,
 "start": "2019-08-02 17:38:51.750706",
 "stderr": "Error response from daemon: Container xxxx is not running",
@@ -751,7 +751,7 @@ fatal: [localhost]: FAILED! => {"attempts": 10, "changed": true, "cmd":
 "stdout": "", "stdout_lines": []}
 ```
 
-You can check the details with `docker logs elastic_service`,
+You can check the details with `docker logs odfe-cauldron`,
 which will show something like:
 
 ```

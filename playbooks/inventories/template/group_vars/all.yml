@@ -4,8 +4,8 @@ WEB_IMAGE_NAME: "cauldronio/webserver:latest"
 WORKER_IMAGE_NAME: "cauldronio/poolsched:latest"
 ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
 PA_TO_ES_IMAGE_NAME: "cauldronio/pa-to-es:latest"
-ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.8.0"
-KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.8.0"
+ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.11.0"
+KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.11.0"
 SYSLOG_IMAGE_NAME: "cauldronio/syslog-ng:latest"
 MATOMO_IMAGE_NAME: "matomo:3"
 DB_IMAGE_NAME: "mariadb:10.5"
@@ -52,10 +52,10 @@ WEB_HOST: "cauldron_service"
 DB_HOST: "db_cauldron_service"
 
 # IP address where the Elasticsearch service is hosted (or container name for single-host deployments)
-ELASTIC_HOST: "elastic_service"
+ELASTIC_HOST: "odfe-cauldron"
 
 # IP address where the Kibana service is hosted (or container name for single-host deployments)
-KIBANA_HOST: "kibana_service"
+KIBANA_HOST: "kibana-cauldron"
 
 # Port where the APP will be available. Use 443 for production
 CAULDRON_PORT: 9000
@@ -109,8 +109,8 @@ IDENTITIES_LOGS_MOUNT_POINT: "sh_logs_volume"
 DB_CONTAINER_NAME: "db_cauldron_service"
 WEB_CONTAINER_NAME: "cauldron_service"
 WORKER_CONTAINER_NAME: "sched_worker" # A number will be appended eg. sched_worker_1
-ELASTIC_CONTAINER_NAME: "elastic_service" # NEVER change it
-KIBANA_CONTAINER_NAME: "kibana_service"
+ELASTIC_CONTAINER_NAME: "odfe-cauldron" # NEVER change it
+KIBANA_CONTAINER_NAME: "kibana-cauldron"
 NGINX_CONTAINER_NAME: "nginx_service"
 SYSLOG_CONTAINER_NAME: 'syslog_service'
 ODFE_CONFIG_CONTAINER_NAME: "odfe_config_cauldron"

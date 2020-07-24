@@ -2,7 +2,7 @@ echo "This script define some methods for snapshots, don't try to execute it dir
 exit 1
 
 PASSWORD="test-password"
-ELASTIC_CONTAINER="elastic_service"
+ELASTIC_CONTAINER="odfe-cauldron"
 SNAPSHOT_NAME="test_snapshot"
 
 # Create a new snapshot with the name $SNAPSHOT_NAME

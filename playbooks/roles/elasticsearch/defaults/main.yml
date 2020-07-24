@@ -1,6 +1,6 @@
 ---
 
-ELASTIC_CONTAINER_NAME: "elastic_service"
+ELASTIC_CONTAINER_NAME: "odfe-cauldron"
 
 ELASTIC_PORT: '9200'
 

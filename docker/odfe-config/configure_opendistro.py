@@ -298,6 +298,20 @@ def update_max_shards(num_shards):
     Logger.info(f'{req.status_code} - {req.json()}')
 
 
+def enable_performance_analyzer():
+    Logger.info("Enabling performance analyzer")
+
+    data_enable = {
+        'enabled': True
+    }
+    req = requests.post(f'{ELASTIC_URL}/_opendistro/_performanceanalyzer/config',
+                       auth=('admin', settings.ES_ADMIN_PASSWORD),
+                       verify=False,
+                       headers=HEADER_JSON,
+                       json=data_enable)
+    Logger.info(f'{req.status_code} - {req.json()}')
+
+
 if __name__ == "__main__":
     wait_for_elastic()
     wait_for_kibana()
@@ -311,3 +325,4 @@ if __name__ == "__main__":
     create_aliases()
     set_snapshot_location("/mnt/snapshots")
     update_max_scrolls(5000)
+    enable_performance_analyzer()

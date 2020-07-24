@@ -1,6 +1,6 @@
 ---
 
-KIBANA_CONTAINER_NAME: "kibana_service"
+KIBANA_CONTAINER_NAME: "kibana-cauldron"
 
 KIBANA_PORT: '5601'
 

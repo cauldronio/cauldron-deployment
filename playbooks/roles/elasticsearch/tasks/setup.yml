@@ -64,3 +64,11 @@
     dest: "{{ CAULDRON_CONFIG_DIR }}/es/internal_users.yml"
     mode: 0644
   tags: [elastic]
+
+
+- name: Copy performance analyzer configuration
+  copy:
+    src: performance-analyzer.properties
+    dest: "{{ CAULDRON_CONFIG_DIR }}/es/performance-analyzer.properties"
+    mode: 0644
+  tags: [elastic]
