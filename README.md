@@ -12,6 +12,7 @@ This repository contains relevant information for running Cauldron in your own c
 - [Admin page](#admin-page)
 - [Metrics](#metrics)
 - [Backups](#backups)
+- [Ansible Vault](#ansible-vault)
 - [Troubleshooting](#troubleshooting)
 
 ## Requirements
@@ -674,6 +675,45 @@ You can also move all the indices to a new cluster. Remember to use the same pas
     ```
 
 With both database backup and Elastic snapshot, you can recover the state of Cauldron.
+
+
+## Ansible Vault
+
+In case you want to keep all the keys secure and encrypted, you should use Ansible Vault. 
+
+### Variables file
+To encrypt the variables file, execute the following command:
+```bash
+ansible-vault encrypt playbooks/inventories/<inventory_name>/group_vars/all.yml
+```
+If you want to view or edit it, you just need to run:
+```bash
+ansible-vault view playbooks/inventories/<inventory_name>/group_vars/all.yml
+ansible-vault edit playbooks/inventories/<inventory_name>/group_vars/all.yml
+```
+
+### Certificates
+To encrypt the certificates, run the following commands:
+```bash
+ansible-vault encrypt playbooks/files/cauldron_host/nginx_keys/*
+ansible-vault encrypt playbooks/files/cauldron_host/es_keys/*
+ansible-vault encrypt playbooks/files/cauldron_host/jwt_key/*
+```
+If you are going to run any playbook. **You must decrypt the certificates** or the deployment may not run:
+```bash
+ansible-vault decrypt playbooks/files/cauldron_host/nginx_keys/*
+ansible-vault decrypt playbooks/files/cauldron_host/es_keys/*
+ansible-vault decrypt playbooks/files/cauldron_host/jwt_key/*
+```
+
+### Run playbooks
+You can run a playbook as always. You just need to provide a password for it. Run the playbook with `--ask-vault-pass`, for example:
+```bash
+ansible-playbook -i inventories/<inventory_name> --ask-vault-pass cauldron.yml
+```
+
+### More details
+There are many ways to run Ansible Vault, if you want a more detailed information, [read the official documentation](https://docs.ansible.com/ansible/latest/user_guide/vault.html).
 
 ## Help!
 
