@@ -4,16 +4,14 @@
   vars:
     docker_worker_name: "{{WORKER_CONTAINER_NAME}}_{{worker_id}}"
     worker_volumes:
-      - "{{CAULDRON_CONFIG_DIR}}/worker/setup.cfg:/code/worker/mordred/setup.cfg"
-      - "{{PROJECT_LOGS_MOUNT_POINT}}:/dashboard_logs"
-      - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git-perceval"
+      - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
+      - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git_repositories"
   docker_container:
     name: "{{ docker_worker_name }}"
     image: "{{ WORKER_IMAGE_NAME }}"
     restart_policy: "on-failure"
     restart_retries: 5
     state: started
-    command: '--repository-tasks'
     networks:
       - name: "{{ NETWORK_NAME }}"
     env:
@@ -22,5 +20,12 @@
       DB_USER: "{{ DB_USER }}"
       DB_PASSWORD: "{{ DB_USER_PASSWORD }}"
       DB_NAME: "{{ DB_DJANGO_NAME }}"
+      DB_PORT: "{{ DB_PORT }}"
+      GIT_REPOS: "/git_repositories"
+      JOB_LOGS: "/job_logs"
+      ELASTIC_USER: "admin"
+      ELASTIC_PASS: "{{ ELASTIC_ADMIN_PASSWORD }}"
+      ELASTIC_HOST: "{{ ELASTIC_HOST }}"
+      ELASTIC_PORT: "{{ ELASTIC_PORT }}"
     volumes: '{{worker_volumes + [WORKER_MOUNT_CODE + ":/code"] if WORKER_MOUNT_CODE is defined else worker_volumes}}'
   tags: [worker]

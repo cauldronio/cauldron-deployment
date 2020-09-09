@@ -30,7 +30,7 @@
 
 - hosts: cauldron_group
   roles:
-    - workers
+    - schedworkers
 
 - hosts: database_group
   roles:

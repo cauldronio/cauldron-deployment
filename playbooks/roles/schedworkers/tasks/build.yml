@@ -1,5 +1,5 @@
 ---
-## Build Cauldron worker image
+## Build Cauldron poolscheduler image
 ##
 ## For this playbook to work, ensure docker-py is installed
 ##

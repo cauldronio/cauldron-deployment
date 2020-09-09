@@ -14,7 +14,7 @@
     tags: [hatstall]
 
   - include_role:
-      name: workers
+      name: schedworkers
       tasks_from: setup
     tags: [worker]
 

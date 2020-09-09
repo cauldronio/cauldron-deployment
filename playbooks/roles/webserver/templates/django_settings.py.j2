@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'CauldronApp.apps.CauldronAppConfig',
     'metrics.apps.MetricsConfig',
+    'poolsched.apps.PoolschedConfig',
     {% if HATSTALL_ENABLED %}
     'hatstall',
     {% endif %}
@@ -66,7 +67,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     {% if HATSTALL_ENABLED %}
-    'Cauldron2.middleware.HatstallAuthorizationMiddleware'
+    'Cauldron2.middleware.HatstallAuthorizationMiddleware',
     {% endif %}
 ]
 

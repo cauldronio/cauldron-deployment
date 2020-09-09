@@ -15,7 +15,7 @@
     tags: [webserver]
 
   - include_role:
-      name: workers
+      name: schedworkers
       tasks_from: run
     tags: [worker]
 

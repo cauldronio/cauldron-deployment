@@ -8,7 +8,7 @@
     tags: [webserver]
 
   - include_role:
-      name: workers
+      name: schedworkers
       tasks_from: remove
     tags: [worker]
 

@@ -2,7 +2,7 @@
 ################### DOCKER IMAGES #####################
 DB_IMAGE_NAME: "cauldronio/database:latest"
 WEB_IMAGE_NAME: "cauldronio/webserver:latest"
-WORKER_IMAGE_NAME: "cauldronio/worker:latest"
+WORKER_IMAGE_NAME: "cauldronio/poolsched:latest"
 ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
 PA_TO_ES_IMAGE_NAME: "cauldronio/pa-to-es:latest"
 ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.8.0"
@@ -108,7 +108,7 @@ IDENTITIES_LOGS_MOUNT_POINT: "sh_logs_volume"
 # Do not change the names unless you know what are you doing
 DB_CONTAINER_NAME: "db_cauldron_service"
 WEB_CONTAINER_NAME: "cauldron_service"
-WORKER_CONTAINER_NAME: "worker_service" # A number will be appended eg. worker_service_1
+WORKER_CONTAINER_NAME: "sched_worker" # A number will be appended eg. sched_worker_1
 ELASTIC_CONTAINER_NAME: "elastic_service" # NEVER change it
 KIBANA_CONTAINER_NAME: "kibana_service"
 NGINX_CONTAINER_NAME: "nginx_service"
@@ -135,8 +135,10 @@ MEETUP_ADMINS: []
 ####################  DEVELOPMENT ####################
 
 ### RUN YOUR LOCAL CODE ###
+WEB_DEV: False
 # (Only dev) WEB_MOUNT_CODE: "/home/user/src/cauldron-web"
-# (Only dev) WORKER_MOUNT_CODE: "/home/user/src/cauldron-web"
+# (Only dev) POOLSCHED_MOUNT_CODE: "/home/user/src/poolsched2/poolsched"
+# (Only dev) WORKER_MOUNT_CODE: "/home/user/src/poolsched2"
 
 
 ### BUILD IMAGES ###

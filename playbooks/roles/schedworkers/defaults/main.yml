@@ -1,0 +1,12 @@
+---
+
+WORKER_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/worker-build"
+WORKER_IMAGE_GIT_CODE: "https://gitlab.com/cauldronio/cauldron-pool-scheduler"
+WORKER_IMAGE_GIT_VERSION: "master"
+
+
+DB_USER: "grimoirelab"
+DB_DJANGO_NAME: "db_cauldron"
+DB_PORT: "3306"
+ELASTIC_PORT: "9200"
+DB_SORTINGHAT_NAME: "db_sortinghat"
