@@ -563,7 +563,7 @@ In case you modify any of the variables, the playbook will update the configurat
 
 ## Admin page
 
-Cauldron comes with an admin page you can use to monitor the status of the server. To access this feature navigate to `/admin-page`, but you will need a user with superuser privileges.
+Cauldron comes with an admin page you can use to monitor the status of the server. To access this feature navigate to `/admin`, but you will need a user with superuser privileges.
 
 To make the creation of superusers easier, Cauldron provides variables in the inventory file for defining them. Add to the corresponding list the id of the users you want as administrator. You can manage it later from the admin page. For example:
 
