@@ -8,6 +8,8 @@
     restart_policy: "always"
     networks:
       - name: "{{ NETWORK_NAME }}"
+    env:
+      MYSQL_ROOT_PASSWORD: "{{ DB_USER_PASSWORD }}"
     ports: "{{ [] if DB_HOST == DB_CONTAINER_NAME else [DB_EXPORTED_PORTS] }}"
     volumes:
       - "{{CAULDRON_CONFIG_DIR}}/database:/docker-entrypoint-initdb.d"

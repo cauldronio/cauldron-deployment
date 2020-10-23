@@ -37,11 +37,6 @@
       tags: [worker]
 
     - import_role:
-        name: database
-        tasks_from: build
-      tags: [database]
-
-    - import_role:
         name: syslog
         tasks_from: build
       tags: [syslog]

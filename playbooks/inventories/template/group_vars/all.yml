@@ -1,6 +1,5 @@
 ---
 ################### DOCKER IMAGES #####################
-DB_IMAGE_NAME: "cauldronio/database:latest"
 WEB_IMAGE_NAME: "cauldronio/webserver:latest"
 WORKER_IMAGE_NAME: "cauldronio/poolsched:latest"
 ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
@@ -9,6 +8,7 @@ ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.8.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.8.0"
 SYSLOG_IMAGE_NAME: "cauldronio/syslog-ng:latest"
 MATOMO_IMAGE_NAME: "matomo:3"
+DB_IMAGE_NAME: "mariadb:10.5"
 
 
 #################### APPLICATION KEYS ####################
