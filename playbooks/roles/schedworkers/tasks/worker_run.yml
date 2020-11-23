@@ -6,6 +6,10 @@
     worker_volumes:
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
       - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git_repositories"
+    dev_volumes:
+      - "{{DEV_WORKER_REPOSITORY}}:/code"
+      - "{{DEV_POOLSCHED_REPOSITORY}}/poolsched:/code/poolsched_worker/poolsched"
+      - "{{DEV_COMMON_APPS_REPOSITORY}}/cauldron_apps:/code/poolsched_worker/cauldron_apps"
   docker_container:
     name: "{{ docker_worker_name }}"
     image: "{{ WORKER_IMAGE_NAME }}"
@@ -27,5 +31,5 @@
       ELASTIC_PASS: "{{ ELASTIC_ADMIN_PASSWORD }}"
       ELASTIC_HOST: "{{ ELASTIC_HOST }}"
       ELASTIC_PORT: "{{ ELASTIC_PORT }}"
-    volumes: '{{worker_volumes + [WORKER_MOUNT_CODE + ":/code"] if WORKER_MOUNT_CODE is defined else worker_volumes}}'
+    volumes: '{{worker_volumes + dev_volumes if DEV_ENABLED else worker_volumes}}'
   tags: [worker]

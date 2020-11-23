@@ -237,11 +237,12 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
 
     <details>
     <summary>Development</summary>
-
-    - `WEB_MOUNT_CODE`: define this variable when you want to test changes on the webserver container without the need to create a new image.
-    - `WORKER_MOUNT_CODE`: define this variable when you want to test changes on the worker container without the need to create a new image.
-    - `WEB_IMAGE_LOCAL_CODE`: define this variable when you want to build the webserver image with your local code.
-    - `WORKER_IMAGE_LOCAL_CODE`: define this variable when you want to build the worker image with your local code.
+    Define the path to the repository for the following variables when you are developing:
+    
+    - `DEV_WEBSERVER_REPOSITORY`: cloned repository for `https://gitlab.com/cauldronio/cauldron-web`
+    - `DEV_POOLSCHED_REPOSITORY`: cloned repository for `https://gitlab.com/cauldronio/cauldron-pool-scheduler`
+    - `DEV_COMMON_APPS_REPOSITORY`: cloned repository for `https://gitlab.com/cauldronio/cauldron-common-apps`
+    - `DEV_WORKER_REPOSITORY`: cloned repository for `https://gitlab.com/cauldronio/cauldron-poolsched-worker`
 
     </details>
 
@@ -549,7 +550,7 @@ All the playbooks are tagged, therefore you can run them with the flag `-t` and 
 
 ## Development environment
 
-For running your Django and Worker local code in the container for development purposes, you need to define the location of the code with the variables `WEB_MOUNT_CODE` and `WORKER_MOUNT_CODE`. If this variables are not defined the containers will use the code from the images.
+For running your Django and Worker local code in the container for development purposes, you need to define the location of the code with the variables described in `Configure the variables for your deployment` in the development section.
 
 ## Continuous Delivery and Rolling Upgrades
 

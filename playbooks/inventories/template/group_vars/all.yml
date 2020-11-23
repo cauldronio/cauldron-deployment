@@ -135,10 +135,11 @@ MEETUP_ADMINS: []
 ####################  DEVELOPMENT ####################
 
 ### RUN YOUR LOCAL CODE ###
-WEB_DEV: False
-# (Only dev) WEB_MOUNT_CODE: "/home/user/src/cauldron-web"
-# (Only dev) POOLSCHED_MOUNT_CODE: "/home/user/src/poolsched2/poolsched"
-# (Only dev) WORKER_MOUNT_CODE: "/home/user/src/poolsched2"
+DEV_ENABLED: False
+# (Only dev) DEV_WEBSERVER_REPOSITORY: "/home/user/src/cauldron-web"
+# (Only dev) DEV_POOLSCHED_REPOSITORY: "/home/user/src/cauldron-pool-scheduler"
+# (Only dev) DEV_COMMON_APPS_REPOSITORY: "/home/user/src/cauldron-common-apps"
+# (Only dev) DEV_WORKER_REPOSITORY: "/home/user/src/cauldron-poolsched-worker"
 
 
 ### BUILD IMAGES ###

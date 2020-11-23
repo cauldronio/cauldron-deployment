@@ -7,8 +7,9 @@
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
       - "{{CAULDRON_CONFIG_DIR}}/django/jwtR256.key:/code/Cauldron2/CauldronApp/jwtR256.key"
     dev_volumes:
-      - "{{WEB_MOUNT_CODE}}:/code"
-      - "{{POOLSCHED_MOUNT_CODE}}:/code/Cauldron2/poolsched"
+      - "{{DEV_WEBSERVER_REPOSITORY}}:/code"
+      - "{{DEV_POOLSCHED_REPOSITORY}}/poolsched:/code/Cauldron2/poolsched"
+      - "{{DEV_COMMON_APPS_REPOSITORY}}/cauldron_apps:/code/Cauldron2/cauldron_apps"
   docker_container:
     name: "{{ WEB_CONTAINER_NAME }}"
     image: "{{ WEB_IMAGE_NAME }}"
@@ -17,5 +18,5 @@
     networks:
       - name: "{{ NETWORK_NAME }}"
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
-    volumes: '{{webserver_volumes + dev_volumes if WEB_DEV else webserver_volumes}}'
+    volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
   tags: [webserver]
