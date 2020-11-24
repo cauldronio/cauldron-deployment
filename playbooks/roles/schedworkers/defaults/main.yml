@@ -1,7 +1,7 @@
 ---
 
 WORKER_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/worker-build"
-WORKER_IMAGE_GIT_CODE: "https://gitlab.com/cauldronio/cauldron-pool-scheduler"
+WORKER_IMAGE_GIT_CODE: "https://gitlab.com/cauldronio/cauldron-poolsched-worker"
 WORKER_IMAGE_GIT_VERSION: "master"
 
 
