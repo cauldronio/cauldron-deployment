@@ -29,6 +29,7 @@ MATOMO_ENABLED = {{MATOMO_ENABLED}}
 MATOMO_URL = 'https://{{ CAULDRON_HOST }}:{{ MATOMO_PORT }}'
 
 HATSTALL_ENABLED = {{ HATSTALL_ENABLED }}
+SORTINGHAT = {{ HATSTALL_ENABLED }}
 
 GOOGLE_ANALYTICS_ID = '{{ GOOGLE_ANALYTICS_ID }}'
 
@@ -58,6 +59,8 @@ INSTALLED_APPS = [
     'cauldron_apps.poolsched_github',
     'cauldron_apps.poolsched_gitlab',
     'cauldron_apps.poolsched_meetup',
+    'cauldron_apps.poolsched_autorefresh',
+    'cauldron_apps.poolsched_merge_identities',
     {% if HATSTALL_ENABLED %}
     'hatstall',
     {% endif %}

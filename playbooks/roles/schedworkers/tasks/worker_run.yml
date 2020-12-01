@@ -31,5 +31,10 @@
       ELASTIC_PASS: "{{ ELASTIC_ADMIN_PASSWORD }}"
       ELASTIC_HOST: "{{ ELASTIC_HOST }}"
       ELASTIC_PORT: "{{ ELASTIC_PORT }}"
+      SORTINGHAT: '{{ HATSTALL_ENABLED | string }}'
+      SORTINGHAT_HOST: "{{ DB_HOST }}"
+      SORTINGHAT_DATABASE: "{{ DB_SORTINGHAT_NAME }}"
+      SORTINGHAT_USER: "{{ DB_USER }}"
+      SORTINGHAT_PASSWORD: "{{ DB_USER_PASSWORD }}"
     volumes: '{{worker_volumes + dev_volumes if DEV_ENABLED else worker_volumes}}'
   tags: [worker]
