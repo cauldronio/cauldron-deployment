@@ -6,12 +6,3 @@
   loop_control:
     loop_var: worker_id
   tags: [worker]
-
-#- name: "Remove {{WORKER_IDENTITIES_CONTAINER_NAME}} container"
-#  vars:
-#    docker_worker_name: "{{WORKER_IDENTITIES_CONTAINER_NAME}}"
-#  docker_container:
-#    name: "{{ docker_worker_name }}"
-#    state: absent
-#    force_kill: yes
-#  tags: [worker]

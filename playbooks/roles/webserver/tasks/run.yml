@@ -3,7 +3,6 @@
 - name: Run Django webserver
   vars:
     webserver_volumes:
-      - "{{CAULDRON_CONFIG_DIR}}/django/django_settings.py:/code/Cauldron2/Cauldron2/settings.py"
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
       - "{{CAULDRON_CONFIG_DIR}}/django/jwtR256.key:/code/Cauldron2/CauldronApp/jwtR256.key"
     dev_volumes:
@@ -17,6 +16,44 @@
     restart_policy: "always"
     networks:
       - name: "{{ NETWORK_NAME }}"
+    env:
+      # Oauth keys
+      GH_CLIENT_ID: '{{ gh_client_id }}'
+      GH_CLIENT_SECRET: '{{ gh_client_secret }}'
+      GL_CLIENT_ID: '{{ gl_client_id }}'
+      GL_CLIENT_SECRET: '{{ gl_client_secret }}'
+      MEETUP_CLIENT_ID: '{{ meetup_client_id }}'
+      MEETUP_CLIENT_SECRET: '{{ meetup_client_secret }}'
+      # Cauldron
+      CAULDRON_HOST: '{{ CAULDRON_HOST }}'
+      CAULDRON_PORT: '{{ CAULDRON_PORT | string }}'
+      # Elasticsearch
+      ELASTIC_HOST: '{{ ELASTIC_HOST }}'
+      ELASTIC_PORT: '{{ ELASTIC_PORT }}'
+      ELASTIC_PROTOCOL: '{{ ELASTIC_PROTOCOL }}'
+      ELASTIC_ADMIN_PASSWORD: '{{ ELASTIC_ADMIN_PASSWORD }}'
+      # Kibana
+      KIBANA_HOST: '{{ KIBANA_HOST }}'
+      KIBANA_PORT: '{{ KIBANA_PORT }}'
+      KIBANA_PROTOCOL: '{{ KIBANA_PROTOCOL }}'
+      KIBANA_URL_PATH: '{{ KIBANA_URL_PATH }}'
+      # Database
+      DB_HOST: "{{ DB_HOST }}"
+      DB_USER: "{{ DB_USER }}"
+      DB_PASSWORD: "{{ DB_USER_PASSWORD }}"
+      DB_NAME: "{{ DB_DJANGO_NAME }}"
+      DB_PORT: "{{ DB_PORT }}"
+      # Matomo
+      MATOMO_ENABLED: '{{ MATOMO_ENABLED | string }}'
+      MATOMO_PORT: '{{ MATOMO_PORT | string }}'
+      # Other
+      GOOGLE_ANALYTICS_ID: '{{ GOOGLE_ANALYTICS_ID }}'
+      HATSTALL_ENABLED: '{{ HATSTALL_ENABLED | string }}'
+      SECRET_KEY: '{{ django_secret_key.stdout_lines[0] }}'
+      # Admins
+      GITHUB_ADMINS: '{{ GITHUB_ADMINS | to_json }}'
+      GITLAB_ADMINS: '{{ GITLAB_ADMINS | to_json }}'
+      MEETUP_ADMINS: '{{ MEETUP_ADMINS | to_json }}'
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
   tags: [webserver]

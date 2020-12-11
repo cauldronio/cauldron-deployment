@@ -6,28 +6,3 @@
   loop_control:
     loop_var: worker_id
   tags: [worker]
-
-#- name: Run identities worker
-#  vars:
-#    worker_volumes:
-#      - "{{CAULDRON_CONFIG_DIR}}/worker/setup.cfg:/code/worker/mordred/setup.cfg"
-#      - "{{IDENTITIES_LOGS_MOUNT_POINT}}:/merge_identities_logs"
-#      - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git-perceval"
-#  docker_container:
-#    name: "{{ WORKER_IDENTITIES_CONTAINER_NAME }}"
-#    image: "{{ WORKER_IMAGE_NAME }}"
-#    restart_policy: "on-failure"
-#    restart_retries: 5
-#    state: started
-#    command: '--identities-merge {{ MERGE_IDENTITIES_TIME }}'
-#    networks:
-#      - name: "{{ NETWORK_NAME }}"
-#    env:
-#      WORKER_NAME: "{{ WORKER_IDENTITIES_CONTAINER_NAME }}"
-#      DB_HOST: "{{ DB_HOST }}"
-#      DB_USER: "{{ DB_USER }}"
-#      DB_PASSWORD: "{{ DB_USER_PASSWORD }}"
-#      DB_NAME: "{{ DB_DJANGO_NAME }}"
-#    volumes: '{{worker_volumes + [WORKER_MOUNT_CODE + ":/code"] if WORKER_MOUNT_CODE is defined else worker_volumes}}'
-#  tags: [worker]
-#  when: "{{ HATSTALL_ENABLED }}"
