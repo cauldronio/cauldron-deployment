@@ -102,6 +102,7 @@ PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
 SYSLOG_MOUNT_POINT: "syslog_volume"
 MATOMO_MOUNT_POINT: "matomo_volume"
 IDENTITIES_LOGS_MOUNT_POINT: "sh_logs_volume"
+NGINX_STATIC_FILES_MOUNT_POINT: "static_files_volume"
 
 
 #################### DOCKER NAMES ####################

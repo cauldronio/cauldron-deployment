@@ -49,6 +49,9 @@ server {
     ssl_certificate_key     /certificates/ssl_server.key;
 
 
+    location /download {
+        alias {{NGINX_STATIC_FILES_DIR}};
+    }
 
     location /kibana {
         access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana matomo;

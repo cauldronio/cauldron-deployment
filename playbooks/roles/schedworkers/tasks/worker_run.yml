@@ -6,6 +6,7 @@
     worker_volumes:
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
       - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git_repositories"
+      - "{{NGINX_STATIC_FILES_MOUNT_POINT}}:/static_files"
     dev_volumes:
       - "{{DEV_WORKER_REPOSITORY}}:/code"
       - "{{DEV_POOLSCHED_REPOSITORY}}/poolsched:/code/poolsched_worker/poolsched"
@@ -27,6 +28,7 @@
       DB_PORT: "{{ DB_PORT }}"
       GIT_REPOS: "/git_repositories"
       JOB_LOGS: "/job_logs"
+      JWT_KEY: "{{ lookup('file', inventory_hostname + '/jwt_key/jwtR256.key') }}"
       ELASTIC_USER: "admin"
       ELASTIC_PASS: "{{ ELASTIC_ADMIN_PASSWORD }}"
       ELASTIC_HOST: "{{ ELASTIC_HOST }}"

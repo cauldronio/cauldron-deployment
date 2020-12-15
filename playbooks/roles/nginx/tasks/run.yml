@@ -23,4 +23,5 @@
     volumes:
       - "{{CAULDRON_CONFIG_DIR}}/nginx/nginx_cauldron.conf:/etc/nginx/conf.d/nginx_cauldron.conf"
       - "{{CAULDRON_CONFIG_DIR}}/nginx/certificates:/certificates"
+      - "{{NGINX_STATIC_FILES_MOUNT_POINT}}:{{ NGINX_STATIC_FILES_DIR }}"
   tags: [nginx]
