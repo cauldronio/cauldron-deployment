@@ -24,6 +24,10 @@ gl_client_secret: ""
 meetup_client_id: ""
 meetup_client_secret: ""
 
+# Gnome Oauth App keys
+gnome_client_id: ""
+gnome_client_secret: ""
+
 
 #################### BASE CONFIGURATION ####################
 CAULDRON_CONFIG_DIR: "/tmp/cauldron-data"
@@ -131,6 +135,9 @@ GITLAB_ADMINS: []
 
 # Meetup Admins
 MEETUP_ADMINS: []
+
+# Gnome Admins
+GNOME_ADMINS: []
 
 
 ####################  DEVELOPMENT ####################

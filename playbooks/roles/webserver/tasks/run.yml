@@ -24,6 +24,8 @@
       GL_CLIENT_SECRET: '{{ gl_client_secret }}'
       MEETUP_CLIENT_ID: '{{ meetup_client_id }}'
       MEETUP_CLIENT_SECRET: '{{ meetup_client_secret }}'
+      GNOME_CLIENT_ID: '{{ gnome_client_id }}'
+      GNOME_CLIENT_SECRET: '{{ gnome_client_secret }}'
       # Cauldron
       CAULDRON_HOST: '{{ CAULDRON_HOST }}'
       CAULDRON_PORT: '{{ CAULDRON_PORT | string }}'
@@ -54,6 +56,7 @@
       GITHUB_ADMINS: '{{ GITHUB_ADMINS | to_json }}'
       GITLAB_ADMINS: '{{ GITLAB_ADMINS | to_json }}'
       MEETUP_ADMINS: '{{ MEETUP_ADMINS | to_json }}'
+      GNOME_ADMINS: '{{ GNOME_ADMINS | to_json }}'
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
   tags: [webserver]
