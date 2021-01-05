@@ -20,6 +20,12 @@
       state: absent
     tags: [repositories]
 
+  - name: "Remove CSV static files volume: {{NGINX_STATIC_FILES_MOUNT_POINT}}"
+    docker_volume:
+      name: "{{ NGINX_STATIC_FILES_MOUNT_POINT }}"
+      state: absent
+    tags: [csv]
+
 - hosts: elastic_group
   tasks:
   - name: "Remove Elasticsearch volume: {{ ELASTIC_MOUNT_POINT }}"
