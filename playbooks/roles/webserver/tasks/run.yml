@@ -48,6 +48,9 @@
       # Matomo
       MATOMO_ENABLED: '{{ MATOMO_ENABLED | string }}'
       MATOMO_PORT: '{{ MATOMO_PORT | string }}'
+      # Plausible Analytics
+      PLAUSIBLE_ANALYTICS_ENABLED: '{{ PLAUSIBLE_ANALYTICS_ENABLED | string }}'
+      PLAUSIBLE_ANALYTICS_URL: '{{ PLAUSIBLE_ANALYTICS_URL }}'
       # Other
       GOOGLE_ANALYTICS_ID: '{{ GOOGLE_ANALYTICS_ID }}'
       HATSTALL_ENABLED: '{{ HATSTALL_ENABLED | string }}'

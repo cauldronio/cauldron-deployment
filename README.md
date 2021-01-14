@@ -143,7 +143,7 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location in the managed nodes where the configuration files for the containers will be stored.
     - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
     - `PA_TO_ES_ENABLED`(`false`): by default the Performance Analyzer metrics are not stored in Elasticsearch. Set this variable to True if you want to save those metrics and visualize them in Kibana.
-    - `MATOMO_ENABLED`(`false`): by default Matomo analytics is disabled. 
+    - `MATOMO_ENABLED`(`false`): by default Matomo analytics is disabled.
     - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that will analyze repositories concurrently.
     - `CAULDRON_HOST` (`localhost`): Public IP address to access Cauldron, or `localhost` for local deployments.
     - `WEB_HOST` (`cauldron_service`): IP address where the Web Server is hosted or, for single-host deployments, the name of the Web Server Docker container.
@@ -155,6 +155,8 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `ENABLE_PORT_80` (false): if true, petitions to port 80 will be redirected to `https://location:CAULDRON_PORT`.
     - `DJANGO_HOSTS` ('*'): location where cauldron is running to avoid HTTP Host header attacks.
     - `ELASTIC_MEMORY` ('4gb'): [head size](https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html) used by Elasticsearch. It is recommended to be half of your RAM.
+    - `PLAUSIBLE_ANALYTICS_ENABLED` (`false`): by default Plausible Analytics is disabled.
+    - `PLAUSIBLE_ANALYTICS_URL` (''): URL of the Plausible Analytics Dashboard.
     - `GOOGLE_ANALYTICS_ID` (''): set the correspoding ID to have analytics.
 
     </details>
@@ -238,7 +240,7 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     <details>
     <summary>Development</summary>
     Define the path to the repository for the following variables when you are developing:
-    
+
     - `DEV_WEBSERVER_REPOSITORY`: cloned repository for `https://gitlab.com/cauldronio/cauldron-web`
     - `DEV_POOLSCHED_REPOSITORY`: cloned repository for `https://gitlab.com/cauldronio/cauldron-pool-scheduler`
     - `DEV_COMMON_APPS_REPOSITORY`: cloned repository for `https://gitlab.com/cauldronio/cauldron-common-apps`
@@ -680,7 +682,7 @@ With both database backup and Elastic snapshot, you can recover the state of Cau
 
 ## Ansible Vault
 
-In case you want to keep all the keys secure and encrypted, you should use Ansible Vault. 
+In case you want to keep all the keys secure and encrypted, you should use Ansible Vault.
 
 ### Variables file
 To encrypt the variables file, execute the following command:

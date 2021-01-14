@@ -34,6 +34,7 @@ CAULDRON_CONFIG_DIR: "/tmp/cauldron-data"
 
 # If enabled, Grimoirelab will use Sortinghat and fetch GitHub users information.
 HATSTALL_ENABLED: false
+
 # Time at which merge identities will be executed daily if Hatstall is enabled. UTC TIME.
 MERGE_IDENTITIES_TIME: '00:00'
 
@@ -78,6 +79,12 @@ ELASTIC_MEMORY: "4g"
 
 # Write your Google Analytics ID if you want it enabled
 GOOGLE_ANALYTICS_ID: ""
+
+# If enabled, Plausible Analytics will start to analyze site activity (You need to configure the domain in https://plausible.io/)
+PLAUSIBLE_ANALYTICS_ENABLED: false
+
+# Plausible Analytics Dashboard URL
+PLAUSIBLE_ANALYTICS_URL: ""
 
 
 #################### PASSWORDS #######################
