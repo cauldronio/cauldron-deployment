@@ -7,9 +7,9 @@ Things you need to do:
 
 # Setting your local environment and getting remote machinery ready
 
-1. Change your working directory to `cauldron-deployment/do`:
+1. Change your working directory to `cauldron-deployment/terraform/do`:
     ```
-    cd cauldron-deployment/do
+    cd cauldron-deployment/terraform/do
     ```
 
 2. Export your Personal Token to an environment variable called `DIGITALOCEAN_TOKEN`:
@@ -43,7 +43,7 @@ Things you need to do:
     ...
     ```
 
-6. You are ready for [next steps](../README.md#requirements).
+6. You are ready for [next steps](../../README.md#requirements).
 
 # Import an existing state
 
@@ -68,9 +68,9 @@ If you use Terraform with already deployed resources, you must first load the st
 
 # Destroying remote machinery and checking status
 
-1. Change your working directory to `cauldron-deployment/do`:
+1. Change your working directory to `cauldron-deployment/terraform/do`:
     ```
-    cd cauldron-deployment/do
+    cd cauldron-deployment/terraform/do
     ```
 
 2. Destroy architecture at DigitalOcean:

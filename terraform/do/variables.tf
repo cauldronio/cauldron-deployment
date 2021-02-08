@@ -25,7 +25,7 @@ variable "ssh_fingerprints" {
 variable "do_size" {
   type        = string
   description = "DigitalOcean default droplet size"
-  default     = "s-6vcpu-16gb"
+  default     = "s-4vcpu-8gb"
 }
 
 variable "do_region" {

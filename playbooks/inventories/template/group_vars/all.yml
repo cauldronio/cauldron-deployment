@@ -154,14 +154,14 @@ KDE_ADMINS: []
 
 ### RUN YOUR LOCAL CODE ###
 DEV_ENABLED: False
-# (Only dev) DEV_WEBSERVER_REPOSITORY: "/home/user/src/cauldron-web"
-# (Only dev) DEV_POOLSCHED_REPOSITORY: "/home/user/src/cauldron-pool-scheduler"
-# (Only dev) DEV_COMMON_APPS_REPOSITORY: "/home/user/src/cauldron-common-apps"
-# (Only dev) DEV_WORKER_REPOSITORY: "/home/user/src/cauldron-poolsched-worker"
+DEV_WEBSERVER_REPOSITORY: ""
+DEV_POOLSCHED_REPOSITORY: ""
+DEV_COMMON_APPS_REPOSITORY: ""
+DEV_WORKER_REPOSITORY: ""
 
 
 ### BUILD IMAGES ###
-# If you don't define a local path for the code, the image with be built with the master branch
+# If you don't define a local path for the code, the image will be built from the master branch
 
 # WEB_IMAGE_LOCAL_CODE: ""
 # WORKER_IMAGE_LOCAL_CODE: ""

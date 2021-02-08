@@ -24,7 +24,7 @@ This repository contains relevant information for running Cauldron in your own c
    $ ansible --version
   ```
 
-- **Terraform** is an ***optional*** requirement in case you want to automate the provisioning of the system used for the deployment. You have more information about how to carry out this provisioning [here](do/README.md).
+- **Terraform** is an ***optional*** requirement in case you want to automate the provisioning of the system used for the deployment. You have more information about how to carry out this provisioning [here](terraform/README.md).
 
 - **Docker** (~18.09) is necessary on the machines where we are going to deploy Cauldron (the managed nodes, from now on) to run the containers. You can install it by following [this guide](https://docs.docker.com/install/).
 
