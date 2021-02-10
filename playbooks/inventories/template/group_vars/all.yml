@@ -149,6 +149,8 @@ GNOME_ADMINS: []
 # KDE Admins
 KDE_ADMINS: []
 
+LIMITED_ACCESS: false
+
 
 ####################  DEVELOPMENT ####################
 

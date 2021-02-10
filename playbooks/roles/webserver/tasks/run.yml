@@ -62,6 +62,7 @@
       GITLAB_ADMINS: '{{ GITLAB_ADMINS | to_json }}'
       MEETUP_ADMINS: '{{ MEETUP_ADMINS | to_json }}'
       GNOME_ADMINS: '{{ GNOME_ADMINS | to_json }}'
+      LIMITED_ACCESS:  '{{ LIMITED_ACCESS | string }}'
       KDE_ADMINS: '{{ KDE_ADMINS | to_json }}'
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
