@@ -32,6 +32,10 @@ gnome_client_secret: ""
 kde_client_id: ""
 kde_client_secret: ""
 
+# Twitter Oauth App keys
+twitter_client_id: ""
+twitter_client_secret: ""
+
 
 #################### BASE CONFIGURATION ####################
 CAULDRON_CONFIG_DIR: "/tmp/cauldron-data"
@@ -148,6 +152,9 @@ GNOME_ADMINS: []
 
 # KDE Admins
 KDE_ADMINS: []
+
+# Twitter Admins
+TWITTER_ADMINS: []
 
 LIMITED_ACCESS: false
 
