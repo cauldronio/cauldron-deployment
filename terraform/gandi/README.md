@@ -48,7 +48,7 @@ If you use Terraform with already created records, you must first load the statu
 
 2. Import the record state:
     ```
-    terraform import gandi_livedns_record.record cauldron.io/<rrset_name>/<rrset_type>
+    terraform import gandi_livedns_record.cauldron cauldron.io/<rrset_name>/<rrset_type>
     ```
     If everything goes well, the following message should appear on the terminal:
     ```

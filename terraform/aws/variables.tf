@@ -27,7 +27,7 @@ variable "ssh_id" {
 variable "aws_size" {
   type        = string
   description = "AWS default instance size"
-  default     = "nano_2_0"
+  default     = "xlarge_2_0"
   # Available sizes can be listed using
   # aws lightsail get-bundles | json_pp | grep bundleId
 }
