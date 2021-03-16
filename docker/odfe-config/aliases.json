@@ -28,12 +28,17 @@
     "alias": "meetup"
   },
   {
+    "index": "stackexchange_enriched_index",
+    "alias": "stackexchange"
+  },
+  {
     "indices": [
       "git_enrich_index",
       "github_enrich_index",
       "gitlab_enriched_index",
       "gitlab_mrs_enriched_index",
-      "meetup_enriched_index"
+      "meetup_enriched_index",
+      "stackexchange_enriched_index"
     ],
     "alias": "all"
   },

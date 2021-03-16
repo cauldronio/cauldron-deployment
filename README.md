@@ -113,6 +113,19 @@ $ cd cauldron-deployment
 
 </details>
 
+
+<details>
+<summary>StackExchange</summary>
+
+- Create an account at [StackApps](https://stackapps.com/).
+
+- Create a [StackExchange Oauth App](https://stackapps.com/apps/oauth/register). After the registration, you can obtain the `Client ID`, `Client Secret` and `app Key`:
+    - **Application Name**: A name for the application, for example `Bitergia Cauldron`
+    - **OAuth Domain**: Your domain name. For example, for your local computer: `localhost` and for a remote host `cauldron.io` or the IP.
+    - **Application website**: A website for the application, for example `https://cauldron.io/`
+
+</details>
+
 ### Configure the variables for your deployment:
 
 Create a copy of the directory `playbooks/inventories/template`. From the root of this repository:
@@ -133,6 +146,10 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `gh_client_id` and `gh_client_secret`: GitHub `Client ID` and `Client Secret`
     - `gl_client_id` and `gl_client_secret`: GitLab `Application ID` and `Secret`
     - `meetup_client_id` and `meetup_client_secret`: Meetup `Application ID` and `Secret`
+    - `gnome_client_id` and `gnome_client_secret`: GitLab for GNOME `Application ID` and `Secret`
+    - `kde_client_id` and `kde_client_secret`: GitLab for KDE `Application ID` and `Secret`
+    - `twitter_client_id` and `twitter_client_secret`: ?
+    - `stackexchange_client_id`, `stackexchange_client_secret` and `stackexchange_app_key`: StackExchange `Client ID`, `Client Secret` and `APP key`
 
     </details>
 
@@ -199,6 +216,10 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `GITHUB_ADMINS`([])
     - `GITLAB_ADMINS`([])
     - `MEETUP_ADMINS`([])
+    - `GNOME_ADMINS`([])
+    - `KDE_ADMINS`([])
+    - `TWITTER_ADMINS`([])
+    - `STACK_EXCHANGE_ADMINS`([])
 
     </details>
 

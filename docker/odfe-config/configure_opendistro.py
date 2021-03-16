@@ -201,6 +201,8 @@ def create_indices(es):
     es.indices.create('meetup_enriched_index', ignore=400)
     es.indices.create('cauldron_daily_metrics', ignore=400)
     es.indices.create('cauldron_monthly_metrics', ignore=400)
+    es.indices.create('stackexchange_raw_index', ignore=400)
+    es.indices.create('stackexchange_enriched_index', ignore=400)
 
     Logger.info('Default indices created')
 
@@ -305,10 +307,10 @@ def enable_performance_analyzer():
         'enabled': True
     }
     req = requests.post(f'{ELASTIC_URL}/_opendistro/_performanceanalyzer/config',
-                       auth=('admin', settings.ES_ADMIN_PASSWORD),
-                       verify=False,
-                       headers=HEADER_JSON,
-                       json=data_enable)
+                        auth=('admin', settings.ES_ADMIN_PASSWORD),
+                        verify=False,
+                        headers=HEADER_JSON,
+                        json=data_enable)
     Logger.info(f'{req.status_code} - {req.json()}')
 
 

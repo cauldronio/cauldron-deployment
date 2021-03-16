@@ -30,6 +30,9 @@
       KDE_CLIENT_SECRET: '{{ kde_client_secret }}'
       TWITTER_CLIENT_ID: '{{ twitter_client_id }}'
       TWITTER_CLIENT_SECRET: '{{ twitter_client_secret }}'
+      STACK_EXCHANGE_CLIENT_ID: "{{ stackexchange_client_id }}"
+      STACK_EXCHANGE_CLIENT_SECRET: "{{ stackexchange_client_secret }}"
+      STACK_EXCHANGE_APP_KEY: "{{ stackexchange_app_key }}"
       # Cauldron
       CAULDRON_HOST: '{{ CAULDRON_HOST }}'
       CAULDRON_PORT: '{{ CAULDRON_PORT | string }}'
@@ -64,9 +67,10 @@
       GITLAB_ADMINS: '{{ GITLAB_ADMINS | to_json }}'
       MEETUP_ADMINS: '{{ MEETUP_ADMINS | to_json }}'
       GNOME_ADMINS: '{{ GNOME_ADMINS | to_json }}'
-      LIMITED_ACCESS:  '{{ LIMITED_ACCESS | string }}'
       KDE_ADMINS: '{{ KDE_ADMINS | to_json }}'
       TWITTER_ADMINS: '{{ TWITTER_ADMINS | to_json }}'
+      STACK_EXCHANGE_ADMINS: '{{ STACK_EXCHANGE_ADMINS | to_json }}'
+      LIMITED_ACCESS:  '{{ LIMITED_ACCESS | string }}'
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
   tags: [webserver]

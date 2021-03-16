@@ -36,6 +36,10 @@ kde_client_secret: ""
 twitter_client_id: ""
 twitter_client_secret: ""
 
+# StackExchange App keys
+stackexchange_client_id: ""
+stackexchange_client_secret: ""
+stackexchange_app_key: ""
 
 #################### BASE CONFIGURATION ####################
 CAULDRON_CONFIG_DIR: "/tmp/cauldron-data"
@@ -155,6 +159,9 @@ KDE_ADMINS: []
 
 # Twitter Admins
 TWITTER_ADMINS: []
+
+# Stack Admins
+STACK_EXCHANGE_ADMINS: []
 
 LIMITED_ACCESS: false
 
