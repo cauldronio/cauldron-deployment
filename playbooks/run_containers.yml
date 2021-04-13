@@ -59,6 +59,11 @@
     tags: [odfe-config]
 
   - include_role:
+      name: backup-rotate
+      tasks_from: run
+    tags: [ backups ]
+
+  - include_role:
       name: pa-to-es
       tasks_from: run
     when: PA_TO_ES_ENABLED

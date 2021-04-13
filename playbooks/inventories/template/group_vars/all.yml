@@ -1,14 +1,16 @@
 ---
 ################### DOCKER IMAGES #####################
 WEB_IMAGE_NAME: "cauldronio/webserver:latest"
-WORKER_IMAGE_NAME: "cauldronio/poolsched:latest"
+WORKER_IMAGE_NAME: "cauldronio/worker:latest"
 ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
 PA_TO_ES_IMAGE_NAME: "cauldronio/pa-to-es:latest"
-ELASTIC_IMAGE_NAME: "amazon/opendistro-for-elasticsearch:1.11.0"
+ELASTIC_IMAGE_NAME: "cauldronio/opendistro-for-elasticsearch:1.11.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.11.0"
 SYSLOG_IMAGE_NAME: "cauldronio/syslog-ng:latest"
+BACKUP_IMAGE_NAME: "cauldronio/backup-rotate:latest"
 MATOMO_IMAGE_NAME: "matomo:3"
 DB_IMAGE_NAME: "mariadb:10.5"
+NGINX_IMAGE_NAME: 'nginx:1.18'
 
 
 #################### APPLICATION KEYS ####################
@@ -99,6 +101,23 @@ PLAUSIBLE_ANALYTICS_ENABLED: false
 PLAUSIBLE_ANALYTICS_URL: ""
 
 
+############## SNAPSHOT AND BACKUP CONFIGURATION ###############
+# Create snapshots daily for Elasticsearch and mysqldump locally.
+# Rotate backups weekly.
+LOCAL_BACKUP_ENABLED: false
+ELASTIC_SNAPSHOT_MOUNT_POINT: "elastic_snapshots"
+MYSQLDUMP_MOUNT_POINT: "mysqldump_volume"
+
+# Create snapshots daily for Elasticsearch and mysqldump at S3.
+# Rotate backups weekly
+S3_BACKUP_ENABLED: false
+BACKUP_S3_ENDPOINT: ""
+BACKUP_S3_BUCKET: ""
+BACKUP_S3_PATH: "" # shared for ES and SQL. Must not start or end with /
+BACKUP_S3_ACCESS_KEY: ""
+BACKUP_S3_SECRET_KEY: ""
+
+
 #################### PASSWORDS #######################
 DB_USER_PASSWORD: "test-password"
 DB_MATOMO_PASSWORD: "test-password"
@@ -120,7 +139,6 @@ ELASTIC_SNAPSHOTRESTORE_PASSWORD: "test-password"
 DB_MOUNT_POINT: "database_volume"
 PROJECT_LOGS_MOUNT_POINT: "cauldron_logs_volume"
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
-ELASTIC_SNAPSHOT_MOUNT_POINT: "elastic_snapshots"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
 SYSLOG_MOUNT_POINT: "syslog_volume"
 MATOMO_MOUNT_POINT: "matomo_volume"
@@ -137,6 +155,7 @@ KIBANA_CONTAINER_NAME: "kibana-cauldron"
 NGINX_CONTAINER_NAME: "nginx_service"
 SYSLOG_CONTAINER_NAME: 'syslog_service'
 ODFE_CONFIG_CONTAINER_NAME: "odfe_config_cauldron"
+BACKUP_CONTAINER_NAME: "cauldron-backup"
 MATOMO_CONTAINER_NAME: "matomo_service"
 PA_TO_ES_CONTAINER_NAME: "pa-to-es"
 WORKER_IDENTITIES_CONTAINER_NAME: "worker_identities"

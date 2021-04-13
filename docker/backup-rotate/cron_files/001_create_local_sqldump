@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "Create Local SQL dump"
+
+mysqldump -P 3306 -h $DB_HOST -p$DB_PASSWORD --all-databases | gzip > /mysqldump/db_`date -u +\%Y\%m\%dt\%H\%M\%S.sql.gz`

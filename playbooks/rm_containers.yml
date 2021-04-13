@@ -47,6 +47,11 @@
     tags: [matomo]
 
   - include_role:
+      name: backup-rotate
+      tasks_from: remove
+    tags: [backups]
+
+  - include_role:
       name: pa-to-es
       tasks_from: remove
     when: PA_TO_ES_ENABLED

@@ -629,18 +629,49 @@ All these measures can be viewed in a Kibana dashboard that Cauldron provides, b
 
 It is important to configure Cauldron to generate periodic snapshots and database backups. If you are not familiar with snapshots, we recommend to read [this article first](https://www.elastic.co/guide/en/elasticsearch/reference/7.x/snapshot-restore.html).
 
-### Database backup
+### Automatic backups
+
+Cauldron comes with a Docker image ready to perform daily backups of Open Distro and MariaDB databases and remove older than 1 week. Backups can be performed locally or in a remote S3 bucket. 
+
+#### Backup locally
+
+To enable local backups you need to modify the following variables in your inventory `group_vars`:
+```
+LOCAL_BACKUP_ENABLED: true
+ELASTIC_SNAPSHOT_MOUNT_POINT: "elastic_snapshots"
+MYSQLDUMP_MOUNT_POINT: "mysqldump_volume"
+```
+The variables `ELASTIC_SNAPSHOT_MOUNT_POINT` and `MYSQLDUMP_MOUNT_POINT` can be a Docker volume or a directory in your local filesystem. One variable is for storing ElasticSearch snapshots, and the other is for gzip compressed mysqldumps.
+
+#### Backup in S3
+
+Currently, we are using Digital Ocean Spaces as S3 buckets, it is possible that it works with AWS S3 out of the box, but we haven't tested it yet.
+
+To enable remote backups you need to modify the following variables in your inventory `group_bars`:
+```
+S3_BACKUP_ENABLED: true
+BACKUP_S3_ENDPOINT: "fra1.digitaloceanspaces.com"
+BACKUP_S3_BUCKET: "cauldron-test"
+BACKUP_S3_PATH: "testing.cauldron.io"
+BACKUP_S3_ACCESS_KEY: "XXXXXXXXXXXXXX"
+BACKUP_S3_SECRET_KEY: "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
+```
+
+We provide an example for a Digital Ocean space:
+- Running in Frankfurt 
+- Name of the bucket is `cauldron-test` (`cauldron-test.fra1.digitaloceanspaces.com`). 
+- Backups are stored under `testing.cauldron.io` directory (this must not end or start with `/`)
+- Sample secret and access keys
+
+### Manual backups
+
+#### Database backup
 You can create a backup of the Cauldron database with the following command:
 ```
-docker exec db_cauldron mysqldump --all-databases > cauldron_sqldump_test.sql
+docker exec db_cauldron mysqldump -pPASSWORD --all-databases > cauldron_sqldump_test.sql
 ```
 
-You can restore the database with the following command:
-```
-cat cauldron_sqldump_test.sql | docker exec -i db_cauldron_service /usr/bin/mysql
-```
-
-### Elasticsearch snapshots
+#### Elasticsearch snapshots
 
 In Cauldron, Elasticsearch is configured by default with a snapshot repository that is mounted in the location defined in the inventory's variable `ELASTIC_SNAPSHOT_MOUNT_POINT`.
 
@@ -654,12 +685,25 @@ curl -k -u admin:PASSWORD -XPUT "https://localhost:9200/_snapshot/cauldron_backu
 }
 '
 ```
-This will created a snapshot with all the indices named `snapshot_test`.
+This will create a snapshot named `snapshot_test` including all the indices.
 
 You can see the snapshots created in a remote machine with the script `list_snapshots.py` located in `playbooks/scripts`:
 ```
 python3 list_snapshots.py --ssh user@host --password ELASTIC_ADMIN_PASSWORD
 ```
+
+### Restore from a backup
+
+With both, database backup and Elastic snapshot, you can recover the state of Cauldron.
+
+#### Database
+
+You can restore the database with the following command:
+```
+cat cauldron_sqldump_test.sql | docker exec -i db_cauldron_service /usr/bin/mysql -pPASSWORD
+```
+
+#### ElasticSearch
 
 You can recover from a snapshot deleting/closing the indices you want to restore and executing the following command inside the Elasticsearch container:
 ```
@@ -697,9 +741,6 @@ You can also move all the indices to a new cluster. Remember to use the same pas
     ```
     ansible-playbook -i inventories/newlocation rm_containers.yml cauldron.yml
     ```
-
-With both database backup and Elastic snapshot, you can recover the state of Cauldron.
-
 
 ## Ansible Vault
 

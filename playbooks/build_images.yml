@@ -47,6 +47,16 @@
       tags: [odfe-config]
 
     - import_role:
+        name: elasticsearch
+        tasks_from: build
+      tags: [elastic]
+
+    - import_role:
+        name: backup-rotate
+        tasks_from: build
+      tags: [backups]
+
+    - import_role:
         name: pa-to-es
         tasks_from: build
       when: PA_TO_ES_ENABLED

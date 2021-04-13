@@ -1,0 +1,27 @@
+---
+
+- name: "Ensures {{ ELASTIC_IMAGE_BUILD_DIR }} exists"
+  file:
+    path: "{{ ELASTIC_IMAGE_BUILD_DIR }}"
+    state: directory
+  tags: [elastic]
+
+- name: "Copy Docker context to {{ ELASTIC_IMAGE_BUILD_DIR }}"
+  synchronize:
+    src: "{{ ELASTIC_IMAGE_DOCKERFILE_PATH }}"
+    dest: "{{ ELASTIC_IMAGE_BUILD_DIR }}"
+    recursive: yes
+    delete: yes
+  tags: [elastic]
+
+- name: "Build the image for Elasticsearch"
+  docker_image:
+    name: "{{ ELASTIC_IMAGE_NAME }}"
+    build:
+      args:
+        ODFE_VERSION: "{{ ELASTIC_IMAGE_NAME.split(':')[-1] }}"
+      path: "{{ ELASTIC_IMAGE_BUILD_DIR }}"
+      pull: "no"
+    source: build
+    state: present
+  tags: [elastic]

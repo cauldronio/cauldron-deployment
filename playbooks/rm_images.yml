@@ -60,3 +60,10 @@
         name: "{{ PA_TO_ES_IMAGE_NAME }}"
       when: PA_TO_ES_ENABLED
       tags: [pa-to-es]
+
+    - name: "Delete backup-rotate image"
+      docker_image:
+        state: absent
+        name: "{{ BACKUP_IMAGE_NAME }}"
+      tags: [backups]
+

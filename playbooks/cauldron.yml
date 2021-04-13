@@ -10,7 +10,7 @@
 ## You can run a single container using tags.
 ## ansible-playbook cauldron.yml -i inventories/<name> -t webserver
 ##
-## Available tags: worker, webserver, odfe-config, database, nginx, elastic, kibana
+## Available tags: worker, webserver, odfe-config, database, nginx, elastic, kibana, backups
 ##
 ## Variables are defined in the inventory file
 
@@ -36,6 +36,7 @@
   roles:
     - kibana
     - odfe-config
+    - backup-rotate
 
 - hosts: cauldron_group
   roles:

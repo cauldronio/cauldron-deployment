@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+
+import os
+import urllib3
+import requests
+import datetime
+
+LIMIT_DATE = datetime.datetime.now() - datetime.timedelta(days=7)
+ODFE_ADMIN_PASSWORD = os.getenv('ODFE_ADMIN_PASSWORD')
+ODFE_HOST = os.getenv('ODFE_HOST')
+ODFE_LOCAL_SNAPSHOT_REPO = os.getenv('ODFE_LOCAL_SNAPSHOT_REPO')
+
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+
+def list_snapshots():
+    """Return the list of snapshots of a ElasticSearch cluster"""
+    snapshots = list()
+    snapshots_url = f"https://{ODFE_HOST}:9200/_snapshot/{ODFE_LOCAL_SNAPSHOT_REPO}/_all"
+    r = requests.get(snapshots_url,
+                     auth=('admin', ODFE_ADMIN_PASSWORD),
+                     verify=False)
+    r.raise_for_status()
+    for snapshot in r.json()['snapshots']:
+        data = {
+            'repository': ODFE_LOCAL_SNAPSHOT_REPO,
+            'name': snapshot['snapshot'],
+            'start_time': snapshot['start_time']
+        }
+        snapshots.append(data)
+    return snapshots
+
+
+def remove_older_snapshots(to_date):
+    """Remove snapshots older than to_date"""
+    for snapshot in list_snapshots():
+        snap_date = datetime.datetime.strptime(snapshot['start_time'],
+                                               '%Y-%m-%dT%H:%M:%S.%fZ')
+        if snap_date < to_date:
+            print(f"Removing Snapshot {snapshot['repository']}/{snapshot['name']}"
+                  f"created at {snap_date}")
+            snap_url = f"https://{ODFE_HOST}:9200/" \
+                       f"_snapshot/{snapshot['repository']}/{snapshot['name']}"
+            r = requests.delete(snap_url,
+                                auth=('admin', ODFE_ADMIN_PASSWORD),
+                                verify=False)
+            r.raise_for_status()
+
+
+if __name__ == "__main__":
+    remove_older_snapshots(LIMIT_DATE)

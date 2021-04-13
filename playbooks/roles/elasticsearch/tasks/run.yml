@@ -1,6 +1,14 @@
 ---
 
 - name: Run ElasticSearch
+  vars:
+    ports_enabled:
+      - name: local
+        mapping: "127.0.0.1:9200:{{ ELASTIC_PORT }}"
+        enabled: true
+      - name: exposed
+        mapping: "{{ELASTIC_HOST}}:{{ELASTIC_PORT}}:{{ELASTIC_PORT}}"
+        enabled: "{{ELASTIC_HOST}} != {{ELASTIC_CONTAINER_NAME}}"
   docker_container:
     name: "{{ ELASTIC_CONTAINER_NAME }}"
     image: "{{ ELASTIC_IMAGE_NAME }}"
@@ -13,7 +21,7 @@
     env:
       ES_JAVA_OPTS: "-Xms{{ELASTIC_MEMORY}} -Xmx{{ELASTIC_MEMORY}}"
       node.name: "{{ ELASTIC_CONTAINER_NAME }}"
-    ports: "{{ [] if ELASTIC_HOST == ELASTIC_CONTAINER_NAME else [ELASTIC_EXPORTED_PORTS] }}"
+    ports: "{{ ports_enabled | selectattr('enabled', 'equalto', true) | map(attribute='mapping') | list }}"
     volumes:
       - "{{ELASTIC_MOUNT_POINT}}:/usr/share/elasticsearch/data"
       - "{{ELASTIC_SNAPSHOT_MOUNT_POINT}}:/mnt/snapshots"

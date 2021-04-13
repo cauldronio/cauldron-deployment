@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+
+import os
+import datetime
+
+LIMIT_DATE = datetime.datetime.now() - datetime.timedelta(days=7)
+MYSQLDUMP_DIRECTORY = '/mysqldump/'
+
+
+for file in os.listdir(MYSQLDUMP_DIRECTORY):
+    file_path = os.path.join(MYSQLDUMP_DIRECTORY, file)
+    creation_date = os.stat(file_path).st_mtime
+    if creation_date <= LIMIT_DATE.timestamp():
+        print(f"Remove mysqldump {file_path}")
+        os.remove(file_path)

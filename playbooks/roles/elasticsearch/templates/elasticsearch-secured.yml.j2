@@ -9,7 +9,6 @@ discovery.type: single-node
 #discovery.seed_providers?
 #cluster.initial_master_nodes? 
 
-cluster.join.timeout: 180s
 cluster.publish.timeout: 180s
 
 
@@ -20,6 +19,20 @@ bootstrap.memory_lock: true
 # Enable snapshots
 path.repo: ["/mnt/snapshots"]
 
+{% if S3_BACKUP_ENABLED %}
+#############################################################################################
+#                                    S3 SNAPSHOT REPOSITORY                                 #
+#                                       Configuration                                       #
+#############################################################################################
+
+s3.client.default.endpoint: {{ BACKUP_S3_ENDPOINT }}
+s3.client.default.protocol: https
+s3.client.default.read_timeout: 50s
+s3.client.default.max_retries: 3
+s3.client.default.use_throttle_retries: true
+s3.client.default.path_style_access: false
+
+{% endif %}
 
 #############################################################################################
 #                                     OPEN DISTRO SECURITY SSL                              #

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "Create Local Open Distro snapshot"
+
+curl -k -XPUT -u admin:$ODFE_ADMIN_PASSWORD "https://$ODFE_HOST:9200/_snapshot/$ODFE_LOCAL_SNAPSHOT_REPO/snapshot_`date -u +\%Y\%m\%dt\%H\%M\%S`" -H 'Content-Type: application/json' -d'{"indices": "*", "ignore_unavailable": true, "include_global_state": false}'

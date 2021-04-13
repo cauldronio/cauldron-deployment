@@ -1,0 +1,2 @@
+BACKUP_IMAGE_BUILD_DIR: "{{ CAULDRON_CONFIG_DIR }}/backup-build"
+BACKUP_IMAGE_DOCKERFILE_PATH: "../docker/backup-rotate/"

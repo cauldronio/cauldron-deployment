@@ -2,6 +2,4 @@
 
 NGINX_CONTAINER_NAME: 'nginx_service'
 
-NGINX_IMAGE_NAME: 'nginx:latest'
-
 NGINX_STATIC_FILES_DIR: '/static-files'

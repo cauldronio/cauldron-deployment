@@ -1,0 +1,25 @@
+---
+
+- name: "Ensures {{ BACKUP_IMAGE_BUILD_DIR }} exists"
+  file:
+    path: "{{ BACKUP_IMAGE_BUILD_DIR }}"
+    state: directory
+  tags: [backups]
+
+- name: "Copy Docker context to {{ BACKUP_IMAGE_BUILD_DIR }}"
+  synchronize:
+    src: "{{ BACKUP_IMAGE_DOCKERFILE_PATH }}"
+    dest: "{{ BACKUP_IMAGE_BUILD_DIR }}"
+    recursive: yes
+    delete: yes
+  tags: [backups]
+
+- name: "Build the image for Backup rotation"
+  docker_image:
+    name: "{{ BACKUP_IMAGE_NAME }}"
+    build:
+      path: "{{ BACKUP_IMAGE_BUILD_DIR }}"
+      pull: "no"
+    source: build
+    state: present
+  tags: [backups]
