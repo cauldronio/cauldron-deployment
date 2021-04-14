@@ -1,5 +1,5 @@
 resource "digitalocean_droplet" "cauldron" {
-  name               = "cauldron"
+  name               = var.do_name
   image              = var.do_image
   region             = var.do_region
   size               = var.do_size

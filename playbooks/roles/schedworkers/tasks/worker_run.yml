@@ -29,6 +29,10 @@
       GIT_REPOS: "/git_repositories"
       JOB_LOGS: "/job_logs"
       JWT_KEY: "{{ lookup('file', inventory_hostname + '/jwt_key/jwtR256.key') }}"
+      TWITTER_CLIENT_ID: '{{ twitter_client_id }}'
+      TWITTER_CLIENT_SECRET: '{{ twitter_client_secret }}'
+      TWITTER_ACCESS_TOKEN: '{{ twitter_access_token }}'
+      TWITTER_ACCESS_TOKEN_SECRET: '{{ twitter_access_token_secret }}'
       ELASTIC_USER: "admin"
       ELASTIC_PASS: "{{ ELASTIC_ADMIN_PASSWORD }}"
       ELASTIC_HOST: "{{ ELASTIC_HOST }}"

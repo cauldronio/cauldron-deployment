@@ -35,11 +35,14 @@ kde_client_secret: ""
 # Twitter Oauth App keys
 twitter_client_id: ""
 twitter_client_secret: ""
+twitter_access_token: ""
+twitter_access_token_secret: ""
 
 # StackExchange App keys
 stackexchange_client_id: ""
 stackexchange_client_secret: ""
 stackexchange_app_key: ""
+
 
 #################### BASE CONFIGURATION ####################
 CAULDRON_CONFIG_DIR: "/tmp/cauldron-data"

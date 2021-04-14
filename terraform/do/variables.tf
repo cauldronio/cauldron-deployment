@@ -1,3 +1,9 @@
+variable "do_name" {
+  type        = string
+  description = "Name of the droplet"
+  default     = "cauldron"
+}
+
 variable "do_usertag" {
   type        = string
   description = "Tag of the user doing the deployment"
@@ -25,7 +31,7 @@ variable "ssh_fingerprints" {
 variable "do_size" {
   type        = string
   description = "DigitalOcean default droplet size"
-  default     = "s-4vcpu-8gb"
+  default     = "s-8vcpu-16gb"
 }
 
 variable "do_region" {
