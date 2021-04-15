@@ -48,12 +48,6 @@
     tags: [syslog]
 
   - include_role:
-      name: matomo
-      tasks_from: setup
-    when: MATOMO_ENABLED
-    tags: [matomo]
-
-  - include_role:
       name: pa-to-es
       tasks_from: setup
     when: PA_TO_ES_ENABLED

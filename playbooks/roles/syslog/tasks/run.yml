@@ -5,15 +5,14 @@
     name: "{{ SYSLOG_CONTAINER_NAME }}"
     image: "{{ SYSLOG_IMAGE_NAME }}"
     state: started
+    command: "--no-caps"
     restart_policy: "always"
     env:
-      MATOMO_USER: "{{MATOMO_USER}}"
-      MATOMO_PASSWORD: "{{MATOMO_PASSWORD}}"
-      MATOMO_URL: "http://{{MATOMO_CONTAINER_NAME}}"
       ELASTIC_HOST: "{{ ELASTIC_HOST }}"
       ELASTIC_PASSWORD: "{{ ELASTIC_ADMIN_PASSWORD }}"
     networks:
       - name: "{{ NETWORK_NAME }}"
     volumes:
+      - "{{CAULDRON_CONFIG_DIR}}/syslog/syslog-ng.conf:/etc/syslog-ng/syslog-ng.conf"
       - "{{ SYSLOG_MOUNT_POINT }}:/var/log/syslog"
   tags: [syslog]

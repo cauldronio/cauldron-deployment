@@ -48,12 +48,6 @@
       state: absent
     tags: [syslog]
 
-  - name: "Remove matomo volume: {{MATOMO_MOUNT_POINT}}"
-    docker_volume:
-      name: "{{ MATOMO_MOUNT_POINT }}"
-      state: absent
-    tags: [matomo]
-
   - name: "Remove mysqldump volume: {{MYSQLDUMP_MOUNT_POINT}}"
     docker_volume:
       name: "{{ MYSQLDUMP_MOUNT_POINT }}"

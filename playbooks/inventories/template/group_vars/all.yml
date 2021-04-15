@@ -6,9 +6,8 @@ ODFE_CONFIG_IMAGE_NAME: "cauldronio/odfe-config:latest"
 PA_TO_ES_IMAGE_NAME: "cauldronio/pa-to-es:latest"
 ELASTIC_IMAGE_NAME: "cauldronio/opendistro-for-elasticsearch:1.11.0"
 KIBANA_IMAGE_NAME: "amazon/opendistro-for-elasticsearch-kibana:1.11.0"
-SYSLOG_IMAGE_NAME: "cauldronio/syslog-ng:latest"
+SYSLOG_IMAGE_NAME: "balabit/syslog-ng:3.31.2"
 BACKUP_IMAGE_NAME: "cauldronio/backup-rotate:latest"
-MATOMO_IMAGE_NAME: "matomo:3"
 DB_IMAGE_NAME: "mariadb:10.5"
 NGINX_IMAGE_NAME: 'nginx:1.18'
 
@@ -55,9 +54,6 @@ HATSTALL_ENABLED: false
 # If enabled, some metrics will be collected from Performance Analyzer and stored in Elasticsearch.
 PA_TO_ES_ENABLED: false
 
-# If enabled, run a new container with Matomo for metrics. It should be manually configured
-MATOMO_ENABLED: false
-
 # Number of mordred worker. Use ~15/20 for production.
 NUM_WORKERS: 5
 
@@ -78,9 +74,6 @@ KIBANA_HOST: "kibana-cauldron"
 
 # Port where the APP will be available. Use 443 for production
 CAULDRON_PORT: 9000
-
-# Port where Matomo will be running
-MATOMO_PORT: 9001
 
 # Enable port 80 for redirecting to https. Use true for production
 ENABLE_PORT_80: false
@@ -120,11 +113,6 @@ BACKUP_S3_SECRET_KEY: ""
 
 #################### PASSWORDS #######################
 DB_USER_PASSWORD: "test-password"
-DB_MATOMO_PASSWORD: "test-password"
-
-# Use the same User and Password when you configure Matomo the first time
-MATOMO_USER: "cauldron"
-MATOMO_PASSWORD: "test-password"
 
 ELASTIC_ADMIN_PASSWORD: "test-password"
 ELASTIC_LOGSTASH_PASSWORD: "test-password"
@@ -141,7 +129,6 @@ PROJECT_LOGS_MOUNT_POINT: "cauldron_logs_volume"
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
 SYSLOG_MOUNT_POINT: "syslog_volume"
-MATOMO_MOUNT_POINT: "matomo_volume"
 NGINX_STATIC_FILES_MOUNT_POINT: "static_files_volume"
 
 
@@ -156,7 +143,6 @@ NGINX_CONTAINER_NAME: "nginx_service"
 SYSLOG_CONTAINER_NAME: 'syslog_service'
 ODFE_CONFIG_CONTAINER_NAME: "odfe_config_cauldron"
 BACKUP_CONTAINER_NAME: "cauldron-backup"
-MATOMO_CONTAINER_NAME: "matomo_service"
 PA_TO_ES_CONTAINER_NAME: "pa-to-es"
 WORKER_IDENTITIES_CONTAINER_NAME: "worker_identities"
 

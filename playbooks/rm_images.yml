@@ -48,12 +48,6 @@
         name: "{{ SYSLOG_IMAGE_NAME }}"
       tags: [syslog]
 
-    - name: "Delete matomo image"
-      docker_image:
-        state: absent
-        name: "{{ MATOMO_IMAGE_NAME }}"
-      tags: [matomo]
-
     - name: "Delete pa-to-es image"
       docker_image:
         state: absent

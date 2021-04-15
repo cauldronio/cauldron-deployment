@@ -5,7 +5,6 @@ This repository contains relevant information for running Cauldron in your own c
 - [Requirements](#requirements)
 - [Preconfiguration](#preconfiguration)
 - [Run and stop Cauldron](#run-and-stop-cauldron)
-- [Matomo analytics](#matomo-analytics)
 - [Advanced deployment for Cauldron](#advanced-deployment-for-cauldron)
 - [Development environment](#development-environment)
 - [Continuous Delivery and Rolling Upgrades](#continuous-delivery-and-rolling-upgrades)
@@ -160,7 +159,6 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location in the managed nodes where the configuration files for the containers will be stored.
     - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
     - `PA_TO_ES_ENABLED`(`false`): by default the Performance Analyzer metrics are not stored in Elasticsearch. Set this variable to True if you want to save those metrics and visualize them in Kibana.
-    - `MATOMO_ENABLED`(`false`): by default Matomo analytics is disabled.
     - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that will analyze repositories concurrently.
     - `CAULDRON_HOST` (`localhost`): Public IP address to access Cauldron, or `localhost` for local deployments.
     - `WEB_HOST` (`cauldron_service`): IP address where the Web Server is hosted or, for single-host deployments, the name of the Web Server Docker container.
@@ -168,7 +166,6 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `ELASTIC_HOST` (`odfe-cauldron`): IP address where the Elasticsearch service is hosted or, for single-host deployments, the name of the Elasticsearch Docker container.
     - `KIBANA_HOST` (`kibana-cauldron`): IP address where the Kibana service is hosted or, for single-host deployments, the name of the Kibana Docker container.
     - `CAULDRON_PORT` (9000): port where Cauldron webserver will be running. Use 443 in production.
-    - `MATOMO_PORT` (9001): port where Matomo will be running.
     - `ENABLE_PORT_80` (false): if true, petitions to port 80 will be redirected to `https://location:CAULDRON_PORT`.
     - `DJANGO_HOSTS` ('*'): location where cauldron is running to avoid HTTP Host header attacks.
     - `ELASTIC_MEMORY` ('4gb'): [head size](https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html) used by Elasticsearch. It is recommended to be half of your RAM.
@@ -183,8 +180,6 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     <summary>More</summary>
 
     - `DB_USER_PASSWORD`('test-password'): password for database
-    - `DB_MATOMO_PASSWORD`('test-password'): password for Matomo's table in the database
-    - `MATOMO_PASSWORD`('test-password'): password for accessing Matomo
     - `ELASTIC_ADMIN_PASSWORD`('test-password'): password for Elasticsearch admin
     - `ELASTIC_LOGSTASH_PASSWORD`('test-password'): password for Elasticsearch Logstash
     - `ELASTIC_KIBANASERVER_PASSWORD`('test-password'): password for Elasticsearch Kibanaserver
@@ -204,7 +199,6 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `ELASTIC_SNAPSHOT_MOUNT_POINT`('elastic_snapshots'): elastic snapshots
     - `PERCEVAL_REPOS_MOUNT_POINT`('perceval_repos'): location for git clone of repositories
     - `SYSLOG_MOUNT_POINT`('syslog_volume'): location for logs storage
-    - `MATOMO_MOUNT_POINT`('matomo_volume'): location for storing Matomo configuration
 
     </details>
 
@@ -233,10 +227,9 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `WORKER_IMAGE_NAME`("cauldronio/worker:latest")
     - `ODFE_CONFIG_IMAGE_NAME`("cauldronio/odfe-config:latest")
     - `PA_TO_ES_IMAGE_NAME`("cauldronio/pa-to-es:latest")
-    - `ELASTIC_IMAGE_NAME`("amazon/opendistro-for-elasticsearch:1.6.0")
-    - `KIBANA_IMAGE_NAME`("amazon/opendistro-for-elasticsearch-kibana:1.6.0")
-    - `SYSLOG_IMAGE_NAME`("cauldronio/syslog-ng:latest")
-    - `MATOMO_IMAGE_NAME`("matomo:3")
+    - `ELASTIC_IMAGE_NAME`("amazon/opendistro-for-elasticsearch:1.11.0")
+    - `KIBANA_IMAGE_NAME`("amazon/opendistro-for-elasticsearch-kibana:1.11.0")
+    - `SYSLOG_IMAGE_NAME`("balabit/syslog-ng:latest")
 
     </details>
 
@@ -253,7 +246,6 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `NGINX_CONTAINER_NAME`('nginx_service')
     - `SYSLOG_CONTAINER_NAME`('syslog_service')
     - `ODFE_CONFIG_CONTAINER_NAME`('odfe_config_cauldron')
-    - `MATOMO_CONTAINER_NAME` ('matomo_service')
     - `PA_TO_ES_CONTAINER_NAME` ('pa-to-es')
 
     </details>
@@ -368,7 +360,6 @@ It will deploy Cauldron in the specified hosts in the inventory file. All the im
 - Run Kibana (OpenDistro) in Docker
 - Run MariaDB in Docker
 - Run syslog for centralized logs
-- Run Matomo for log analytics
 - Create default configuration for Elasticsearch and Kibana, and import visualizations
 - (optional) Run Hatstall for managing identities
 - (optional) Run a container to store Performance Analyzer metrics in Elasticsearch
@@ -387,30 +378,6 @@ $ ansible-playbook -i inventories/local rm_volumes.yml
 ```
 The configuration files are stored in the directory defined by `CAULDRON_CONFIG_DIR`. You can safely delete that directory when Cauldron is not running.
 
-## Matomo analytics
-
-Cauldron is using syslog-ng + Matomo for managing the logs. Some steps are necessary to have Matomo correctly configured.
-
-### Installation steps
-
-First of all you need to enable it before deploying Cauldron using `MATOMO_ENABLED` variable.
-
-Go to the port you have Matomo deployed (9001 by default) and follow the installation steps:
-1. Welcome (next)
-2. System check (next)
-3. Database setup. The variables should be defined (next)
-4. Creating tables (next)
-5. Super User. Specify the user (`MATOMO_USER`) and password (`MATOMO_PASSWORD`) defined in Cauldron's configuration file and your email address. (next)
-6. Setup the website to track:
-    - Name: Cauldron
-    - Website url: your website location
-    - Time zone: location where you are
-    - Not an Ecommerce site
-7. JS Tracking code (next)
-8. Congratulations (next)  
-
-Now you can get logs in Matomo. We have configured Matomo with a buffer of 50 hits. You won't see anything until 50 requests are made to the server.
-
 
 ## Advanced deployment for Cauldron
 
@@ -420,7 +387,7 @@ Now you can get logs in Matomo. We have configured Matomo with a buffer of 50 hi
 
 Now we will detail all the steps for running Cauldron and the variables that can be modified.
 
-All the playbooks are tagged, therefore you can run them with the flag `-t` and any of the following keyworks: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `odfe-config`, `matomo`, `syslog`, `pa-to-es`
+All the playbooks are tagged, therefore you can run them with the flag `-t` and any of the following keyworks: `webserver`, `worker`, `elastic`, `kibana`, `database`, `nginx`, `odfe-config`, `syslog`, `pa-to-es`
 
 - **Build the images.**
 

@@ -6,9 +6,6 @@
       - name: cauldron
         mapping: "{{ CAULDRON_PORT }}:{{ CAULDRON_PORT }}"
         enabled: true
-      - name: matomo
-        mapping: "{{ MATOMO_PORT }}:{{ MATOMO_PORT }}"
-        enabled: "{{ MATOMO_ENABLED }}"
       - name: port80
         mapping: "80:80"
         enabled: "{{ ENABLE_PORT_80 }}"

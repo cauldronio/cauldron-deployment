@@ -3,12 +3,10 @@
 DB_CONTAINER_NAME: "db_cauldron_service"
 
 DB_USER: "grimoirelab"
-DB_MATOMO_USER: "matomo"
 DB_PORT: "3306"
 
 DB_SORTINGHAT_NAME: "db_sortinghat"
 DB_DJANGO_NAME: "db_cauldron"
-DB_MATOMO_NAME: "db_matomo"
 
 CAULDRON_CONFIG_DIR: "/tmp/cauldron"
 DB_IMAGE_NAME: "cauldronio-database:test"

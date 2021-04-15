@@ -54,9 +54,6 @@
       DB_PASSWORD: "{{ DB_USER_PASSWORD }}"
       DB_NAME: "{{ DB_DJANGO_NAME }}"
       DB_PORT: "{{ DB_PORT }}"
-      # Matomo
-      MATOMO_ENABLED: '{{ MATOMO_ENABLED | string }}'
-      MATOMO_PORT: '{{ MATOMO_PORT | string }}'
       # Plausible Analytics
       PLAUSIBLE_ANALYTICS_ENABLED: '{{ PLAUSIBLE_ANALYTICS_ENABLED | string }}'
       PLAUSIBLE_ANALYTICS_URL: '{{ PLAUSIBLE_ANALYTICS_URL }}'

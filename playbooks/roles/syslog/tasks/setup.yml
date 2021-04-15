@@ -1,0 +1,16 @@
+---
+
+- name: Ensures {{CAULDRON_CONFIG_DIR}}/syslog dir exists
+  file:
+    path: "{{CAULDRON_CONFIG_DIR}}/syslog"
+    state: directory
+    recurse: yes
+  tags: [syslog]
+
+
+- name: Add syslog configuration
+  copy:
+    src: syslog-ng.conf
+    dest: "{{ CAULDRON_CONFIG_DIR }}/syslog/syslog-ng.conf"
+    mode: 0644
+  tags: [syslog]
