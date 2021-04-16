@@ -20,8 +20,6 @@ server.host: "0"
 server.basePath: "{{KIBANA_URL_PATH}}"
 server.rewriteBasePath: true
 
-kibana.defaultAppId: "dashboard/8c34bc50-a2fe-11e9-ac51-1516462fb85e"
-
 elasticsearch.hosts: https://{{ ELASTIC_HOST }}:{{ ELASTIC_PORT }}
 elasticsearch.ssl.verificationMode: none
 #elasticsearch.ssl.certificateAuthorities: ["/usr/share/kibana/config/root-ca.pem"]
@@ -48,3 +46,5 @@ opendistro_security.jwt.url_param: jwtToken
 newsfeed.enabled: false
 telemetry.optIn: false
 telemetry.enabled: false
+security.showInsecureClusterWarning: false
+map.includeElasticMapsService: false
