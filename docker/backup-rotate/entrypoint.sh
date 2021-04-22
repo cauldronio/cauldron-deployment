@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 
+printenv | grep -E "(ODFE_HOST|ODFE_ADMIN_PASSWORD|DB_HOST|DB_PASSWORD)" >> /etc/environment
+
 if [ ! -z "$LOCAL_BACKUP" ]
 then
   echo "Enable local backup"
+  printenv | grep -E "(ODFE_LOCAL_SNAPSHOT_REPO)" >> /etc/environment
   cp /cron_files/000_create_local_snapshot /etc/cron.daily/
   cp /cron_files/001_create_local_sqldump /etc/cron.daily/
   cp /cron_files/004_remove_local_snapshot /etc/cron.daily/
@@ -16,6 +19,7 @@ then
     exit 1
   fi
   echo "Enable S3 backup"
+  printenv | grep -E "(S3_ENDPOINT|S3_BUCKET|S3_PATH|S3_ACCESS_KEY|S3_SECRET_KEY|ODFE_S3_SNAPSHOT_REPO)" >> /etc/environment
   cp /cron_files/002_create_s3_snapshot /etc/cron.daily/
   cp /cron_files/003_create_s3_sqldump /etc/cron.daily/
   cp /cron_files/006_remove_s3_snapshot /etc/cron.daily/
