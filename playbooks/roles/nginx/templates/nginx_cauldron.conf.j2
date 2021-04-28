@@ -10,6 +10,7 @@ upstream kibana {
 {% if ENABLE_PORT_80 %}
 server {
     listen 80;
+    listen [::]:80;
 
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
 
@@ -22,7 +23,8 @@ server {
 
 
 server {
-    listen        {{CAULDRON_PORT}} ssl;
+    listen        {{CAULDRON_PORT}} ssl http2;
+    listen        [::]:{{CAULDRON_PORT}} ssl http2;
     server_name   {{ ansible_ssh_host|default(ansible_host) }};
 
     # If the user try to access the app port with http, redirect to https
@@ -33,6 +35,16 @@ server {
     ssl_certificate         /certificates/ssl_server.crt;
     ssl_certificate_key     /certificates/ssl_server.key;
 
+    # SSL Settings
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384;
+    ssl_prefer_server_ciphers off;
+
+    ssl_session_timeout 1d;
+    ssl_session_cache   shared:SSL:10m;
+    ssl_session_tickets off;
+
+    add_header Strict-Transport-Security "max-age=63072000" always;
 
     location /download {
         alias {{NGINX_STATIC_FILES_DIR}};
@@ -41,6 +53,10 @@ server {
     location /kibana {
         access_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana;
         error_log syslog:server={{SYSLOG_CONTAINER_NAME}}:514,tag=kibana;
+
+        proxy_buffer_size          128k;
+        proxy_buffers              4 256k;
+        proxy_busy_buffers_size    256k;
 
         proxy_pass http://kibana;
         break;
