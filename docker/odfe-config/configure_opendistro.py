@@ -303,14 +303,46 @@ def update_max_shards(num_shards):
 def enable_performance_analyzer():
     Logger.info("Enabling performance analyzer")
 
-    data_enable = {
+    data_enabled = {
         'enabled': True
     }
     req = requests.post(f'{ELASTIC_URL}/_opendistro/_performanceanalyzer/config',
                         auth=('admin', settings.ES_ADMIN_PASSWORD),
                         verify=False,
                         headers=HEADER_JSON,
-                        json=data_enable)
+                        json=data_enabled)
+    Logger.info(f'{req.status_code} - {req.json()}')
+
+
+def create_role_reporting():
+
+    role = 'reports_download_access'
+    backend_role = 'br_download_reports'
+    data_role = {
+        "cluster_permissions": ['cluster:admin/opendistro/reports/menu/download'],
+        "index_permissions": [],
+        "tenant_permissions": []
+    }
+    data_role_mapping = {
+        "backend_roles": [backend_role],
+        "hosts": [],
+        "users": []
+    }
+
+    Logger.info(f"Create {role} role")
+    req = requests.put(f'{ELASTIC_URL}/_opendistro/_security/api/roles/{role}',
+                       auth=('admin', settings.ES_ADMIN_PASSWORD),
+                       verify=False,
+                       headers=HEADER_JSON,
+                       json=data_role)
+    Logger.info(f'{req.status_code} - {req.json()}')
+
+    Logger.info(f"Map role {role} to backend role {backend_role}")
+    req = requests.put(f'{ELASTIC_URL}/_opendistro/_security/api/rolesmapping/{role}',
+                       auth=('admin', settings.ES_ADMIN_PASSWORD),
+                       verify=False,
+                       headers=HEADER_JSON,
+                       json=data_role_mapping)
     Logger.info(f'{req.status_code} - {req.json()}')
 
 
@@ -328,3 +360,4 @@ if __name__ == "__main__":
     set_snapshot_location("/mnt/snapshots")
     update_max_scrolls(5000)
     enable_performance_analyzer()
+    create_role_reporting()
