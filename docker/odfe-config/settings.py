@@ -9,3 +9,12 @@ KIB_IN_PROTOCOL = 'http'
 KIB_IN_HOST = 'kibana-cauldron'
 KIB_IN_PORT = '5601'
 KIB_PATH = '/kibana'
+
+# Database variables for the container
+DB_HOST = ''
+DB_PORT = ''
+DB_USER = 'grimoirelab'
+DB_PASSWORD = ''
+DB_DATABASE = 'db_sortinghat'
+
+SORTINGHAT = False

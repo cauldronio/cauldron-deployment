@@ -8,6 +8,8 @@ import os
 from elasticsearch import Elasticsearch
 from elasticsearch.connection import create_ssl_context
 
+from sortinghat.cmd.load import Load
+
 import settings
 
 import urllib3
@@ -346,6 +348,17 @@ def create_role_reporting():
     Logger.info(f'{req.status_code} - {req.json()}')
 
 
+def load_organizations():
+    data = {
+        'user': settings.DB_USER,
+        'password': settings.DB_PASSWORD,
+        'database': settings.DB_DATABASE,
+        'host': settings.DB_HOST,
+        'port': settings.DB_PORT
+    }
+    Load(**data).run('--orgs', '/organizations.json')
+
+
 if __name__ == "__main__":
     wait_for_elastic()
     wait_for_kibana()
@@ -361,3 +374,5 @@ if __name__ == "__main__":
     update_max_scrolls(5000)
     enable_performance_analyzer()
     create_role_reporting()
+    if settings.SORTINGHAT:
+        load_organizations()

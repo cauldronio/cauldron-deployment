@@ -1,2 +1,3 @@
 requests
 elasticsearch>=7.0.0,<8.0.0
+sortinghat==0.7.15
