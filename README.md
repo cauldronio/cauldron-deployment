@@ -159,6 +159,7 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
     - `CAULDRON_CONFIG_DIR`(`/tmp/cauldron-data`): location in the managed nodes where the configuration files for the containers will be stored.
     - `HATSTALL_ENABLED`(`false`): by default personal user information collected from the data sources is anonymized. If you want to see and manage user data from [Hatstall](https://github.com/chaoss/grimoirelab-hatstall) set this to True.
     - `PA_TO_ES_ENABLED`(`false`): by default the Performance Analyzer metrics are not stored in Elasticsearch. Set this variable to True if you want to save those metrics and visualize them in Kibana.
+    - `PRICING_ENABLED`(`false`): Set this variable to `true` to show the pricing page of Cauldron.
     - `NUM_WORKERS`(5): number of [workers](https://gitlab.com/cauldronio/cauldron-worker/) that will analyze repositories concurrently.
     - `CAULDRON_HOST` (`localhost`): Public IP address to access Cauldron, or `localhost` for local deployments.
     - `WEB_HOST` (`cauldron_service`): IP address where the Web Server is hosted or, for single-host deployments, the name of the Web Server Docker container.
@@ -598,7 +599,7 @@ It is important to configure Cauldron to generate periodic snapshots and databas
 
 ### Automatic backups
 
-Cauldron comes with a Docker image ready to perform daily backups of Open Distro and MariaDB databases and remove older than 1 week. Backups can be performed locally or in a remote S3 bucket. 
+Cauldron comes with a Docker image ready to perform daily backups of Open Distro and MariaDB databases and remove older than 1 week. Backups can be performed locally or in a remote S3 bucket.
 
 #### Backup locally
 
@@ -625,8 +626,8 @@ BACKUP_S3_SECRET_KEY: "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
 ```
 
 We provide an example for a Digital Ocean space:
-- Running in Frankfurt 
-- Name of the bucket is `cauldron-test` (`cauldron-test.fra1.digitaloceanspaces.com`). 
+- Running in Frankfurt
+- Name of the bucket is `cauldron-test` (`cauldron-test.fra1.digitaloceanspaces.com`).
 - Backups are stored under `testing.cauldron.io` directory (this must not end or start with `/`)
 - Sample secret and access keys
 

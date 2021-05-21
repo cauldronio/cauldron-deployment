@@ -54,6 +54,9 @@ HATSTALL_ENABLED: false
 # If enabled, some metrics will be collected from Performance Analyzer and stored in Elasticsearch.
 PA_TO_ES_ENABLED: false
 
+# If enabled, the Cauldron Cloud pricing page will appear in the banner.
+PRICING_ENABLED: false
+
 # Number of mordred worker. Use ~15/20 for production.
 NUM_WORKERS: 5
 

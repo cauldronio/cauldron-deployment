@@ -60,6 +60,7 @@
       # Other
       GOOGLE_ANALYTICS_ID: '{{ GOOGLE_ANALYTICS_ID }}'
       HATSTALL_ENABLED: '{{ HATSTALL_ENABLED | string }}'
+      PRICING_ENABLED: '{{ PRICING_ENABLED | string }}'
       SECRET_KEY: '{{ django_secret_key.stdout_lines[0] }}'
       # Admins
       GITHUB_ADMINS: '{{ GITHUB_ADMINS | to_json }}'
