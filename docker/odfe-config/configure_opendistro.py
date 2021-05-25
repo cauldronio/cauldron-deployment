@@ -365,6 +365,8 @@ if __name__ == "__main__":
     elastic = connect_elasticsearch()
     update_max_shards(2000)
     import_index_templates('./index_templates')
+    if settings.SORTINGHAT:
+        import_kibana_objects('./kibana_objects/sortinghat_objects', 'global')
     import_kibana_objects('./kibana_objects/global_objects', 'global')
     import_kibana_objects('./kibana_objects/admin_objects', 'admin_tenant')
     default_index_pattern('all')
