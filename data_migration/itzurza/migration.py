@@ -34,7 +34,7 @@ for r in GitLabRepository.objects.all():
 for r in GitRepository.objects.filter(metrics=None).all():
     owner, repo = github.parse_input_data(r.url)
     if owner and repo:
-        metrics_name = f'GitHub {r.owner}/{r.repo}'
+        metrics_name = f'GitHub {owner}/{repo}'
         metrics, _ = RepositoryMetrics.objects.get_or_create(name=metrics_name)
         r.metrics = metrics
         r.save()
