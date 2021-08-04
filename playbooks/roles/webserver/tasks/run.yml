@@ -71,6 +71,8 @@
       TWITTER_ADMINS: '{{ TWITTER_ADMINS | to_json }}'
       STACK_EXCHANGE_ADMINS: '{{ STACK_EXCHANGE_ADMINS | to_json }}'
       LIMITED_ACCESS:  '{{ LIMITED_ACCESS | string }}'
+      CLOUD_CUSTOM_BRAND: '{{ CLOUD_CUSTOM_BRAND | default("") }}'
+      CLOUD_CUSTOM_SUB_BRAND: '{{ CLOUD_CUSTOM_SUB_BRAND | default("") }}'
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
   tags: [webserver]

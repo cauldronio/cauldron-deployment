@@ -96,6 +96,11 @@ PLAUSIBLE_ANALYTICS_ENABLED: false
 # Plausible Analytics Dashboard URL
 PLAUSIBLE_ANALYTICS_URL: ""
 
+# Custom name for Cauldron Cloud instance
+CLOUD_CUSTOM_BRAND: ""
+
+# Custom subtitle for Cauldron Cloud instance
+CLOUD_CUSTOM_SUB_BRAND: ""
 
 ############## SNAPSHOT AND BACKUP CONFIGURATION ###############
 # Create snapshots daily for Elasticsearch and mysqldump locally.
