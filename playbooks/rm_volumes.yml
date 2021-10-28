@@ -8,6 +8,12 @@
       state: absent
     tags: [project_logs]
 
+  - name: "Remove SPDX files volume: {{ SPDX_FILES_MOUNT_POINT }}"
+    docker_volume:
+      name: "{{ SPDX_FILES_MOUNT_POINT }}"
+      state: absent
+    tags: [project_spdx]
+
   - name: "Remove Git Perceval Repositories volume: {{PERCEVAL_REPOS_MOUNT_POINT}}"
     docker_volume:
       name: "{{ PERCEVAL_REPOS_MOUNT_POINT }}"

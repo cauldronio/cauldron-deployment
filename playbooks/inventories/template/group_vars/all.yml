@@ -102,6 +102,9 @@ CLOUD_CUSTOM_BRAND: ""
 # Custom subtitle for Cauldron Cloud instance
 CLOUD_CUSTOM_SUB_BRAND: ""
 
+# Enable of disable SPDX analysis. It is disabled by default, only for Cauldron Cloud.
+SPDX_ENABLED: false
+
 ############## SNAPSHOT AND BACKUP CONFIGURATION ###############
 # Create snapshots daily for Elasticsearch and mysqldump locally.
 # Rotate backups weekly.
@@ -134,6 +137,7 @@ ELASTIC_SNAPSHOTRESTORE_PASSWORD: "test-password"
 # Could be either a path or a Docker volume
 DB_MOUNT_POINT: "database_volume"
 PROJECT_LOGS_MOUNT_POINT: "cauldron_logs_volume"
+SPDX_FILES_MOUNT_POINT: "cauldron_spdx_volume"
 ELASTIC_MOUNT_POINT: "elastic_data_volume"
 PERCEVAL_REPOS_MOUNT_POINT: "perceval_repos"
 SYSLOG_MOUNT_POINT: "syslog_volume"

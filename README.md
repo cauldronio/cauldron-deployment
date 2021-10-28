@@ -196,6 +196,7 @@ $ <prefered_editor> playbooks/inventories/local/group_vars/all.yml
 
     - `DB_MOUNT_POINT`('database_volume'): database storage
     - `PROJECT_LOGS_MOUNT_POINT`('cauldron_logs_volume'): logs of repository analysis
+    - `SPDX_FILES_MOUNT_POINT`('cauldron_spdx_volume'): spdx files for analysis
     - `ELASTIC_MOUNT_POINT`('elastic_data_volume'): elastic data
     - `ELASTIC_SNAPSHOT_MOUNT_POINT`('elastic_snapshots'): elastic snapshots
     - `PERCEVAL_REPOS_MOUNT_POINT`('perceval_repos'): location for git clone of repositories

@@ -5,6 +5,7 @@
     docker_worker_name: "{{WORKER_CONTAINER_NAME}}_{{worker_id}}"
     worker_volumes:
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
+      - "{{SPDX_FILES_MOUNT_POINT}}:/spdx_files"
       - "{{PERCEVAL_REPOS_MOUNT_POINT}}:/git_repositories"
       - "{{NGINX_STATIC_FILES_MOUNT_POINT}}:/static_files"
     dev_volumes:
@@ -28,6 +29,7 @@
       DB_PORT: "{{ DB_PORT }}"
       GIT_REPOS: "/git_repositories"
       JOB_LOGS: "/job_logs"
+      SPDX_FILES: "/spdx_files"
       JWT_KEY: "{{ lookup('file', inventory_hostname + '/jwt_key/jwtR256.key') }}"
       TWITTER_CLIENT_ID: '{{ twitter_client_id }}'
       TWITTER_CLIENT_SECRET: '{{ twitter_client_secret }}'

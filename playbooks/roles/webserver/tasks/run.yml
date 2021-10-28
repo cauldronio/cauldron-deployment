@@ -4,6 +4,7 @@
   vars:
     webserver_volumes:
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
+      - "{{SPDX_FILES_MOUNT_POINT}}:/spdx_files"
       - "{{CAULDRON_CONFIG_DIR}}/django/jwtR256.key:/code/Cauldron2/CauldronApp/jwtR256.key"
     dev_volumes:
       - "{{DEV_WEBSERVER_REPOSITORY}}:/code"
@@ -71,8 +72,11 @@
       TWITTER_ADMINS: '{{ TWITTER_ADMINS | to_json }}'
       STACK_EXCHANGE_ADMINS: '{{ STACK_EXCHANGE_ADMINS | to_json }}'
       LIMITED_ACCESS:  '{{ LIMITED_ACCESS | string }}'
+      # Branding
       CLOUD_CUSTOM_BRAND: '{{ CLOUD_CUSTOM_BRAND | default("") }}'
       CLOUD_CUSTOM_SUB_BRAND: '{{ CLOUD_CUSTOM_SUB_BRAND | default("") }}'
+      # SPDX
+      SPDX_ENABLED: '{{ SPDX_ENABLED | default(False) | string }}'
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
   tags: [webserver]
