@@ -105,6 +105,9 @@ CLOUD_CUSTOM_SUB_BRAND: ""
 # Enable of disable SPDX analysis. It is disabled by default, only for Cauldron Cloud.
 SPDX_ENABLED: false
 
+# Enable or disabled the possibility to autorefresh reports for users that are not administrators.
+AUTOREFRESH_REPORTS: false
+
 ############## SNAPSHOT AND BACKUP CONFIGURATION ###############
 # Create snapshots daily for Elasticsearch and mysqldump locally.
 # Rotate backups weekly.

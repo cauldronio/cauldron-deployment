@@ -77,6 +77,8 @@
       CLOUD_CUSTOM_SUB_BRAND: '{{ CLOUD_CUSTOM_SUB_BRAND | default("") }}'
       # SPDX
       SPDX_ENABLED: '{{ SPDX_ENABLED | default(False) | string }}'
+      # Reports refresh
+      AUTOREFRESH_REPORTS: '{{ AUTOREFRESH_REPORTS | default(False) | string }}'
     ports: "{{ [] if WEB_HOST == WEB_CONTAINER_NAME else [WEB_EXPORTED_PORTS] }}"
     volumes: '{{webserver_volumes + dev_volumes if DEV_ENABLED else webserver_volumes}}'
   tags: [webserver]
