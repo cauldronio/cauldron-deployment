@@ -18,8 +18,6 @@
   docker_image:
     name: "{{ ELASTIC_IMAGE_NAME }}"
     build:
-      args:
-        ODFE_VERSION: "{{ ELASTIC_IMAGE_NAME.split(':')[-1] }}"
       path: "{{ ELASTIC_IMAGE_BUILD_DIR }}"
       pull: "no"
     source: build
