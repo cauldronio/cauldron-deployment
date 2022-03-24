@@ -2,16 +2,16 @@
 
 - name: "Copy Hatstall installation script in {{WEB_CONTAINER_NAME}}"
   command: "docker cp {{CAULDRON_CONFIG_DIR}}/hatstall/hatstall_installation.sh {{WEB_CONTAINER_NAME}}:/hatstall_installation.sh"
-  tags: [hatstall]
+  tags: [webserver]
 
 - name: "Copy shdb.cfg in {{WEB_CONTAINER_NAME}}"
   command: "docker cp {{CAULDRON_CONFIG_DIR}}/hatstall/shdb.cfg {{WEB_CONTAINER_NAME}}:/code/Cauldron2/shdb.cfg"
-  tags: [hatstall]
+  tags: [webserver]
 
 - name: "Hatstall: change permissions to the installation script"
   command: "docker exec {{ WEB_CONTAINER_NAME }} chmod +x /hatstall_installation.sh"
-  tags: [hatstall]
+  tags: [webserver]
 
 - name: "Install Hatstall in the {{WEB_CONTAINER_NAME}}"
   command: "docker exec {{ WEB_CONTAINER_NAME }} bash -l -c /hatstall_installation.sh"
-  tags: [hatstall]
+  tags: [webserver]

@@ -5,7 +5,7 @@
     path: "{{CAULDRON_CONFIG_DIR}}/hatstall"
     state: directory
     recurse: yes
-  tags: [hatstall]
+  tags: [webserver]
 
 
 - name: Hatstall database configuration
@@ -13,7 +13,7 @@
     src: shdb.cfg.j2
     dest: "{{ CAULDRON_CONFIG_DIR }}/hatstall/shdb.cfg"
     mode: 0644
-  tags: [hatstall]
+  tags: [webserver]
 
 
 - name: Hatstall script installation
@@ -21,4 +21,4 @@
     src: hatstall_installation.sh
     dest: "{{ CAULDRON_CONFIG_DIR }}/hatstall/hatstall_installation.sh"
     mode: 0644
-  tags: [hatstall]
+  tags: [webserver]
