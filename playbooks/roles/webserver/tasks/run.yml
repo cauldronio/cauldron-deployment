@@ -6,6 +6,9 @@
       - "{{PROJECT_LOGS_MOUNT_POINT}}:/job_logs"
       - "{{SPDX_FILES_MOUNT_POINT}}:/spdx_files"
       - "{{CAULDRON_CONFIG_DIR}}/django/jwtR256.key:/code/Cauldron2/CauldronApp/jwtR256.key"
+      - "{{CAULDRON_CONFIG_DIR}}/django/cauldron_custom/css/custom.css:/code/Cauldron2/CauldronApp/static/css/customized.css"
+      - "{{CAULDRON_CONFIG_DIR}}/django/cauldron_custom/html/footer.html:/code/Cauldron2/CauldronApp/templates/cauldronapp/footer.html"
+      - "{{CAULDRON_CONFIG_DIR}}/django/cauldron_custom/img/:/code/Cauldron2/CauldronApp/static/img/custom/"
     dev_volumes:
       - "{{DEV_WEBSERVER_REPOSITORY}}:/code"
       - "{{DEV_POOLSCHED_REPOSITORY}}/poolsched:/code/Cauldron2/poolsched"
